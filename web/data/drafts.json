@@ -6,9 +6,85 @@
    "simulated": true,
    "headline": "Tech sell-off: Nvidia down 30% in two weeks; broad US equities down ~8%",
    "date": "2026-11-21"
+  },
+  {
+   "event_id": "layoffs_johnson_employer",
+   "type": "life",
+   "simulated": true,
+   "headline": "Daniel Johnson's employer announces 10% layoffs",
+   "date": "2026-11-21",
+   "applies_to": [
+    "johnson"
+   ]
   }
  ],
  "drafts": [
+  {
+   "family_id": "johnson",
+   "event_id": "layoffs_johnson_employer",
+   "affected": "high",
+   "action_type": "act",
+   "urgency_score": 85,
+   "goal_at_risk": {
+    "name": "Emergency cash reserve",
+    "date": "2026-11"
+   },
+   "why_this_family": "Their cash covers only 1.4 months of essentials and an $18,000 card at 24.9% competes for the same dollars, so a pause in Daniel's income would be felt within weeks.",
+   "plan_figures_cited": [
+    {
+     "figure": "$19,000",
+     "meaning": "accessible cash",
+     "source": "PLAN.financial_health.protection_emergency_fund"
+    },
+    {
+     "figure": "1.4 months",
+     "meaning": "essential expenses covered by cash (8 to 9 months recommended)",
+     "source": "PLAN.financial_health.protection_emergency_fund"
+    },
+    {
+     "figure": "$18,000",
+     "meaning": "credit card balance",
+     "source": "PLAN.financial_health.summary_main"
+    },
+    {
+     "figure": "24.9%",
+     "meaning": "credit card interest rate",
+     "source": "PLAN.financial_health.summary_main"
+    },
+    {
+     "figure": "$120,000",
+     "meaning": "Emily's salary",
+     "source": "PLAN.financial_health.protection_emergency_fund"
+    },
+    {
+     "figure": "$15,032",
+     "meaning": "free cash flow per year",
+     "source": "PLAN.financial_health.summary_main"
+    }
+   ],
+   "tone": "joint-couple",
+   "subject": "The layoff news at Daniel's company",
+   "draft": "Daniel and Emily, I saw that Daniel's employer is announcing 10% layoffs. Nothing has happened to Daniel's job, and an announcement isn't a decision, so let's take this calmly and prepare together. Your plan already showed that cash is the thin spot: $19,000 covers about 1.4 months of essentials, against a recommended 8 to 9 months. The $18,000 card at 24.9% would also weigh more if income paused. Emily's $120,000 salary is a real anchor. Let's look this week at what a few months on one income would look like, and how your $15,032 a year of free cash flow could build the cushion first.",
+   "voice_script": "Hi Daniel and Emily, it's Mohamed. I saw the layoff news at Daniel's company. Nothing has changed yet, so let's prepare calmly. Your cash covers about 1.4 months, so I'd like to look together at what a few months on one income would look like. I'll send you some times.",
+   "advisor_note": "Event is SIMULATED. Confirm Daniel's role and severance terms before the call; check whether either employer offers a 401(k) match. Client profile not available (no MCP); tone inferred from the plan narrative.",
+   "simulated_inputs": [
+    "event"
+   ],
+   "generated_by": "offline-draft",
+   "household": {
+    "names": [
+     "Daniel",
+     "Emily"
+    ],
+    "surname": "Johnson",
+    "advisor": {
+     "name": "Mohamed",
+     "surname": "Benhaddi"
+    }
+   },
+   "audio": "audio/layoffs_johnson_employer__johnson.mp3",
+   "id": "layoffs_johnson_employer__johnson"
+  },
   {
    "family_id": "carter",
    "event_id": "tech_selloff_2026_11",

@@ -120,19 +120,50 @@ DRAFTS = [
     },
 ]
 
+LAYOFFS = "layoffs_johnson_employer"
+LAYOFF_DRAFTS = [
+    {
+        "family_id": "johnson",
+        "affected": "high", "action_type": "act", "urgency_score": 85,
+        "goal_at_risk": {"name": "Emergency cash reserve", "date": "2026-11"},
+        "why_this_family": "Their cash covers only 1.4 months of essentials and an $18,000 card at 24.9% competes for the same dollars, so a pause in Daniel's income would be felt within weeks.",
+        "plan_figures_cited": [
+            {"figure": "$19,000", "meaning": "accessible cash", "source": "PLAN.financial_health.protection_emergency_fund"},
+            {"figure": "1.4 months", "meaning": "essential expenses covered by cash (8 to 9 months recommended)", "source": "PLAN.financial_health.protection_emergency_fund"},
+            {"figure": "$18,000", "meaning": "credit card balance", "source": "PLAN.financial_health.summary_main"},
+            {"figure": "24.9%", "meaning": "credit card interest rate", "source": "PLAN.financial_health.summary_main"},
+            {"figure": "$120,000", "meaning": "Emily's salary", "source": "PLAN.financial_health.protection_emergency_fund"},
+            {"figure": "$15,032", "meaning": "free cash flow per year", "source": "PLAN.financial_health.summary_main"},
+        ],
+        "tone": "joint-couple",
+        "subject": "The layoff news at Daniel's company",
+        "draft": ("Daniel and Emily, I saw that Daniel's employer is announcing 10% layoffs. Nothing has happened to "
+                  "Daniel's job, and an announcement isn't a decision, so let's take this calmly and prepare together. "
+                  "Your plan already showed that cash is the thin spot: $19,000 covers about 1.4 months of essentials, "
+                  "against a recommended 8 to 9 months. The $18,000 card at 24.9% would also weigh more if income paused. "
+                  "Emily's $120,000 salary is a real anchor. Let's look this week at what a few months on one income "
+                  "would look like, and how your $15,032 a year of free cash flow could build the cushion first."),
+        "voice_script": ("Hi Daniel and Emily, it's Mohamed. I saw the layoff news at Daniel's company. Nothing has "
+                         "changed yet, so let's prepare calmly. Your cash covers about 1.4 months, so I'd like to look "
+                         "together at what a few months on one income would look like. I'll send you some times."),
+        "advisor_note": "Event is SIMULATED. Confirm Daniel's role and severance terms before the call; check whether either employer offers a 401(k) match. " + NO_PROFILE,
+    },
+]
+
 if __name__ == "__main__":
     _, events = impact.load_prompt()
     impact.CACHE_DIR.mkdir(parents=True, exist_ok=True)
     ok = True
-    for d in DRAFTS:
+    batches = [(EVENT, d) for d in DRAFTS] + [(LAYOFFS, d) for d in LAYOFF_DRAFTS]
+    for ev, d in batches:
         fid = d["family_id"]
-        r = impact.ImpactResult.model_validate({**d, **COMMON})
-        src = json.dumps({"EVENT": events[EVENT], "PLAN": impact.plan_digest(fid)}, ensure_ascii=False)
+        r = impact.ImpactResult.model_validate({**d, **COMMON, "event_id": ev})
+        src = json.dumps({"EVENT": events[ev], "PLAN": impact.plan_digest(fid)}, ensure_ascii=False)
         bad = impact.ungrounded_figures(r, src)
         wc = (len(r.draft.split()), len(r.voice_script.split()))
-        print(f"{fid:8} draft={wc[0]}w voice={wc[1]}w ungrounded={bad}")
+        print(f"{ev[:14]:14} {fid:8} draft={wc[0]}w voice={wc[1]}w ungrounded={bad}")
         if bad or wc[0] > 120 or wc[1] > 60:
             ok = False
             continue
-        (impact.CACHE_DIR / f"{EVENT}__{fid}.json").write_text(r.model_dump_json(indent=2), encoding="utf8")
+        (impact.CACHE_DIR / f"{ev}__{fid}.json").write_text(r.model_dump_json(indent=2), encoding="utf8")
     sys.exit(0 if ok else 1)
