@@ -13,8 +13,8 @@
   :root{--canvas:#f5f5f5;--panel:#ffffff;--bar:#f8f9fc;--ink:#1b1c22;--ink-2:#3a3d4a;--muted:#646883;--faint:#9a9db2;
         --line:#e3e5ec;--line-2:#d3d6df;--brand:#4b55d0;--brand-ink:#fff;--hero-a:#eceffd;--hero-b:#e4e8fb;
         --red:#d0342c;--amber:#e08a1e;--green:#2f9e5b;--blue:#4b55d0;--sim:#6b4fc8}
-  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--canvas:#111216;--panel:#191a20;--bar:#1d1e25;--ink:#ececf2;--ink-2:#c9cbd6;--muted:#9a9db2;--faint:#6d7085;
-        --line:#2b2d37;--line-2:#383a46;--brand:#8a92ff;--brand-ink:#11121a;--hero-a:#23264a;--hero-b:#1e2140}}
+  /* Always light, like the Sherpas plan pages; dark only if explicitly set with data-theme="dark". */
+  :root{color-scheme:light}
   :root[data-theme="dark"]{--canvas:#111216;--panel:#191a20;--bar:#1d1e25;--ink:#ececf2;--ink-2:#c9cbd6;--muted:#9a9db2;--faint:#6d7085;
         --line:#2b2d37;--line-2:#383a46;--brand:#8a92ff;--brand-ink:#11121a;--hero-a:#23264a;--hero-b:#1e2140}
   *{box-sizing:border-box}
