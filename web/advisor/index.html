@@ -93,6 +93,7 @@
   .avatar{width:34px;height:34px;border-radius:50%;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font:600 13px Poppins,sans-serif;flex:none}
   .msgcard{max-width:640px}
   .msgcard .hero{padding:24px 26px} .msgcard .hero h2{font-size:24px;margin-top:12px}
+  .lbl{font:600 11px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
   .dl{display:inline-block;font:600 12.5px/1 Inter,sans-serif;padding:6px 10px;border-radius:99px;background:var(--bar);border:1px solid var(--line-2);color:var(--ink-2)}
   .dl.urg{background:#fdecea;border-color:#f3b9b4;color:#9e2a22}
   .flash{animation:flash 1.2s ease} @keyframes flash{0%{box-shadow:0 0 0 3px var(--brand)}100%{box-shadow:0 0 0 0 transparent}}
@@ -212,21 +213,44 @@ function checkinsBody() {
   const fam = fid => { const d = DATA.drafts.find(x => x.family_id === fid); return d ? names(d) : fid; };
   const badge = s => s.headline.includes("URGENT") ? `<span class="tag high">Urgent</span>` : s.all_good ? `<span class="tag" style="background:var(--green)">All good</span>` : `<span class="tag medium">To note</span>`;
   const when = t => new Date(t).toLocaleString("en", {day: "numeric", month: "short", hour: "2-digit", minute: "2-digit"});
-  const callHtml = calls.length ? calls.map(c => `<div class="card">
-      <div class="row"><span class="fam grow">${esc(c.summary.headline)}</span>${badge(c.summary)}</div>
-      <div class="meta">${c.mode === "event" ? "Event call" : "Periodic check-in"} · ${when(c.ended || c.started)} · client mood: ${esc(c.summary.emotion)}</div>
-      ${c.summary.key_points.length ? `<h3 class="label">Key points</h3><ul style="margin:0;padding-left:20px">${c.summary.key_points.map(p => `<li>${esc(p)}</li>`).join("")}</ul>` : ""}
-      <h3 class="label">Client asks</h3><div>${esc(c.summary.client_asks)}</div>
-      <h3 class="label">Suggested next step</h3><div>${esc(c.summary.next_step)}</div>
-      <details style="margin-top:12px"><summary class="meta" style="cursor:pointer">Transcript (${c.turns.length} turns)</summary>
-        <div class="note">${c.turns.map(t => `<div style="margin:4px 0"><b>${t.who === "ai" ? "AI" : "Client"}:</b> ${esc(t.text)}</div>`).join("")}</div></details></div>`).join("")
-    : `<div class="empty">No calls yet. Start one from a family's view ("Talk to us").</div>`;
+  // Layout from the team's advisor mockup: the first call that needs you is expanded (summary, transcript, requests,
+  // Done); the rest are one-line rows you can open. Handled calls sink to the bottom.
+  const first = n => (DATA.drafts.find(x => x.family_id === n) || {household: {names: [n]}}).household.names[0];
+  const status = c => c.done ? ["Done", "var(--faint)"] : c.summary.headline.includes("URGENT") ? ["Urgent", "var(--red)"]
+    : !c.summary.all_good && c.summary.client_asks !== "Nothing" ? ["Asks for something", "var(--amber)"]
+    : !c.summary.all_good ? ["To note", "var(--amber)"] : ["No requests", "var(--green)"];
+  const pill = c => { const [t, col] = status(c); return `<span style="font:600 12px/1 Inter,sans-serif;border-radius:99px;padding:6px 10px;background:color-mix(in srgb,${col} 14%,transparent);color:${col}">${t}</span>`; };
+  const ordered = [...calls].sort((a, b) => (a.done ? 1 : 0) - (b.done ? 1 : 0));
+  if (chkOpen === null && ordered.length) chkOpen = (ordered.find(c => !c.done) || ordered[0]).key;
+  const mins = c => Math.max(1, Math.round(((c.ended || c.started) - c.started) / 60000));
+  const av = c => `<div class="avatar" style="width:40px;height:40px;background:var(--hero-a);color:var(--brand)">${esc(first(c.family_id)[0])}</div>`;
+  const expandedCard = c => `<div class="card" style="border-radius:20px;display:flex;flex-direction:column;gap:14px">
+      <div class="row" style="gap:12px">${av(c)}<div class="grow"><div class="fam" style="font-size:18px">${esc(first(c.family_id))} <span class="meta">· ${esc(fam(c.family_id))}</span></div>
+        <div class="meta">${c.mode === "event" ? "Event call" : "Check-in call"} · ${mins(c)} min · ${when(c.ended || c.started)}</div></div>${pill(c)}</div>
+      <div><div class="lbl">Summary</div><p style="margin:6px 0 0;font-size:15px;line-height:1.55">${esc(c.summary.headline.replace(/^[^:]+:\s*/, "").replace(/^./, ch => ch.toUpperCase()))}.${c.summary.key_points.length ? " " + c.summary.key_points.map(p => esc(p)).join(". ") + "." : ""} Client mood: ${esc(c.summary.emotion)}.</p></div>
+      <details><summary style="list-style:none;cursor:pointer;min-height:44px;border:1px solid var(--line-2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;color:var(--brand);font-weight:600">Show full transcript <span aria-hidden="true">⌄</span></summary>
+        <div class="note">${c.turns.map(t => `<div style="margin:4px 0"><b>${t.who === "ai" ? "AI" : esc(first(c.family_id))}:</b> ${esc(t.text)}</div>`).join("")}</div></details>
+      <div><div class="lbl">Requests</div><ul style="margin:8px 0 0;padding-left:18px;font-size:15px;line-height:1.6">
+        ${c.summary.client_asks !== "Nothing" ? `<li>${esc(c.summary.client_asks)}</li>` : `<li>No requests</li>`}<li><span class="meta">Suggested:</span> ${esc(c.summary.next_step)}</li></ul></div>
+      <button class="${c.done ? "" : "primary"}" style="min-height:48px;border-radius:14px;font-size:16px" onclick="markDone('${c.key}', ${!c.done})">${c.done ? "Mark as not done" : "✓ Done"}</button></div>`;
+  const row = c => `<button onclick="chkOpen='${c.key}';render()" style="width:100%;display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:10px;text-align:left;font:inherit;line-height:1.4">
+      ${av(c)}<div class="grow" style="min-width:0"><div style="font-weight:600;font-size:16px">${esc(first(c.family_id))}</div>
+      <div class="meta" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(c.summary.headline.replace(/^[^:]+:\s*/, ""))}</div></div>${pill(c)}</button>`;
+  const callHtml = ordered.length ? ordered.map(c => c.key === chkOpen ? expandedCard(c) : row(c)).join("")
+    : `<div class="empty">No calls yet. Start one from the client app ("Call me now").</div>`;
   const chgHtml = changes.length ? changes.map(c => `<div class="card"><div class="row"><span class="fam grow" style="font-size:16px">${esc(fam(c.fid))}</span><span class="tag low">${esc(c.kind)}</span></div>
       <div class="meta">${when(c.created)}${c.when ? " · happening: " + esc(c.when) : ""} · ${esc(c.source)} · ${esc(c.status)}</div><p class="msg" style="margin-top:8px">${esc(c.text)}</p></div>`).join("")
     : `<div class="empty">No changes reported yet.</div>`;
   return `${kv ? "" : `<div class="note">Storage is not connected yet (KV binding CALLS), so calls work but summaries can't be saved.</div>`}
     <section id="sec-calls"><h2>Call summaries</h2><p class="lead">Newest first. Open the transcript only if you need it.</p>${callHtml}</section>
     <section id="sec-changes"><h2>Changes reported by clients</h2><p class="lead">Client statements: validate before updating the plan.</p>${chgHtml}</section>`;
+}
+let chkOpen = null;
+async function markDone(key, done) {
+  const pin = getPin(); if (!pin) return;
+  const r = await api("/api/calls", pin, {key, done});
+  if (r.ok) { const c = CHK.calls.find(x => x.key === key); if (c) c.done = done; if (done) chkOpen = (CHK.calls.find(x => !x.done) || {}).key || null; render(); }
+  else alert("Couldn't save: " + (r.error || "error"));
 }
 async function loadCheckins(force) {
   if (CHK && !force) return;
@@ -278,9 +302,10 @@ const URGENT = 70;
 const freqOf = fid => (state.freq && state.freq[fid]) || "monthly";
 function setFreq(fid, f) { state.freq = {...(state.freq || {}), [fid]: f}; save(); render(); }
 function nextUpdate(fid) {
-  const f = freqOf(fid), d = new Date(TODAY);
-  if (f === "monthly") return new Date(d.getFullYear(), d.getMonth() + 1, 1);
-  const toMon = (8 - d.getDay()) % 7 || 7; d.setDate(d.getDate() + toMon + (f === "biweekly" ? 7 : 0)); return d;
+  // same rule as the client app: calls on Fridays; monthly = first Friday of next month
+  const f = freqOf(fid);
+  if (f === "monthly") { const d = new Date(TODAY.getFullYear(), TODAY.getMonth() + 1, 1); while (d.getDay() !== 5) d.setDate(d.getDate() + 1); return d; }
+  const d = new Date(TODAY); do d.setDate(d.getDate() + 1); while (d.getDay() !== 5); return d;
 }
 const dayFmt = d => d.toLocaleDateString("en", {weekday: "short", day: "numeric", month: "short"});
 const isUrgent = d => d.urgency_score >= URGENT;

@@ -81,7 +81,7 @@
 <script>
 /* Shared with the advisor view (same browser): approvals and preferences live in localStorage "ftt-state-v1". */
 const STORE = "ftt-state-v1";
-let DATA = null, state = {}, tab = "home", fid = null, BRIEF = null, open = {}, chat = [];
+let DATA = null, state = {}, tab = "home", fid = null, BRIEF = null, expanded = {}, chat = [];
 const load = () => { try { state = JSON.parse(localStorage.getItem(STORE) || "{}"); } catch (e) { state = {}; } };
 const save = () => { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} };
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -118,8 +118,8 @@ function msgCard(d, clip) {
   return `<div class="card">
     <div class="row"><span class="grow lbl">From ${esc(A.name)}</span><span class="pill ${isUrgent(d) ? "urg" : ""}">${isUrgent(d) ? "Important" : "Update"}</span></div>
     <div class="big">${esc(d.subject)}</div>
-    <p class="msg ${clip && !open[d.id] ? "clip" : ""}">${esc(st(d).text)}</p>
-    ${clip ? `<button class="link" onclick="open['${d.id}']=!open['${d.id}'];render()">${open[d.id] ? "Show less" : "Read more"}</button>` : ""}
+    <p class="msg ${clip && !expanded[d.id] ? "clip" : ""}">${esc(st(d).text)}</p>
+    ${clip ? `<button class="link" onclick="expanded['${d.id}']=!expanded['${d.id}'];render()">${expanded[d.id] ? "Show less" : "Read more"}</button>` : ""}
     ${d.audio ? `<div class="lbl">Voice note</div><audio controls preload="none" src="/${d.audio}"></audio>` : ""}
     <button class="ghost" onclick="callMe({mode:'event', id:'${d.id}'}, this, 's-${d.id}')">📞 Call me about this</button>
     <div class="status" id="s-${d.id}"></div></div>`;
@@ -254,8 +254,8 @@ async function sendChange(btn) {
 }
 async function passQ(i, btn) {
   btn.disabled = true;
-  const j = await post("/api/changes", {fid, kind: "question", text: chat[i - 1].text});
-  if (j.ok) { remember("question", chat[i - 1].text); btn.textContent = `✓ Sent to ${advisor().name}`; } else { btn.disabled = false; btn.textContent = "Couldn't send: " + (j.error || "error"); }
+  const j = await post("/api/changes", {fid, kind: "question", text: chat[i].pass});
+  if (j.ok) { remember("question", chat[i].pass); btn.textContent = `✓ Sent to ${advisor().name}`; } else { btn.disabled = false; btn.textContent = "Couldn't send: " + (j.error || "error"); }
 }
 
 /* ---------------- boot ---------------- */
