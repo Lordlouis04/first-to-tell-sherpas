@@ -1,0 +1,43 @@
+{
+  "family_id": "carter",
+  "event_id": "tech_selloff_2026_11",
+  "affected": "high",
+  "action_type": "act",
+  "urgency_score": 90,
+  "goal_at_risk": {
+    "name": "Home purchase",
+    "date": "2027-01"
+  },
+  "why_this_family": "His January 2027 home purchase needs $113,300 but only $30,000 is in cash, so the rest depends on investments that are 73.5% in stocks.",
+  "plan_figures_cited": [
+    {
+      "figure": "$113,300",
+      "meaning": "cash to hold for the January 2027 home purchase",
+      "source": "PLAN.financial_health.protection_emergency_fund"
+    },
+    {
+      "figure": "$30,000",
+      "meaning": "accessible cash today",
+      "source": "PLAN.financial_health.summary_main"
+    },
+    {
+      "figure": "73.5%",
+      "meaning": "share of invested savings in stocks",
+      "source": "PLAN.financial_health.assets"
+    },
+    {
+      "figure": "33%",
+      "meaning": "technology share of stock holdings",
+      "source": "PLAN.portfolio.recommendations_main"
+    }
+  ],
+  "tone": "calm-first",
+  "subject": "The tech drop and your January home purchase",
+  "draft": "Michael, you've likely seen the news: Nvidia is down 30% in two weeks and US stocks about 8%. Drops like this happen, and your long-term plan was built to ride them out. The part that matters now is your home purchase in January 2027. It needs $113,300 and you hold $30,000 in cash, so the rest depends on investments that are 73.5% in stocks, with technology about 33% of your stock holdings. Your plan already flagged keeping near-term home money separate from long-term investments. Let's look together this week at where that money sits and confirm the size and timing of the purchase, so a market dip doesn't make the decision for you.",
+  "voice_script": "Hi Michael, it's Mohamed. Tech stocks have dropped sharply, and I want to talk about your January home purchase. It needs $113,300 and you hold $30,000 in cash, so let's look this week at where the rest sits, so a dip doesn't decide the timing for you.",
+  "advisor_note": "Confirm where the home-purchase money is held today (cash vs brokerage) and whether the January 2027 date is firm. Client profile not available (no MCP); tone inferred from the plan narrative.",
+  "simulated_inputs": [
+    "event"
+  ],
+  "generated_by": "offline-draft"
+}

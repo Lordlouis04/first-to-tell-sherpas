@@ -1,0 +1,38 @@
+{
+  "family_id": "johnson",
+  "event_id": "tech_selloff_2026_11",
+  "affected": "low",
+  "action_type": "reassure",
+  "urgency_score": 20,
+  "goal_at_risk": {
+    "name": "Retirement",
+    "date": "2044"
+  },
+  "why_this_family": "At 60.2% stocks with retirement in 2044, the sell-off changes little; the real lever in their plan is a cash reserve of only 1.4 months.",
+  "plan_figures_cited": [
+    {
+      "figure": "60.2%",
+      "meaning": "share of invested savings in stocks",
+      "source": "PLAN.financial_health.assets"
+    },
+    {
+      "figure": "$19,000",
+      "meaning": "accessible cash",
+      "source": "PLAN.financial_health.protection_emergency_fund"
+    },
+    {
+      "figure": "1.4 months",
+      "meaning": "essential expenses covered by cash",
+      "source": "PLAN.financial_health.protection_emergency_fund"
+    }
+  ],
+  "tone": "joint-couple",
+  "subject": "The tech headlines: no action needed, here's why",
+  "draft": "Daniel and Emily, a quick note on the tech headlines: Nvidia is down 30% in two weeks and US stocks about 8%. No action is needed from you. Your invested savings are 60.2% in stocks and your retirement is planned for 2044, so there is plenty of time for markets to move through this. Daniel, your profile is Growth and Emily's is Moderate; this drop doesn't change what either of you needs to do. The part of your plan I'd rather we focus on is your cash: $19,000 covers about 1.4 months of essentials. That cushion is what keeps a dip like this from ever forcing a decision, so it's worth a calm conversation when it suits you.",
+  "voice_script": "Hi Daniel and Emily, it's Mohamed. You may have seen the tech news. No action is needed: your retirement is years away and your mix is moderate. When it suits you, I'd like to talk about building up your cash cushion, which matters more for you than this drop.",
+  "advisor_note": "No action needed on the event itself. Cash reserve is the real topic; consider pairing with the layoffs scenario if it applies. Client profile not available (no MCP); tone inferred from the plan narrative.",
+  "simulated_inputs": [
+    "event"
+  ],
+  "generated_by": "offline-draft"
+}

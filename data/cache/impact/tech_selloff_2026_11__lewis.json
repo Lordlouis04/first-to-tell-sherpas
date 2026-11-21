@@ -1,0 +1,53 @@
+{
+  "family_id": "lewis",
+  "event_id": "tech_selloff_2026_11",
+  "affected": "high",
+  "action_type": "understand",
+  "urgency_score": 70,
+  "goal_at_risk": {
+    "name": "College for Ethan",
+    "date": "2027-08"
+  },
+  "why_this_family": "Her invested savings are 85.1% stocks with technology at 30.6% and US at 92.6%, a concentration her plan already flagged, and college money rides the same swings.",
+  "plan_figures_cited": [
+    {
+      "figure": "85.1%",
+      "meaning": "share of invested savings in stocks",
+      "source": "PLAN.financial_health.assets"
+    },
+    {
+      "figure": "30.6%",
+      "meaning": "technology share of stock holdings",
+      "source": "PLAN.portfolio.recommendations_main"
+    },
+    {
+      "figure": "92.6%",
+      "meaning": "US share of stock holdings",
+      "source": "PLAN.portfolio.recommendations_main"
+    },
+    {
+      "figure": "$12,500",
+      "meaning": "Ethan's college payment due August 2027",
+      "source": "PLAN.portfolio.recommendations_main"
+    },
+    {
+      "figure": "$80,000",
+      "meaning": "cash, covering 7.9 months of essentials",
+      "source": "PLAN.financial_health.summary_main"
+    },
+    {
+      "figure": "$3,032",
+      "meaning": "yearly tax cost of taxable holdings",
+      "source": "PLAN.portfolio.recommendations_main"
+    }
+  ],
+  "tone": "numbers-first",
+  "subject": "What the tech sell-off means for your portfolio",
+  "draft": "Samantha, on the tech sell-off: Nvidia is down 30% in two weeks and US stocks about 8%. Your invested savings are 85.1% in stocks, technology is 30.6% of your stock holdings and 92.6% is in the US, so you'll feel this more than most. Two steadying facts: your $80,000 in cash covers 7.9 months of essentials, and Ethan's $12,500 college payment isn't due until August 2027, so nothing forces a decision today. Your plan already flagged the tech and US concentration and the tax cost of your taxable holdings, about $3,032 a year. This is a good moment to look at both together, starting with the missing cost basis so we know what any change would really cost.",
+  "voice_script": "Hi Samantha, it's Mohamed. With tech down this much, your portfolio will show it, since technology is 30.6% of your stock holdings. Your $80,000 cash cushion means nothing is forced today. Let's use this moment to look at the concentration your plan already flagged.",
+  "advisor_note": "Cost basis and purchase dates for taxable holdings are missing; confirm before discussing any change. Client profile not available (no MCP); tone inferred from the plan narrative.",
+  "simulated_inputs": [
+    "event"
+  ],
+  "generated_by": "offline-draft"
+}

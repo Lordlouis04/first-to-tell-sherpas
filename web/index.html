@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>First to Tell</title>
+<style>
+  :root{--bg:#f6f5f1;--card:#fff;--ink:#1d1d1b;--muted:#6b6a65;--line:#e4e2db;--accent:#1f5f4a;--accent-ink:#fff;
+        --high:#b4372b;--medium:#b5761b;--low:#2f6f9f;--none:#6b6a65;--sim:#7a3fb0}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#151514;--card:#1e1e1c;--ink:#ecebe6;--muted:#a09f99;--line:#33322f;--accent:#5fb08f;--accent-ink:#0d1a14}}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+  header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line);background:var(--card)}
+  header h1{font-size:18px;margin:0} nav a{color:var(--muted);text-decoration:none;margin-left:14px;font-weight:600} nav a.on{color:var(--accent)}
+  main{max-width:920px;margin:0 auto;padding:16px}
+  .banner{background:color-mix(in srgb,var(--sim) 12%,transparent);border:1px solid var(--sim);color:var(--ink);border-radius:10px;padding:10px 12px;margin-bottom:14px;font-size:14px}
+  .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:99px;color:#fff}
+  .sim{background:var(--sim)} .high{background:var(--high)} .medium{background:var(--medium)} .low{background:var(--low)} .none{background:var(--none)}
+  .toolbar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin:6px 0 12px;flex-wrap:wrap}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+  .card.approved{border-color:var(--accent)} .card.rejected{opacity:.55}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap} .grow{flex:1}
+  .fam{font-weight:700;font-size:16px} .muted{color:var(--muted);font-size:13px}
+  .why{margin:8px 0;padding:8px 10px;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent);font-size:14px}
+  .figs{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0} .fig{border:1px solid var(--line);border-radius:8px;padding:3px 8px;font-size:12.5px} .fig b{font-variant-numeric:tabular-nums}
+  textarea{width:100%;min-height:150px;font:inherit;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+  .msg{white-space:pre-wrap;margin:8px 0}
+  button{font:inherit;font-weight:600;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 12px;cursor:pointer}
+  button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .note{font-size:13px;color:var(--muted);margin-top:6px} .empty{color:var(--muted);text-align:center;padding:30px}
+  select{font:inherit;padding:6px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+  .phone{max-width:420px;margin:0 auto}
+</style>
+</head>
+<body>
+<header>
+  <h1>First to Tell <span class="tag sim">Prototype</span></h1>
+  <nav><a href="#/inbox" id="nav-inbox">Advisor inbox</a><a href="#/family" id="nav-family">Family view</a></nav>
+</header>
+<main id="app"><p class="empty">Loading…</p></main>
+<script>
+const STORE = "ftt-state-v1";
+let DATA = null, state = {};
+try { state = JSON.parse(localStorage.getItem(STORE) || "{}"); } catch (e) { state = {}; }
+const save = () => { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} };
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const st = d => state[d.id] || {status: "pending", text: d.draft};
+const names = d => d.household.names.join(" & ") + " " + d.household.surname;
+
+// urgency x date of the goal at risk: sooner goal => higher priority
+function priority(d) {
+  let months = 120;
+  if (d.goal_at_risk && d.goal_at_risk.date) {
+    const [y, m] = d.goal_at_risk.date.split("-").map(Number);
+    months = Math.max(1, (y - 2026) * 12 + ((m || 6) - 11));
+  }
+  return d.urgency_score * (1 + 12 / months);
+}
+
+function banner() {
+  const ev = DATA.events.map(e => `<b>${esc(e.headline)}</b> (${esc(e.date)})`).join("<br>");
+  return `<div class="banner"><span class="tag sim">Simulated</span> Event: ${ev}<br>
+  Synthetic families from the Sherpas case. No real messages are sent. Draft messages were generated offline and validated against each family's plan figures.</div>`;
+}
+
+function inbox() {
+  const ds = [...DATA.drafts].sort((a, b) => priority(b) - priority(a));
+  const pending = ds.filter(d => st(d).status === "pending").length;
+  return banner() + `<div class="toolbar"><div><b>${ds.length}</b> drafts · <b>${pending}</b> waiting for you</div>
+    <div class="row"><button onclick="resetAll()">Reset</button><button class="primary" onclick="approveAll()" ${pending ? "" : "disabled"}>Approve all pending</button></div></div>` +
+    ds.map(d => {
+      const s = st(d), editing = s.status === "editing";
+      return `<div class="card ${s.status}">
+        <div class="row"><span class="fam grow">${esc(names(d))}</span>
+          <span class="tag ${d.affected}">${d.affected}</span>
+          <span class="muted">${esc(d.action_type)} · urgency ${d.urgency_score}${d.goal_at_risk ? " · " + esc(d.goal_at_risk.name) + " " + esc(d.goal_at_risk.date) : ""}</span></div>
+        <div class="why"><b>Why this family:</b> ${esc(d.why_this_family)}</div>
+        <div class="figs">${d.plan_figures_cited.map(f => `<span class="fig" title="${esc(f.source)}"><b>${esc(f.figure)}</b> ${esc(f.meaning)}</span>`).join("")}</div>
+        <div class="muted">Subject: <b>${esc(d.subject)}</b> · tone: ${esc(d.tone)}</div>
+        ${editing ? `<textarea id="ta-${d.id}">${esc(s.text)}</textarea>` : `<div class="msg">${esc(s.text)}</div>`}
+        ${d.advisor_note ? `<div class="note">⚑ ${esc(d.advisor_note)}</div>` : ""}
+        <div class="row" style="margin-top:10px">
+          ${editing ? `<button class="primary" onclick="saveEdit('${d.id}')">Save &amp; approve</button><button onclick="setStatus('${d.id}','pending')">Cancel</button>`
+                    : s.status === "pending" ? `<button class="primary" onclick="setStatus('${d.id}','approved')">Approve</button><button onclick="setStatus('${d.id}','editing')">Edit</button><button onclick="setStatus('${d.id}','rejected')">Reject</button>`
+                    : `<span class="muted grow">${s.status === "approved" ? "✓ Approved — visible in Family view" : "Rejected"}</span><button onclick="setStatus('${d.id}','pending')">Undo</button>`}
+        </div></div>`;
+    }).join("");
+}
+
+function family(fid) {
+  const approved = DATA.drafts.filter(d => st(d).status === "approved");
+  const opts = DATA.drafts.map(d => `<option value="${d.family_id}" ${d.family_id === fid ? "selected" : ""}>${esc(names(d))}</option>`).join("");
+  const d = DATA.drafts.find(x => x.family_id === fid) || DATA.drafts[0];
+  const ok = approved.includes(d);
+  return `<div class="phone"><div class="toolbar"><select onchange="location.hash='#/family/'+this.value">${opts}</select><span class="tag sim">Simulated</span></div>` +
+    (ok ? `<div class="card"><div class="muted">From ${esc(d.household.advisor.name)} ${esc(d.household.advisor.surname)}, your advisor</div>
+      <div class="fam" style="margin:6px 0">${esc(d.subject)}</div>
+      <div class="msg">${esc(st(d).text)}</div>
+      ${d.audio ? `<audio controls src="${d.audio}" style="width:100%"></audio><div class="note">Voice note uses a synthetic stock voice.</div>`
+                : `<div class="note">Voice note: coming soon (synthetic stock voice).</div>`}</div>`
+        : `<div class="empty">Nothing here yet. The advisor hasn't approved a message for this family.</div>`) + `</div>`;
+}
+
+function render() {
+  const [, view = "inbox", arg] = location.hash.split("/");
+  document.getElementById("nav-inbox").className = view === "inbox" ? "on" : "";
+  document.getElementById("nav-family").className = view === "family" ? "on" : "";
+  document.getElementById("app").innerHTML = view === "family" ? family(arg || DATA.drafts[0].family_id) : inbox();
+}
+function setStatus(id, s) { const d = DATA.drafts.find(x => x.id === id); state[id] = {...st(d), status: s}; save(); render(); }
+function saveEdit(id) { state[id] = {status: "approved", text: document.getElementById("ta-" + id).value}; save(); render(); }
+function approveAll() { DATA.drafts.forEach(d => { if (st(d).status === "pending") state[d.id] = {...st(d), status: "approved"}; }); save(); render(); }
+function resetAll() { state = {}; save(); render(); }
+
+window.addEventListener("hashchange", render);
+fetch("data/drafts.json").then(r => r.json()).then(j => { DATA = j; render(); })
+  .catch(() => document.getElementById("app").innerHTML = '<p class="empty">Could not load data/drafts.json</p>');
+</script>
+</body>
+</html>

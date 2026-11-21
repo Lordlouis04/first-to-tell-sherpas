@@ -1,0 +1,38 @@
+{
+  "family_id": "weah",
+  "event_id": "tech_selloff_2026_11",
+  "affected": "medium",
+  "action_type": "understand",
+  "urgency_score": 45,
+  "goal_at_risk": {
+    "name": "Home purchase",
+    "date": "2030"
+  },
+  "why_this_family": "Their invested mix is about 81% stocks and Timothy (Growth) and Melanie (Moderate) see risk differently, but $150,000 in cash means no goal depends on today's prices.",
+  "plan_figures_cited": [
+    {
+      "figure": "81%",
+      "meaning": "approximate share of invested savings in stocks",
+      "source": "PLAN.financial_health.summary_main"
+    },
+    {
+      "figure": "$150,000",
+      "meaning": "cash held",
+      "source": "PLAN.financial_health.summary_main"
+    },
+    {
+      "figure": "$600,000",
+      "meaning": "planned home purchase in 2030",
+      "source": "PLAN.goals"
+    }
+  ],
+  "tone": "joint-couple",
+  "subject": "The tech drop, and a conversation for both of you",
+  "draft": "Timothy and Melanie, you may have seen that Nvidia is down 30% in two weeks and US stocks about 8%. With your invested savings at about 81% in stocks, your balances will show it. Your $150,000 in cash isn't affected and covers about 16 months of essentials, so nothing in your plan depends on today's prices. The goal closest to the market is the $600,000 home in 2030, which still has time. Timothy, your profile is Growth; Melanie, yours is Moderate, so a drop like this may feel different to each of you. Your plan already suggested revisiting your mix together, and this is a natural moment for that conversation.",
+  "voice_script": "Hi Timothy and Melanie, it's Mohamed. Tech has dropped, and your balances will show it. Your cash cushion is untouched, so nothing urgent changes. Since you each feel risk differently, I'd like to sit down with both of you and agree on a mix you're both comfortable with.",
+  "advisor_note": "Plan shows both 81.2% (financial health) and about 77% (portfolio) equity; confirm which figure to quote. Client profile not available (no MCP); tone inferred from the plan narrative.",
+  "simulated_inputs": [
+    "event"
+  ],
+  "generated_by": "offline-draft"
+}
