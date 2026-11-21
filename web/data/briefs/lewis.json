@@ -20,7 +20,8 @@
   "strength": "your protection for Ethan and Ava is fully in place",
   "area": "retirement accounts, which hold nothing yet"
  },
- "world_update": "universities announced 5% tuition increases. For you, Ethan's $12,500 payment is due in August 2027, and $98,838 of college funding is still needed",
+ "world_update": "a new tax law raises next year's limits for retirement and health savings accounts. That matters for you, because your retirement accounts hold $0 today, and you could already put up to $7,500 into an IRA and $4,400 into an HSA",
+ "purchase_context": "For context, your plan shows $80,000 in cash, but only $750 sits above your reserve and near-term goals, and Ethan's $12,500 college payment is due in August 2027.",
  "data_gap": {
   "id": "G1",
   "question": "Quick question for your file: do you know if your employer offers a 401(k) plan?"

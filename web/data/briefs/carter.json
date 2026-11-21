@@ -19,7 +19,8 @@
   "strength": "your $180,000 income and the full employer match are a real strength",
   "area": "the cash cushion ahead of your January 2027 home purchase"
  },
- "world_update": "tech stocks fell sharply. What matters for you is the January 2027 home purchase: it needs $113,300 in cash and you hold $30,000 today",
+ "world_update": "a new tax law raises next year's 401(k) and IRA limits. You already have $7,500 of unused 401(k) room, and your January 2027 home purchase comes first, so nothing changes for you right now",
+ "purchase_context": "For context, your plan shows $30,000 in cash today, while your January 2027 home purchase needs $113,300.",
  "data_gap": {
   "id": "G1",
   "question": "Quick question for your file: is the money for the home purchase sitting in cash, or in your brokerage account?"

@@ -3,7 +3,7 @@
 //   ?...&status=1  -> Twilio status callback (finalizes the summary if the client hung up early)
 // State per call lives in KV (binding CALLS) under s:<CallSid>; the final record under call:<rev-ts>:<CallSid>.
 // Without the KV binding the call still works, it just cannot save the transcript for the advisor.
-import {STEPS, intents, isYes, isNo, topicOf, prompt, closing, safe, extract, summarize} from "../_lib/engine.js";
+import {STEPS, intents, isYes, isNo, isQuestiony, purchaseLine, topicOf, prompt, closing, safe, extract, summarize} from "../_lib/engine.js";
 import {renderVoice, polly} from "../_lib/tts.js";
 
 const FIDS = ["carter", "johnson", "lewis", "weah"];
@@ -61,7 +61,7 @@ export async function onRequest({request, env}) {
   const gather = (step, extraXml = "") => {
     const p = safe(prompt(step, brief), brief);
     s.turns.push({who: "ai", text: p, step});
-    out.push(`<Gather input="speech" language="en-US" speechTimeout="auto" timeout="7" actionOnEmptyResult="true" method="POST" action="${esc(`${base}&step=${step}&h=${h + 1}`)}">${extraXml}${L(p)}</Gather>`);
+    out.push(`<Gather input="speech" language="en-US" speechTimeout="3" timeout="8" hints="car, house, home, boat, question, advisor, college, tuition, retirement, cash, taxes, mortgage, credit card, layoffs"  actionOnEmptyResult="true" method="POST" action="${esc(`${base}&step=${step}&h=${h + 1}`)}">${extraXml}${L(p)}</Gather>`);
   };
   const close = async () => {
     s.closed = true;
@@ -72,7 +72,7 @@ export async function onRequest({request, env}) {
   const endEarly = async (line, why) => { s.closed = true; s.endedEarly = why; say(line); out.push("<Hangup/>"); await finalize(env, brief, s, sid); };
   const nextOf = step => steps[steps.indexOf(step) + 1];
   const goto = async step => {
-    if (!step || step === "S8" || step === "E5" || h >= 8) return close();
+    if (!step || step === "S8" || step === "E5" || h >= 9) return close();   // Twilio trial: max 10 hops
     if (step === "E2") {   // event: reason + calm first + the advisor-approved voice note, then ask how they feel
       say(`Thanks, ${brief.client_first_name}. I'm calling about something in the news, in this simulated demo: ${event.headline}.`);
       say(event.type === "market" ? "First, ups and downs like this are normal, and your plan was built with them in mind. Here's the short voice note your advisor approved for you."
@@ -116,6 +116,11 @@ export async function onRequest({request, env}) {
     await goto(verifyStep ? step : step);        // re-ask the same question
   } else if (it.includes("wants_to_end")) {
     await close();
+  } else if (it.includes("big_purchase") && !it.includes("distressed")) {
+    // adapt to the client's plan: grounded context from their own plan, no advice, noted for the advisor, then carry on
+    s.changes.push({field: "planned purchase", value: speech, source: "client statement", quote: speech}); s.wantsAdvisor = true;
+    say(purchaseLine(brief));
+    await goto(step === "Q" ? s.returnTo : (verifyStep ? nextOf(step) : nextOf(step)));
   } else if (it.includes("life_event")) {
     s.changes.push({field: "life event", value: speech, source: "client statement", quote: speech}); s.escalate = true; s.urgency = s.urgency === "urgent" ? "urgent" : "normal";
     say(`Thank you for telling me, that's important. I'll make sure ${A} knows and follows up with you.`);
@@ -129,8 +134,22 @@ export async function onRequest({request, env}) {
     s.wantsAdvisor = true;
     say(`Of course. I'll ask ${A} to get in touch with you.`);
     await goto(mode === "event" ? "E5" : (steps.indexOf(step) < steps.indexOf("S7") ? "S7" : "S8"));
+  } else if (step === "Q") {
+    // the client's own question: answer from the plan if we can, otherwise note it for the advisor, then resume
+    const tp = topicOf(speech, brief);
+    if (it.includes("asked_advice")) { s.unanswered.push(speech); say(`That's exactly the kind of decision ${A} should help you with. I'll note it and ask them to get in touch.`); }
+    else if (tp) { s.topics.push(tp); say(`${brief.topics[tp]} I've noted for ${A} that you asked about it.`); }
+    else { s.unanswered.push(speech); say(`I don't have that in front of me, but I've noted your question for ${A}.`); }
+    say("Thanks for asking. Let's carry on.");
+    await goto(s.returnTo);
+  } else if (it.includes("has_question") && !topicOf(speech, brief) && !it.includes("asked_advice") && !it.includes("asked_unknown_number")) {
+    // "I have a question": stop the agenda and listen
+    s.returnTo = verifyStep ? nextOf(step) : nextOf(step);
+    await goto("Q");
   } else {
     // ---- in-agenda handling ----
+    const tq = step !== "S0b" ? topicOf(speech, brief) : null;     // a plan topic asked mid-agenda gets an answer too
+    if (tq && (isQuestiony(speech) || it.includes("has_question"))) { s.topics.push(tq); say(`${brief.topics[tq]} I've noted for ${A} that you asked about it.`); }
     if (it.includes("asked_advice")) { s.unanswered.push(speech); say(`That's exactly the kind of decision ${A} should help you with. I'll note it and ask them to get in touch.`); }
     if (it.includes("asked_unknown_number")) { s.unanswered.push(speech); say(`I don't have that in front of me, I'll note it for ${A}.`); }
     const worried = /worr|scared|nervous|anxious|concern|not great|bad/i.test(speech);

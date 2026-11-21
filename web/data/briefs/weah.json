@@ -21,6 +21,7 @@
   "area": "life insurance and umbrella cover"
  },
  "world_update": "rates came down, so the spare cash you hold will likely earn a little less while it waits",
+ "purchase_context": "For context, your plan shows $150,000 in cash, with about $60,223 above your reserve and near-term goals, and a vehicle purchase of $45,000 planned for 2028.",
  "data_gap": {
   "id": "G1",
   "question": "Quick question for your file: is the monthly spending in your plan still about right, or has it changed?"

@@ -20,7 +20,8 @@
   "strength": "two steady incomes and manageable debt payments are a solid base",
   "area": "the cash cushion, which covers about 1.4 months of essentials while your plan suggests 8 to 9"
  },
- "world_update": "markets dipped with a tech sell-off, but your retirement is planned for 2044 and your savings are 60.2% in stocks, so nothing changes for you because of it",
+ "world_update": "a new tax law raises next year's 401(k) limits to help people save more. Neither of you is putting anything into your 401(k) today, so it's a good moment to check whether your employers offer a match",
+ "purchase_context": "For context, your plan shows $19,000 in accessible cash, about 1.4 months of essentials, and an $18,000 card at 24.9%.",
  "data_gap": {
   "id": "G1",
   "question": "Quick question for your file: do either of your employers offer a 401(k) match?"

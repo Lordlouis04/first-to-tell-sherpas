@@ -60,6 +60,16 @@ for (const fid of FAMS) {
     await run(P, ["yes", "nothing", "yes", intr, "no", "no"]);
     await run(P, ["yes", "nothing", "yes", "fine", "yes", "good", "no", intr]);
   }
+  // question mode and big purchases (anywhere in the agenda)
+  for (const q of [...TOPIC_Q.map(x => x.replace("Let's talk about my", "how about my") + "?"), "what's the weather like?", "should I sell my stocks?"]) {
+    await run(P, ["yes", "I have a question", q, "yes", "fine", "no", "ok", "no", "no"]);
+    await run(P, ["yes", "nothing", "yes, and I have a question", q, "fine", "no", "ok", "no", "no"]);
+  }
+  for (const buy of ["I'm thinking of buying a car for 200,000 dollars", "We want to buy a house next year"]) {
+    await run(P, ["yes", buy, "yes", "fine", "no", "ok", "no", "no"]);
+    await run(P, ["yes", "nothing", "yes", buy, "no", "ok", "no", "no"]);
+    await run(P, ["yes", "I have a question", buy, "fine", "no", "ok", "no", "no"]);
+  }
   await run(P, ["Are you a real person?", "yes"]);
   await run(P, ["I'm busy, call me later"]);
   await run(P, ["No, this is his wife"]);

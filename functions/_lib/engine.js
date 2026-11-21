@@ -30,7 +30,15 @@ export function intents(text) {
   if (has(t, ["wrong number", "not here", "this is his", "this is her", "you have the wrong", "who is this"])) out.push("wrong_person");
   if (has(t, ["goodbye", "bye", "hang up", "i have to go", "gotta go", "stop calling", "that's all", "end the call"])) out.push("wants_to_end");
   if (has(t, ["complain", "complaint", "unhappy with", "scam", "fraud", "lawyer", "lawsuit"])) out.push("wants_advisor");
+  // big purchase plans ("I'm thinking of buying a car for 200k"; speech-to-text sometimes hears "bring a car")
+  if (/\b(buy|buying|bought|bring|purchase|purchasing|get|getting|afford)\b[^.?!]{0,30}\b(car|truck|house|home|boat|apartment|condo|second home|vacation home|property|motorbike|motorcycle)\b/.test(t)
+      || /\b(new|another)\s+(car|house|home|boat)\b/.test(t)) out.push("big_purchase");
+  if (has(t, ["i have a question", "i've got a question", "can i ask", "a question", "my question", "answer my question", "can you tell me", "i want to ask", "i'd like to ask", "quick question", "i want to know"])) out.push("has_question");
   return out;
+}
+export const isQuestiony = t => /\?|\b(what|how|when|why|can you|could you|tell me|is it|do i|am i)\b/i.test(String(t || ""));
+export function purchaseLine(brief) {
+  return `That's a big decision, thanks for telling me. ${brief.purchase_context} I can't advise on it, but I've noted it so ${brief.advisor_first} can look at how it fits your plan with you.`;
 }
 export const isYes = t => has(String(t || "").toLowerCase(), YES);
 export const isNo = t => has(String(t || "").toLowerCase(), NO);
@@ -79,6 +87,7 @@ export function prompt(step, brief, ctx = {}) {
     case "S4": return `Looking ahead, your plan has ${brief.upcoming_goal.name} ${brief.upcoming_goal.when}. How are preparations going?`;
     case "S5": return `Something your plan highlights that's worth talking through with ${A}: ${brief.plan_point}. Would you like ${A} to walk you through that?`;
     case "S7": return `Is there anything you'd like me to pass on to ${A}?`;
+    case "Q": return "Of course. What's your question?";
     case "E0": return `Hi, this is the AI assistant from ${brief.advisor_name}'s office, with a simulated demo message. This call is recorded and ${A} gets a summary. Am I speaking with ${C}?`;
     case "E2": return `How do you feel about it, and is anything worrying you?`;
     case "E4": return `Would you like ${A} to call you about it?`;
@@ -120,7 +129,7 @@ export function summarize(brief, x) {
   const important = x.urgency !== "none" || x.wants_advisor || x.stated_changes.length || x.client_messages_for_advisor.length
     || x.emotion === "worried" || x.unanswered_questions.length || (x.plan_points_interest[0] || {}).interested;
   const headline = x.urgency === "urgent" ? `${who}: URGENT, safety concern raised on the call`
-    : x.stated_changes.length ? `${who}: reported a life change`
+    : x.stated_changes.length ? (x.stated_changes.some(c => c.field === "planned purchase") ? `${who}: is planning a big purchase` : `${who}: reported a life change`)
     : x.wants_advisor ? `${who}: wants to talk with you`
     : x.ended_early ? `${who}: call ended early (${x.ended_early})`
     : important ? `${who}: check-in done, a few things to note` : `${who}: all good, nothing needs action`;
