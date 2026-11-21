@@ -264,7 +264,7 @@ async function loadCheckins(force) {
 }
 
 function inbox() {
-  curEvent = curEvent || DATA.events[0].event_id;
+  curEvent = curEvent || "__checkins";   // advisor lands on Client check-ins
   if (curEvent === "__checkins") { if (CHK === null) setTimeout(loadCheckins, 0); return checkins(); }
   const ds = evDrafts(curEvent).sort((a, b) => priority(b) - priority(a));
   const pending = ds.filter(d => st(d).status === "pending").length;
@@ -567,7 +567,7 @@ let spy;
 function render() {
   const [, view = "inbox", arg] = location.hash.split("/");
   const fid = arg || "carter";
-  curEvent = curEvent || DATA.events[0].event_id;
+  curEvent = curEvent || "__checkins";   // advisor lands on Client check-ins
   document.getElementById("nav-inbox").className = view === "inbox" ? "on" : "";
   document.getElementById("nav-family").className = view === "family" ? "on" : "";
   document.getElementById("side").innerHTML = view === "family" ? sideFamily(fid) : sideInbox();
