@@ -300,7 +300,7 @@ const TODAY = new Date(2026, 10, 21);                       // demo date = event
 const FREQS = {weekly: "Every week", biweekly: "Every two weeks", monthly: "Every month"};
 const URGENT = 70;
 const freqOf = fid => (state.freq && state.freq[fid]) || "monthly";
-function setFreq(fid, f) { state.freq = {...(state.freq || {}), [fid]: f}; save(); render(); }
+function setFreq(fid, f) { state.freq = {...(state.freq || {}), [fid]: f}; save(); render(); const pin = getPin(); if (pin) api("/api/approvals", pin, {prefs: {freq: {[fid]: f}}}); }
 function nextUpdate(fid) {
   // same rule as the client app: calls on Fridays; monthly = first Friday of next month
   const f = freqOf(fid);
@@ -604,13 +604,40 @@ async function startCall(payload, btn, outId) {
   btn.disabled = false;
 }
 const callMe = (id, btn) => startCall({mode: "event", id}, btn, "call-" + id);
-function setStatus(id, s) { const d = DATA.drafts.find(x => x.id === id); state[id] = {...st(d), status: s}; save(); render(); }
-function saveEdit(id) { state[id] = {status: "approved", text: document.getElementById("ta-" + id).value}; save(); render(); }
-function approveAll() { evDrafts(curEvent).forEach(d => { if (st(d).status === "pending") state[d.id] = {...st(d), status: "approved"}; }); save(); render(); }
-function resetAll() { state = {}; save(); render(); }
+/* Approvals are shared through the server (KV) so the client app on any device sees them; localStorage is only a cache. */
+function toast(t) {
+  let el = document.getElementById("toast");
+  if (!el) { el = Object.assign(document.createElement("div"), {id: "toast"}); el.style.cssText = "position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 14px;border-radius:12px;font-size:13.5px;z-index:30;transition:opacity .2s"; document.body.appendChild(el); }
+  el.textContent = t; el.style.opacity = 1; clearTimeout(el._t); el._t = setTimeout(() => el.style.opacity = 0, 2600);
+}
+async function syncApprovals(ids, reset) {
+  const pin = getPin(); if (!pin) { toast("Saved on this device only (no PIN)"); return; }
+  const approvals = Object.fromEntries(ids.map(id => [id, state[id] && ["approved", "rejected"].includes(state[id].status) ? state[id] : null]));
+  const r = await api("/api/approvals", pin, reset ? {reset: true} : {approvals});
+  if (r.ok) toast(reset ? "Reset for everyone" : "Saved · the client app sees it now");
+  else { toast("Couldn't save to the server: " + (r.error || "error")); if (r.error === "Wrong PIN") forgetPin(); }
+}
+async function pullShared() {
+  try {
+    const r = await (await fetch("/api/approvals", {cache: "no-store"})).json();
+    if (!r.ok || !r.kv) return;
+    DATA.drafts.forEach(d => {
+      const v = r.approvals[d.id], local = state[d.id];
+      if (v) state[d.id] = {status: v.status, text: v.text || d.draft};
+      else if (local && local.status !== "editing") delete state[d.id];
+    });
+    state.freq = {...(state.freq || {}), ...r.prefs.freq}; state.time = {...(state.time || {}), ...r.prefs.time};
+    save(); render();
+  } catch (e) {}
+}
+function setStatus(id, s) { const d = DATA.drafts.find(x => x.id === id); state[id] = {...st(d), status: s}; save(); render(); if (s !== "editing") syncApprovals([id]); }
+function saveEdit(id) { state[id] = {status: "approved", text: document.getElementById("ta-" + id).value}; save(); render(); syncApprovals([id]); }
+function approveAll() { const ids = []; evDrafts(curEvent).forEach(d => { if (st(d).status === "pending") { state[d.id] = {...st(d), status: "approved"}; ids.push(d.id); } }); save(); render(); if (ids.length) syncApprovals(ids); }
+function resetAll() { DATA.drafts.forEach(d => delete state[d.id]); save(); render(); syncApprovals([], true); }
 
 window.addEventListener("hashchange", () => { render(); window.scrollTo({top: 0}); });
-fetch("/data/drafts.json").then(r => r.json()).then(j => { DATA = j; render(); })
+window.addEventListener("focus", () => DATA && pullShared());
+fetch("/data/drafts.json").then(r => r.json()).then(j => { DATA = j; render(); pullShared(); })
   .catch(() => document.getElementById("app").innerHTML = '<p class="empty">Could not load data/drafts.json</p>');
 </script>
 </body>

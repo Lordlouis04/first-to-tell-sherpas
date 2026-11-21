@@ -170,7 +170,20 @@ function render() {
   ["home", "history", "profile"].forEach(t => document.getElementById("t-" + t).classList.toggle("on", t === tab));
 }
 function go(t) { tab = t; render(); window.scrollTo({top: 0}); }
-function setPref(k, v) { state[k] = {...(state[k] || {}), [fid]: v}; save(); render(); }
+function setPref(k, v) { state[k] = {...(state[k] || {}), [fid]: v}; save(); render(); post("/api/approvals", {prefs: {[k]: {[fid]: v}}}); }
+
+/* Advisor approvals come from the server (KV), so this app sees them on any device. */
+async function pullShared() {
+  if (!DATA) return;
+  try {
+    const r = await (await fetch("/api/approvals", {cache: "no-store"})).json();
+    if (!r.ok || !r.kv) return;
+    const before = JSON.stringify(state);
+    DATA.drafts.forEach(d => { const v = r.approvals[d.id]; if (v) state[d.id] = {status: v.status, text: v.text || d.draft}; else delete state[d.id]; });
+    state.freq = {...(state.freq || {}), ...r.prefs.freq}; state.time = {...(state.time || {}), ...r.prefs.time};
+    if (JSON.stringify(state) !== before) { save(); if (!document.querySelector(".sheet")) render(); }
+  } catch (e) {}
+}
 
 /* ---------------- family picker (demo only: there is no login) ---------------- */
 function openFamilies() {
@@ -265,6 +278,7 @@ fetch("/data/drafts.json").then(r => r.json()).then(async j => {
   DATA = j;
   let saved = null; try { saved = localStorage.getItem("ftt-client-fid"); } catch (e) {}
   await setFamily(new URLSearchParams(location.search).get("family") || saved || "lewis");
+  pullShared(); setInterval(pullShared, 10000); window.addEventListener("focus", pullShared);
 }).catch(() => document.getElementById("app").innerHTML = '<p class="empty">Could not load your plan.</p>');
 </script>
 </body>
