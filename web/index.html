@@ -253,7 +253,10 @@ function family(fid) {
         From ${esc(d.household.advisor.name)} ${esc(d.household.advisor.surname)}, your advisor</div>
         <div style="margin-top:10px"><span class="dl ${delivery(d).urgent ? "urg" : ""}">${delivery(d).urgent ? "⚡ " : "🗓 "}${esc(delivery(d).text)}</span></div><h2>${esc(d.subject)}</h2></div>
       <div class="card" style="margin-top:12px"><p class="msg">${esc(st(d).text)}</p>
-      ${d.audio ? `<audio controls src="${d.audio}" style="width:100%;margin-top:14px"></audio><div class="note">Voice note uses a synthetic stock voice.</div>` : ""}</div></div>`;
+      ${d.audio ? `<audio controls src="${d.audio}" style="width:100%;margin-top:14px"></audio>
+        <div class="row" style="margin-top:12px"><button class="primary" onclick="callMe('${d.id}', this)">📞 Call me with this message</button>
+          <span class="meta" id="call-${d.id}">Plays this voice note on a real phone call to the demo number.</span></div>
+        <div class="note">Voice note uses a synthetic stock voice. Demo calls go only to one pre-registered number.</div>` : ""}</div></div>`;
   return `<section id="sec-messages"><div class="hero"><span class="tag sim">Simulated</span><h1 style="margin-top:16px">${esc(any ? names(any) : fid)}</h1>
       <p>What your advisor has shared with you, and where your plan is heading.</p></div>
     <h2>Messages from your advisor</h2><p class="lead">Only messages your advisor approved appear here.</p>
@@ -454,6 +457,20 @@ function render() {
     btns.forEach(b => b.classList.toggle("on", b.dataset.sec === e.target.id));
   }), {rootMargin: "-20% 0px -70% 0px"});
   btns.forEach(b => { const el = document.getElementById(b.dataset.sec); if (el) spy.observe(el); });
+}
+// Real phone call through the Pages Function /api/call (Twilio). PIN kept only for this browser session.
+async function callMe(id, btn) {
+  const out = document.getElementById("call-" + id);
+  let pin = ""; try { pin = sessionStorage.getItem("ftt-pin") || ""; } catch (e) {}
+  if (!pin) { pin = prompt("Demo PIN to place the call:") || ""; if (!pin) return; }
+  btn.disabled = true; out.textContent = "Calling…";
+  try {
+    const r = await fetch("api/call", {method: "POST", headers: {"content-type": "application/json"}, body: JSON.stringify({id, pin})});
+    const j = await r.json().catch(() => ({}));
+    if (j.ok) { out.textContent = `📞 Ringing ${j.to} now. Pick up to hear the message.`; try { sessionStorage.setItem("ftt-pin", pin); } catch (e) {} }
+    else { out.textContent = "Couldn't call: " + (j.error || r.status); if (r.status === 401) try { sessionStorage.removeItem("ftt-pin"); } catch (e) {} }
+  } catch (e) { out.textContent = "Couldn't reach the call service."; }
+  btn.disabled = false;
 }
 function setStatus(id, s) { const d = DATA.drafts.find(x => x.id === id); state[id] = {...st(d), status: s}; save(); render(); }
 function saveEdit(id) { state[id] = {status: "approved", text: document.getElementById("ta-" + id).value}; save(); render(); }
