@@ -173,6 +173,15 @@ export async function onRequest({request, env}) {
                    say(`I'll pass that on to ${A}.`);
                  } break;
       case "E2": say(worried ? "That's completely understandable." : "Thanks for telling me."); break;
+      case "E3": {                                                   // open turn: whatever the client wants to talk about
+        const answered = (tq && (isQuestiony(speech) || it.includes("has_question"))) || it.includes("asked_advice") || it.includes("asked_unknown_number");
+        if (!answered && !(isNo(speech) && speech.split(/\s+/).length <= 5)) {
+          const tp = topicOf(speech, brief);
+          if (tp) { s.topics.push(tp); say(`${brief.topics[tp]} I've noted for ${A} that you asked about it.`); }
+          else { s.messages.push(speech); say(`Thanks for sharing that. I'll pass it on to ${A}.`); }
+        }
+        break;
+      }
       case "E4": if (isYes(speech) && !isNo(speech)) { s.wantsAdvisor = true; say(`I'll ask ${A} to call you.`); } else say("No problem."); break;
     }
     await goto(nextOf(step));

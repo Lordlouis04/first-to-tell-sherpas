@@ -6,7 +6,7 @@
 
 export const STEPS = {
   periodic: ["S0", "S0b", "S1", "S2", "S3", "S4", "S5", "S7", "S8"],
-  event: ["E0", "E2", "E4", "E5"],
+  event: ["E0", "E2", "E3", "E4", "E5"],
 };
 
 const has = (t, words) => words.some(w => new RegExp(`\\b${w}\\b`, "i").test(t));
@@ -90,6 +90,7 @@ export function prompt(step, brief, ctx = {}) {
     case "Q": return "Of course. What's your question?";
     case "E0": return `Hi, this is the AI assistant from ${brief.advisor_name}'s office, with a simulated demo message. This call is recorded and ${A} gets a summary. Am I speaking with ${C}?`;
     case "E2": return `How do you feel about it, and is anything worrying you?`;
+    case "E3": return `Is there anything about this you'd like to ask, or anything on your mind?`;
     case "E4": return `Would you like ${A} to call you about it?`;
     default: return "";
   }

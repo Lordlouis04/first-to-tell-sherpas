@@ -78,7 +78,13 @@ for (const fid of FAMS) {
   // event calls for every approved-message event of this family
   for (const ev of Object.keys(brief.events)) {
     const E = `fid=${fid}&mode=event&ev=${ev}`;
-    await run(E, ["yes", "I'm fine", "yes please"]);
+    await run(E, ["yes", "I'm fine", "no", "yes please"]);
+    await run(E, ["yes", "I'm fine", "no", "no"]);
+    for (const q of ["How much cash do I have?", "what about my home?", "and my college plans?", "what about retirement?", "my debt?", "what about the market?", "taxes?"])
+      await run(E, ["yes", "ok", q, "yes"]);
+    await run(E, ["yes", "ok", "I have a question", "how much cash do I have?", "no"]);
+    await run(E, ["yes", "ok", "I'm thinking of buying a car for 200,000", "no"]);
+    await run(E, ["yes", "ok", "We started a new savings plan last month", "no"]);
     await run(E, ["yes", "I'm worried", "no"]);
     await run(E, ["yes", "should I sell?", "no"]);
     await run(E, ["yes", "I'm panicking"]);

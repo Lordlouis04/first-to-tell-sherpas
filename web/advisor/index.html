@@ -269,7 +269,7 @@ function inbox() {
   const ds = evDrafts(curEvent).sort((a, b) => priority(b) - priority(a));
   const pending = ds.filter(d => st(d).status === "pending").length;
   return hero(ds, pending) + urgencyChart(ds) + planCalendar(ds) +
-    `<section id="sec-drafts"><h2>Drafts to review</h2><div class="toolbar"><div>Sorted by urgency and how soon the goal at risk is</div>
+    `<section id="sec-drafts"><h2>Drafts to review</h2><div class="toolbar"><div>Sorted by urgency and how soon the goal at risk is<br><label style="display:inline-flex;align-items:center;gap:8px;margin-top:6px;color:var(--ink-2);cursor:pointer"><input type="checkbox" ${callOnApprove() ? "checked" : ""} onchange="state.callOnApprove=this.checked;save()" style="width:18px;height:18px"> 📞 Call the family when I approve (demo, one at a time)</label></div>
     <div class="row"><button onclick="resetAll()">Reset</button><button class="primary" onclick="approveAll()" ${pending ? "" : "disabled"}>Approve all pending</button></div></div>` +
     ds.map(d => {
       const s = st(d), editing = s.status === "editing";
@@ -630,8 +630,22 @@ async function pullShared() {
     save(); render();
   } catch (e) {}
 }
-function setStatus(id, s) { const d = DATA.drafts.find(x => x.id === id); state[id] = {...st(d), status: s}; save(); render(); if (s !== "editing") syncApprovals([id]); }
-function saveEdit(id) { state[id] = {status: "approved", text: document.getElementById("ta-" + id).value}; save(); render(); syncApprovals([id]); }
+// Demo: approving ONE draft also phones the family (interactive event call). "Approve all" never calls:
+// it would ring the same demo phone several times at once.
+const callOnApprove = () => state.callOnApprove !== false;
+async function deliverByCall(id) {
+  if (!callOnApprove()) return;
+  const pin = getPin(); if (!pin) return;
+  toast("📞 Calling the family with this message…");
+  try {
+    const r = await fetch("/api/call", {method: "POST", headers: {"content-type": "application/json"}, body: JSON.stringify({mode: "event", id, pin})});
+    const j = await r.json().catch(() => ({}));
+    toast(j.ok ? `📞 Ringing ${j.to}: the family hears the message and can talk about it` : "Couldn't call: " + (j.error || r.status));
+    if (r.status === 401) forgetPin();
+  } catch (e) { toast("Couldn't reach the call service"); }
+}
+async function setStatus(id, s) { const d = DATA.drafts.find(x => x.id === id); state[id] = {...st(d), status: s}; save(); render(); if (s !== "editing") { await syncApprovals([id]); if (s === "approved") deliverByCall(id); } }
+async function saveEdit(id) { state[id] = {status: "approved", text: document.getElementById("ta-" + id).value}; save(); render(); await syncApprovals([id]); deliverByCall(id); }
 function approveAll() { const ids = []; evDrafts(curEvent).forEach(d => { if (st(d).status === "pending") { state[d.id] = {...st(d), status: "approved"}; ids.push(d.id); } }); save(); render(); if (ids.length) syncApprovals(ids); }
 function resetAll() { DATA.drafts.forEach(d => delete state[d.id]); save(); render(); syncApprovals([], true); }
 
