@@ -4,10 +4,11 @@
 // State per call lives in KV (binding CALLS) under s:<CallSid>; the final record under call:<rev-ts>:<CallSid>.
 // Without the KV binding the call still works, it just cannot save the transcript for the advisor.
 import {STEPS, intents, isYes, isNo, topicOf, prompt, closing, safe, extract, summarize} from "../_lib/engine.js";
+import {renderVoice, polly} from "../_lib/tts.js";
 
 const FIDS = ["carter", "johnson", "lewis", "weah"];
 const esc = s => String(s).replace(/[<>&'"]/g, c => ({"<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&apos;", '"': "&quot;"}[c]));
-const SAY = t => `<Say voice="Polly.Joanna" language="en-US">${esc(t)}</Say>`;
+const SAY = polly;   // only for early error replies; normal turns use the ElevenLabs assistant voice (see _lib/tts.js)
 const xml = body => new Response(`<?xml version="1.0" encoding="UTF-8"?><Response>${body}</Response>`, {headers: {"content-type": "text/xml"}});
 
 async function loadState(env, sid) {
@@ -54,12 +55,13 @@ export async function onRequest({request, env}) {
   const h = Number(q.get("h") || 0);
   const base = `${origin}/api/voice?fid=${fid}&mode=${mode}${ev ? `&ev=${encodeURIComponent(ev)}` : ""}`;
   const A = brief.advisor_first;
-  const out = [];
-  const say = t => { const line = safe(t, brief); out.push(SAY(line)); s.turns.push({who: "ai", text: line}); };
+  const out = [], lines = [];
+  const L = t => { lines.push(t); return `@@L${lines.length - 1}@@`; };   // placeholder, resolved to audio at the end
+  const say = t => { const line = safe(t, brief); out.push(L(line)); s.turns.push({who: "ai", text: line}); };
   const gather = (step, extraXml = "") => {
     const p = safe(prompt(step, brief), brief);
     s.turns.push({who: "ai", text: p, step});
-    out.push(`<Gather input="speech" language="en-US" speechTimeout="auto" timeout="7" actionOnEmptyResult="true" method="POST" action="${esc(`${base}&step=${step}&h=${h + 1}`)}">${extraXml}${SAY(p)}</Gather>`);
+    out.push(`<Gather input="speech" language="en-US" speechTimeout="auto" timeout="7" actionOnEmptyResult="true" method="POST" action="${esc(`${base}&step=${step}&h=${h + 1}`)}">${extraXml}${L(p)}</Gather>`);
   };
   const close = async () => {
     s.closed = true;
@@ -85,7 +87,7 @@ export async function onRequest({request, env}) {
   if (!step) {                                    // call just connected
     await goto(steps[0]);
     await saveState(env, sid, s);
-    return xml(out.join(""));
+    return xml(await renderVoice(out.join(""), lines, env, origin));
   }
 
   const speech = String(form.SpeechResult || "").trim();
@@ -94,7 +96,7 @@ export async function onRequest({request, env}) {
     else if (step === "S0" || step === "E0") await endEarly("I'll try you another time. Goodbye.", "no answer to verification");
     else await goto(nextOf(step));
     await saveState(env, sid, s);
-    return xml(out.join(""));
+    return xml(await renderVoice(out.join(""), lines, env, origin));
   }
   s.turns.push({who: "client", text: speech, step});
   const it = intents(speech);
@@ -157,5 +159,5 @@ export async function onRequest({request, env}) {
     await goto(nextOf(step));
   }
   await saveState(env, sid, s);
-  return xml(out.join(""));
+  return xml(await renderVoice(out.join(""), lines, env, origin));
 }
