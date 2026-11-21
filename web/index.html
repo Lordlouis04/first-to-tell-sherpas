@@ -93,6 +93,8 @@
   .avatar{width:34px;height:34px;border-radius:50%;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font:600 13px Poppins,sans-serif;flex:none}
   .msgcard{max-width:640px}
   .msgcard .hero{padding:24px 26px} .msgcard .hero h2{font-size:24px;margin-top:12px}
+  .dl{display:inline-block;font:600 12.5px/1 Inter,sans-serif;padding:6px 10px;border-radius:99px;background:var(--bar);border:1px solid var(--line-2);color:var(--ink-2)}
+  .dl.urg{background:#fdecea;border-color:#f3b9b4;color:#9e2a22}
   .flash{animation:flash 1.2s ease} @keyframes flash{0%{box-shadow:0 0 0 3px var(--brand)}100%{box-shadow:0 0 0 0 transparent}}
 
   /* charts */
@@ -180,7 +182,7 @@ function sideFamily(fid) {
   return `<div class="grp">Families</div>` + fams.map(d => {
     const on = d.family_id === fid, n = DATA.drafts.filter(x => x.family_id === d.family_id && st(x).status === "approved").length;
     return `<button class="it ${on ? "" : "dim"}" onclick="location.hash='#/family/${d.family_id}'">${esc(names(d))}<span class="n">${n} ${n === 1 ? "message" : "messages"}</span></button>` +
-      (on ? `<div class="sub"><button data-sec="sec-messages" onclick="goSec('sec-messages')">Messages from your advisor</button><button data-sec="sec-plan" onclick="goSec('sec-plan')">Your plan, year by year</button></div>` : "");
+      (on ? `<div class="sub"><button data-sec="sec-messages" onclick="goSec('sec-messages')">Messages from your advisor</button><button data-sec="sec-updates" onclick="goSec('sec-updates')">Your updates</button><button data-sec="sec-plan" onclick="goSec('sec-plan')">Your plan, year by year</button></div>` : "");
   }).join("");
 }
 
@@ -208,6 +210,8 @@ function inbox() {
       return `<div class="card ${s.status}" id="card-${d.family_id}">
         <div class="row"><span class="fam grow">${esc(names(d))}</span><span class="tag ${d.affected}">${d.affected} impact</span></div>
         <div class="meta">${esc(d.action_type)} · urgency ${d.urgency_score}${d.goal_at_risk ? " · goal at risk: " + esc(d.goal_at_risk.name) + ", " + esc(fmtDate(d.goal_at_risk.date)) : ""} · tone: ${esc(d.tone)}</div>
+        <div style="margin-top:8px"><span class="dl ${delivery(d).urgent ? "urg" : ""}">${delivery(d).urgent ? "⚡ " : "🗓 "}${esc(delivery(d).text)}</span>
+          <span class="meta"> · family prefers updates ${FREQS[freqOf(d.family_id)].toLowerCase()}</span></div>
         <h3 class="label">Why this family</h3><div class="why">${esc(d.why_this_family)}</div>
         <h3 class="label">From their plan</h3>
         <div class="figs">${d.plan_figures_cited.map(f => `<div class="fig" title="${esc(f.source)}"><b>${esc(f.figure)}</b><span>${esc(f.meaning)}</span></div>`).join("")}</div>
@@ -223,17 +227,43 @@ function inbox() {
 }
 
 /* ---------- family view ---------- */
+/* ---------- update frequency (per family) ----------
+   Families choose how often they get personalized updates. Urgent alerts (urgency >= 70) always go out at once;
+   everything else is bundled into the next scheduled update. Nothing is ever dropped ("always send something"). */
+const TODAY = new Date(2026, 10, 21);                       // demo date = event date (simulated)
+const FREQS = {weekly: "Every week", biweekly: "Every two weeks", monthly: "Every month"};
+const URGENT = 70;
+const freqOf = fid => (state.freq && state.freq[fid]) || "monthly";
+function setFreq(fid, f) { state.freq = {...(state.freq || {}), [fid]: f}; save(); render(); }
+function nextUpdate(fid) {
+  const f = freqOf(fid), d = new Date(TODAY);
+  if (f === "monthly") return new Date(d.getFullYear(), d.getMonth() + 1, 1);
+  const toMon = (8 - d.getDay()) % 7 || 7; d.setDate(d.getDate() + toMon + (f === "biweekly" ? 7 : 0)); return d;
+}
+const dayFmt = d => d.toLocaleDateString("en", {weekday: "short", day: "numeric", month: "short"});
+const isUrgent = d => d.urgency_score >= URGENT;
+const delivery = d => isUrgent(d) ? {urgent: true, text: "Urgent alert · sent as soon as you approve"}
+                                  : {urgent: false, text: `In the ${UPD[freqOf(d.family_id)]} · ${dayFmt(nextUpdate(d.family_id))}`};
+const UPD = {weekly: "weekly update", biweekly: "two-weekly update", monthly: "monthly update"};
+
 function family(fid) {
   const mine = DATA.drafts.filter(d => d.family_id === fid && st(d).status === "approved").sort((a, b) => priority(b) - priority(a));
   const any = DATA.drafts.find(d => d.family_id === fid);
   const msg = d => `<div class="msgcard" style="margin-bottom:22px"><div class="hero"><div class="from"><span class="avatar">${esc(d.household.advisor.name[0] + d.household.advisor.surname[0])}</span>
-        From ${esc(d.household.advisor.name)} ${esc(d.household.advisor.surname)}, your advisor</div><h2>${esc(d.subject)}</h2></div>
+        From ${esc(d.household.advisor.name)} ${esc(d.household.advisor.surname)}, your advisor</div>
+        <div style="margin-top:10px"><span class="dl ${delivery(d).urgent ? "urg" : ""}">${delivery(d).urgent ? "⚡ " : "🗓 "}${esc(delivery(d).text)}</span></div><h2>${esc(d.subject)}</h2></div>
       <div class="card" style="margin-top:12px"><p class="msg">${esc(st(d).text)}</p>
       ${d.audio ? `<audio controls src="${d.audio}" style="width:100%;margin-top:14px"></audio><div class="note">Voice note uses a synthetic stock voice.</div>` : ""}</div></div>`;
   return `<section id="sec-messages"><div class="hero"><span class="tag sim">Simulated</span><h1 style="margin-top:16px">${esc(any ? names(any) : fid)}</h1>
       <p>What your advisor has shared with you, and where your plan is heading.</p></div>
     <h2>Messages from your advisor</h2><p class="lead">Only messages your advisor approved appear here.</p>
     ${mine.length ? mine.map(msg).join("") : `<div class="empty">Nothing here yet. Approve a draft in the Advisor inbox and it will appear here.</div>`}</section>
+    <section id="sec-updates"><h2>Your updates</h2><p class="lead">Choose how often you'd like a personalized update from your advisor. Urgent alerts always reach you right away.</p>
+      <div class="seg">${Object.entries(FREQS).map(([k, v]) => `<button class="${freqOf(fid) === k ? "on" : ""}" onclick="setFreq('${fid}','${k}')">${v}</button>`).join("")}</div>
+      <div class="figs" style="margin-top:14px;max-width:640px">
+        <div class="fig"><b>${dayFmt(nextUpdate(fid))}</b><span>next personalized update</span></div>
+        <div class="fig"><b>Always on</b><span>urgent alerts (when something important happens)</span></div>
+        <div class="fig"><b>${DATA.drafts.filter(d => d.family_id === fid && !isUrgent(d)).length}</b><span>topics waiting for your next update</span></div></div></section>
     <section id="sec-plan">${projectionChart(fid)}</section>`;
 }
 
