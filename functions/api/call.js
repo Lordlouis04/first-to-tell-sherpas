@@ -28,8 +28,8 @@ export async function onRequestPost({request, env}) {
   const head = await fetch(audioUrl, {method: "HEAD"});
   if (!head.ok) return json({ok: false, error: "Voice note not found"}, 404);
 
-  const twiml = `<Response><Play>${audioUrl}</Play><Pause length="1"/><Say voice="alice">This was a simulated demo message. Goodbye.</Say></Response>`;
-  const form = new URLSearchParams({To: env.DEMO_TO, From: env.TWILIO_FROM, Twiml: twiml});
+  // Trial accounts take a TwiML URL ("Custom TwiML URL"), so Twilio fetches /api/twiml when the call connects.
+  const form = new URLSearchParams({To: env.DEMO_TO, From: env.TWILIO_FROM, Url: `${origin}/api/twiml?id=${body.id}`, Method: "GET"});
   const auth = btoa(`${env.TWILIO_ACCOUNT_SID}:${env.TWILIO_AUTH_TOKEN}`);
   const r = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${env.TWILIO_ACCOUNT_SID}/Calls.json`, {
     method: "POST",
