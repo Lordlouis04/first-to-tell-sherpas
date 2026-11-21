@@ -8,47 +8,79 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
 <style>
-  /* Visual language follows the Sherpas shared-plan pages: Poppins headings, Inter body,
-     soft grey canvas, white rounded panel, lavender hero card, indigo accent. */
-  :root{--canvas:#f5f5f5;--panel:#ffffff;--bar:#f8f9fc;--ink:#1b1c22;--ink-2:#3a3d4a;--muted:#646883;--faint:#9a9db2;
-        --line:#e3e5ec;--line-2:#d3d6df;--brand:#4b55d0;--brand-ink:#fff;--hero-a:#eceffd;--hero-b:#e4e8fb;
-        --red:#d0342c;--amber:#e08a1e;--green:#2f9e5b;--blue:#4b55d0;--sim:#6b4fc8}
-  /* Always light, like the Sherpas plan pages; dark only if explicitly set with data-theme="dark". */
-  :root{color-scheme:light}
+  /* Layout and visual language follow the Sherpas shared-plan pages: top tabs, a left section menu,
+     Poppins display headings, Inter body, lavender hero card, indigo accent, flat sections. */
+  :root{--canvas:#f8f9fc;--panel:#ffffff;--bar:#f8f9fc;--ink:#1b1c22;--ink-2:#3a3d4a;--muted:#646883;--faint:#9a9db2;
+        --line:#e3e5ec;--line-2:#d3d6df;--brand:#4b55d0;--brand-ink:#fff;--hero-a:#eceffd;--hero-b:#e2e6fb;
+        --red:#d0342c;--amber:#e08a1e;--green:#2f9e5b;--blue:#4b55d0;--sim:#6b4fc8;color-scheme:light}
   :root[data-theme="dark"]{--canvas:#111216;--panel:#191a20;--bar:#1d1e25;--ink:#ececf2;--ink-2:#c9cbd6;--muted:#9a9db2;--faint:#6d7085;
         --line:#2b2d37;--line-2:#383a46;--brand:#8a92ff;--brand-ink:#11121a;--hero-a:#23264a;--hero-b:#1e2140}
   *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
   body{margin:0;background:var(--canvas);color:var(--ink);font:15px/1.6 Inter,ui-sans-serif,system-ui,sans-serif}
-  h1,h2,h3,.display{font-family:Poppins,ui-sans-serif,system-ui,sans-serif;letter-spacing:-.025em;margin:0}
-  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 24px;background:var(--bar)}
-  .wordmark{font-family:Poppins,sans-serif;font-weight:600;font-size:20px;letter-spacing:-.02em}
-  .crumbs{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 24px;background:var(--panel);border-bottom:1px solid var(--line)}
-  .crumbs nav{display:flex;align-items:center;gap:10px;font-size:15px}
-  .crumbs a{color:var(--muted);text-decoration:none} .crumbs a.on{color:var(--ink);font-weight:600}
-  .crumbs .sep{color:var(--faint)}
-  .shell{max-width:1040px;margin:0 auto;padding:0}
-  @media (min-width:900px){.shell{margin:20px auto;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--panel)}}
-  main{background:var(--panel);padding:24px}
-  @media (max-width:600px){main{padding:16px}.topbar,.crumbs{padding-left:16px;padding-right:16px}}
-  .hero{background:linear-gradient(135deg,var(--hero-a),var(--hero-b));border-radius:20px;padding:28px}
-  .hero h2{font-size:clamp(24px,4vw,34px);font-weight:600;line-height:1.15;color:var(--ink)}
-  .hero .big{font-family:Poppins,sans-serif;font-weight:600;font-size:clamp(44px,8vw,72px);line-height:1;color:var(--brand);margin:14px 0 6px}
-  .hero p{margin:8px 0 0;color:var(--ink-2)}
-  .fine{font-size:12px;font-style:italic;color:var(--muted);margin:8px 4px 0}
+  h1,h2,h3{font-family:Poppins,ui-sans-serif,system-ui,sans-serif;letter-spacing:-.03em;margin:0;font-weight:600}
+  a{color:var(--brand)}
+
+  /* top bar: wordmark + view tabs (like "Advice | Living map") */
+  .topbar{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:0 32px;height:64px}
+  .wordmark{font:600 22px/64px Poppins,sans-serif;letter-spacing:-.03em;display:flex;align-items:center;gap:10px}
+  .views{display:flex;gap:6px;height:100%}
+  .views a{display:flex;align-items:center;padding:0 16px;color:var(--ink-2);text-decoration:none;font-weight:500;border-bottom:2px solid transparent}
+  .views a.on{color:var(--ink);font-weight:600;border-bottom-color:var(--ink)}
+
+  /* white rounded sheet with left menu + content */
+  .sheet{background:var(--panel);border:1px solid var(--line);border-radius:20px 20px 0 0;margin:0 16px;min-height:calc(100vh - 64px);
+         display:grid;grid-template-columns:260px minmax(0,1fr);gap:0}
+  .side{position:sticky;top:0;align-self:start;max-height:100vh;overflow:auto;padding:36px 12px 36px 28px}
+  .side .grp{font:600 12px Inter,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);margin:0 0 10px}
+  .side .it{display:block;width:100%;text-align:left;background:none;border:0;padding:7px 0;color:var(--ink);font:600 15px/1.35 Inter,sans-serif;cursor:pointer}
+  .side .it .n{color:var(--muted);font-weight:400;font-size:12.5px;margin-left:6px}
+  .side .it.dim{color:var(--ink-2);font-weight:500}
+  .side .sub{border-left:1px solid var(--line-2);margin:4px 0 12px 12px;padding:2px 0}
+  .side .sub button{display:block;width:100%;text-align:left;background:none;border:0;border-left:2px solid transparent;margin-left:-1px;
+                    padding:6px 0 6px 22px;color:var(--ink-2);font:400 14.5px/1.35 Inter,sans-serif;cursor:pointer}
+  .side .sub button.on{color:var(--brand);border-left-color:var(--brand)}
+  .side .sub button:hover,.side .it:hover{color:var(--brand)}
+  main{padding:36px 40px 80px 12px;min-width:0}
+
+  @media (max-width:880px){
+    .topbar{padding:0 16px;height:auto;flex-wrap:wrap;align-items:center} .wordmark{line-height:52px}
+    .views{height:44px;width:100%}
+    .sheet{grid-template-columns:1fr;margin:0;border-radius:16px 16px 0 0}
+    .side{position:sticky;top:0;z-index:5;background:var(--panel);max-height:none;padding:10px 16px;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid var(--line)}
+    .side .grp,.side .sub{display:none}
+    .side .it{white-space:nowrap;width:auto;border:1px solid var(--line-2);border-radius:99px;padding:7px 12px;font-size:13.5px}
+    .side .it:not(.dim){border-color:var(--brand);color:var(--brand)}
+    main{padding:20px 16px 60px}
+  }
+
+  /* hero like the "Investment analysis" card */
+  .hero{background:linear-gradient(120deg,var(--hero-a),var(--hero-b));border-radius:20px;padding:36px 40px}
+  .hero h1{font-size:clamp(34px,5.5vw,60px);line-height:1.05}
+  .hero p{margin:16px 0 0;color:var(--ink-2);font-size:16px;max-width:760px}
+  .stats{display:flex;gap:28px;flex-wrap:wrap;margin-top:22px}
+  .stat b{display:block;font:600 30px/1.1 Poppins,sans-serif;letter-spacing:-.03em;color:var(--brand)} .stat span{font-size:13px;color:var(--muted)}
+  @media (max-width:600px){.hero{padding:24px 20px}}
+  .fine{font-size:12px;font-style:italic;color:var(--muted);margin:10px 4px 0}
+
+  section{scroll-margin-top:16px}
+  section > h2{font-size:clamp(26px,3.4vw,40px);line-height:1.1;margin:48px 0 6px}
+  .lead{color:var(--muted);margin:0 0 18px;font-size:14.5px;max-width:760px}
   .tag{display:inline-block;font:600 11px/1 Inter,sans-serif;letter-spacing:.05em;text-transform:uppercase;padding:5px 9px;border-radius:99px;color:#fff;vertical-align:middle}
   .sim{background:var(--sim)} .high{background:var(--red)} .medium{background:var(--amber)} .low{background:var(--blue)} .none{background:var(--faint)}
-  .section-title{font-family:Poppins,sans-serif;font-weight:600;font-size:22px;letter-spacing:-.02em;margin:28px 0 4px}
-  .toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;margin:4px 0 16px;flex-wrap:wrap;color:var(--muted)}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:14px}
-  .card.approved{border-color:var(--green);box-shadow:inset 4px 0 0 var(--green)} .card.rejected{opacity:.5}
+  .toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;margin:0 0 16px;flex-wrap:wrap;color:var(--muted)}
   .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap} .grow{flex:1}
-  .fam{font-family:Poppins,sans-serif;font-weight:600;font-size:19px;letter-spacing:-.02em}
+
+  /* draft cards */
+  .card{border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:14px;background:var(--panel)}
+  .card.approved{border-color:var(--green);box-shadow:inset 4px 0 0 var(--green)} .card.rejected{opacity:.5}
+  .fam{font:600 20px/1.3 Poppins,sans-serif;letter-spacing:-.02em}
   .meta{color:var(--muted);font-size:13.5px}
   h3.label{font:600 15px/1.4 Inter,sans-serif;color:var(--brand);letter-spacing:0;margin:16px 0 6px}
   .why{color:var(--ink-2)}
-  .figs{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin:4px 0}
+  .figs{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin:4px 0}
   .fig{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--bar)}
-  .fig b{display:block;font-family:Poppins,sans-serif;font-weight:600;font-size:18px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--ink)}
+  .fig b{display:block;font:600 18px/1.3 Poppins,sans-serif;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--ink)}
   .fig span{font-size:12.5px;color:var(--muted);line-height:1.35;display:block}
   textarea{width:100%;min-height:170px;font:inherit;padding:12px;border-radius:12px;border:1px solid var(--line-2);background:var(--bar);color:var(--ink)}
   .msg{white-space:pre-wrap;margin:0;color:var(--ink)}
@@ -56,50 +88,43 @@
   button{font:600 14px/1 Inter,sans-serif;border-radius:10px;border:1px solid var(--line-2);background:var(--panel);color:var(--ink);padding:10px 14px;cursor:pointer}
   button:hover{border-color:var(--brand)} button:disabled{opacity:.45;cursor:default}
   button.primary{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
-  .empty{color:var(--muted);text-align:center;padding:36px}
-  select{font:inherit;padding:9px 12px;border-radius:10px;border:1px solid var(--line-2);background:var(--panel);color:var(--ink)}
-  .phone{max-width:460px;margin:0 auto}
-  .tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-bottom:16px}
-  .tab{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:14px 16px;border-radius:14px;line-height:1.35}
-  .tab.on{border-color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand);background:var(--bar)}
-  .tab-type{font:600 11px Inter,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--brand)}
-  .tab-title{font:500 14px/1.35 Inter,sans-serif;color:var(--ink)} .tab-meta{font:400 12.5px Inter,sans-serif;color:var(--muted)}
+  .empty{color:var(--muted);text-align:center;padding:36px;border:1px dashed var(--line-2);border-radius:16px}
+  .from{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13.5px}
+  .avatar{width:34px;height:34px;border-radius:50%;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font:600 13px Poppins,sans-serif;flex:none}
+  .msgcard{max-width:640px}
+  .msgcard .hero{padding:24px 26px} .msgcard .hero h2{font-size:24px;margin-top:12px}
+  .flash{animation:flash 1.2s ease} @keyframes flash{0%{box-shadow:0 0 0 3px var(--brand)}100%{box-shadow:0 0 0 0 transparent}}
+
   /* charts */
-  .viz{border:1px solid var(--line);border-radius:16px;padding:18px;margin:16px 0;background:var(--panel)}
-  .viz-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:8px}
-  .viz-head h3{font:600 17px/1.3 Poppins,sans-serif;letter-spacing:-.02em} .viz-head p{margin:2px 0 0;color:var(--muted);font-size:13px}
   .seg{display:inline-flex;border:1px solid var(--line-2);border-radius:10px;overflow:hidden}
   .seg button{border:0;border-radius:0;padding:8px 12px;font-size:13px} .seg button.on{background:var(--brand);color:var(--brand-ink)}
   svg.chart{width:100%;height:auto;display:block;overflow:visible}
   svg.chart text{font:12px Inter,sans-serif;fill:var(--muted)} svg.chart .lbl{fill:var(--ink);font-weight:600}
+  svg.chart .risklbl{fill:var(--red);font-weight:600;font-size:11.5px}
   svg.chart .grid{stroke:var(--line);stroke-width:1} svg.chart .axis{stroke:var(--line-2);stroke-width:1}
   svg.chart .hit{fill:transparent;cursor:pointer}
-  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2);margin-top:8px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2);margin-top:10px}
   .legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
   .legend i.dia{border-radius:2px;transform:rotate(45deg)} .legend i.ring{background:transparent!important;border:2px solid var(--red)}
   #tip{position:fixed;pointer-events:none;z-index:20;background:var(--ink);color:var(--panel);font:12.5px/1.4 Inter,sans-serif;padding:8px 10px;border-radius:10px;max-width:260px;opacity:0;transition:opacity .1s}
-  #tip b{font-weight:600}
   .cal{display:grid;gap:14px}
   .cal-year{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px}
   .cal-yh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:4px 0 2px} .cal-yh b{font:600 15px Poppins,sans-serif}
   .cal-m{border:1px solid var(--line);border-radius:10px;padding:7px 8px;min-height:64px;background:var(--panel)}
-  .cal-m.past{opacity:.4} .cal-m.now{border-color:var(--brand);background:var(--bar)}
+  .cal-m.now{border-color:var(--brand);background:var(--bar)}
   .cal-m .mn{font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
-  .chip{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;line-height:1.25;padding:3px 7px;border-radius:99px;border:1px solid var(--line-2);background:var(--panel);color:var(--ink);margin:3px 3px 0 0;cursor:pointer;text-align:left}
+  .chip{display:inline-flex;align-items:center;gap:5px;font:500 11.5px/1.25 Inter,sans-serif;padding:3px 7px;border-radius:99px;border:1px solid var(--line-2);background:var(--panel);color:var(--ink);margin:3px 3px 0 0;cursor:pointer;text-align:left}
   .chip i{width:8px;height:8px;border-radius:50%;flex:none} .chip.risk{border-color:var(--red);box-shadow:inset 0 0 0 1px var(--red)}
   .chip.ev{background:var(--sim);color:#fff;border-color:var(--sim)}
-  .cal-detail{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--bar);font-size:14px;min-height:20px}
-  .flash{animation:flash 1.2s ease} @keyframes flash{0%{box-shadow:0 0 0 3px var(--brand)}100%{box-shadow:0 0 0 0 transparent}}
-  .from{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13.5px}
-  .avatar{width:34px;height:34px;border-radius:50%;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font:600 13px Poppins,sans-serif}
+  .cal-detail{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--bar);font-size:14px}
 </style>
 </head>
 <body>
-<div class="shell">
-  <div class="topbar"><span class="wordmark">First to Tell</span><span class="tag sim">Prototype</span></div>
-  <div class="crumbs"><nav><a href="#/inbox" id="nav-inbox">Advisor inbox</a><span class="sep">›</span><a href="#/family" id="nav-family">Family view</a></nav></div>
-  <main id="app"><p class="empty">Loading…</p></main>
+<div class="topbar">
+  <span class="wordmark">First to Tell <span class="tag sim">Prototype</span></span>
+  <nav class="views"><a href="#/inbox" id="nav-inbox">Advisor inbox</a><a href="#/family" id="nav-family">Family view</a></nav>
 </div>
+<div class="sheet"><aside class="side" id="side"></aside><main id="app"><p class="empty">Loading…</p></main></div>
 <script>
 const STORE = "ftt-state-v1";
 let DATA = null, state = {};
@@ -108,6 +133,9 @@ const save = () => { try { localStorage.setItem(STORE, JSON.stringify(state)); }
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const st = d => state[d.id] || {status: "pending", text: d.draft};
 const names = d => d.household.names.join(" & ") + " " + d.household.surname;
+const SHORT = {tech_selloff_2026_11: "Tech sell-off", layoffs_johnson_employer: "Layoffs at Daniel's employer", rate_cut_2026_11: "Fed rate cut",
+               tax_limits_2027: "New contribution limits", home_prices_2026_11: "Home prices up 6%", tuition_2027: "Tuition up 5%"};
+const short = e => SHORT[e.event_id] || e.headline;
 
 // urgency x date of the goal at risk: sooner goal => higher priority
 function priority(d) {
@@ -121,38 +149,65 @@ function priority(d) {
 
 let curEvent = null;
 const evDrafts = id => DATA.drafts.filter(d => d.event_id === id);
+const pendingOf = id => evDrafts(id).filter(d => st(d).status === "pending").length;
+function goSec(id) { const el = document.getElementById(id); if (el) el.scrollIntoView({behavior: "smooth", block: "start"}); }
+function pickEvent(id) { curEvent = id; render(); window.scrollTo({top: 0}); }
 
-function eventTabs() {
-  return `<div class="tabs">${DATA.events.map(e => {
-    const n = evDrafts(e.event_id).length, p = evDrafts(e.event_id).filter(d => st(d).status === "pending").length;
-    return `<button class="tab ${e.event_id === curEvent ? "on" : ""}" onclick="curEvent='${e.event_id}';render()">
-      <span class="tab-type">${esc(e.type)}</span><span class="tab-title">${esc(e.headline)}</span>
-      <span class="tab-meta">${n} ${n === 1 ? "family" : "families"} · ${p} pending</span></button>`;
-  }).join("")}</div>`;
+/* ---------- left menu ---------- */
+function sideInbox() {
+  const types = {market: "Markets", law: "The law changes", life: "Family life"};
+  let h = "";
+  Object.entries(types).forEach(([t, label]) => {
+    const evs = DATA.events.filter(e => e.type === t); if (!evs.length) return;
+    h += `<div class="grp" style="margin-top:${h ? 18 : 0}px">${label}</div>`;
+    evs.forEach(e => {
+      const on = e.event_id === curEvent, p = pendingOf(e.event_id);
+      h += `<button class="it ${on ? "" : "dim"}" onclick="pickEvent('${e.event_id}')">${esc(short(e))}<span class="n">${p ? p + " pending" : "done"}</span></button>`;
+      if (on) {
+        const ds = evDrafts(e.event_id).sort((a, b) => priority(b) - priority(a));
+        h += `<div class="sub"><button data-sec="sec-overview" onclick="goSec('sec-overview')">Overview</button>
+          <button data-sec="sec-urgency" onclick="goSec('sec-urgency')">Who needs you first</button>
+          <button data-sec="sec-calendar" onclick="goSec('sec-calendar')">Plan calendar</button>
+          <button data-sec="sec-drafts" onclick="goSec('sec-drafts')">Drafts to review</button>
+          ${ds.map(d => `<button data-sec="card-${d.family_id}" onclick="goSec('card-${d.family_id}')" style="padding-left:36px;font-size:13.5px">${esc(names(d))}</button>`).join("")}</div>`;
+      }
+    });
+  });
+  return h;
+}
+function sideFamily(fid) {
+  const fams = [...new Map(DATA.drafts.map(d => [d.family_id, d])).values()].sort((a, b) => FAM_ORDER.indexOf(a.family_id) - FAM_ORDER.indexOf(b.family_id));
+  return `<div class="grp">Families</div>` + fams.map(d => {
+    const on = d.family_id === fid, n = DATA.drafts.filter(x => x.family_id === d.family_id && st(x).status === "approved").length;
+    return `<button class="it ${on ? "" : "dim"}" onclick="location.hash='#/family/${d.family_id}'">${esc(names(d))}<span class="n">${n} ${n === 1 ? "message" : "messages"}</span></button>` +
+      (on ? `<div class="sub"><button data-sec="sec-messages" onclick="goSec('sec-messages')">Messages from your advisor</button><button data-sec="sec-plan" onclick="goSec('sec-plan')">Your plan, year by year</button></div>` : "");
+  }).join("");
 }
 
+/* ---------- inbox ---------- */
 function hero(ds, pending) {
   const ev = DATA.events.find(e => e.event_id === curEvent) || {};
-  const who = ds.length === 1 ? names(ds[0]) : `${ds.length} families`;
-  return `<div class="hero"><span class="tag sim">Simulated event</span>
-    <h2 style="margin-top:14px">${esc(ev.headline)}</h2>
-    <div class="big">${esc(who)}</div>
-    <p>${ds.length === 1 ? "Affected, with a personal draft" : "Each one got a personal draft"} grounded in their own plan. ${pending ? `<b>${pending}</b> waiting for your approval.` : "All reviewed."}</p></div>
-    <p class="fine">Synthetic families from the Sherpas case; event dated ${esc(ev.date)} is simulated. No real messages are sent. Drafts were generated offline and checked so that every figure comes from the family's plan.</p>`;
+  const high = ds.filter(d => d.affected === "high").length;
+  return `<section id="sec-overview"><div class="hero"><span class="tag sim">Simulated ${esc(ev.type)} event</span>
+    <h1 style="margin-top:16px">${esc(short(ev))}</h1>
+    <p>${esc(ev.headline)}. Every affected family got a personal draft grounded in their own plan, ready for your approval.</p>
+    <div class="stats"><div class="stat"><b>${ds.length}</b><span>${ds.length === 1 ? "family" : "families"} affected</span></div>
+      <div class="stat"><b>${high}</b><span>high impact</span></div><div class="stat"><b>${pending}</b><span>waiting for you</span></div></div></div>
+    <p class="fine">Synthetic families from the Sherpas case; the event dated ${esc(ev.date)} is simulated. No real messages are sent. Drafts were generated offline and checked so that every figure comes from the family's plan.</p></section>`;
 }
 
 function inbox() {
   curEvent = curEvent || DATA.events[0].event_id;
   const ds = evDrafts(curEvent).sort((a, b) => priority(b) - priority(a));
   const pending = ds.filter(d => st(d).status === "pending").length;
-  return eventTabs() + hero(ds, pending) + urgencyChart(ds) + planCalendar(ds) + `<div class="section-title">Drafts to review</div>
-    <div class="toolbar"><div>Sorted by urgency and how soon the goal at risk is</div>
+  return hero(ds, pending) + urgencyChart(ds) + planCalendar(ds) +
+    `<section id="sec-drafts"><h2>Drafts to review</h2><div class="toolbar"><div>Sorted by urgency and how soon the goal at risk is</div>
     <div class="row"><button onclick="resetAll()">Reset</button><button class="primary" onclick="approveAll()" ${pending ? "" : "disabled"}>Approve all pending</button></div></div>` +
     ds.map(d => {
       const s = st(d), editing = s.status === "editing";
       return `<div class="card ${s.status}" id="card-${d.family_id}">
         <div class="row"><span class="fam grow">${esc(names(d))}</span><span class="tag ${d.affected}">${d.affected} impact</span></div>
-        <div class="meta">${esc(d.action_type)} · urgency ${d.urgency_score}${d.goal_at_risk ? " · goal at risk: " + esc(d.goal_at_risk.name) + ", " + esc(d.goal_at_risk.date) : ""} · tone: ${esc(d.tone)}</div>
+        <div class="meta">${esc(d.action_type)} · urgency ${d.urgency_score}${d.goal_at_risk ? " · goal at risk: " + esc(d.goal_at_risk.name) + ", " + esc(fmtDate(d.goal_at_risk.date)) : ""} · tone: ${esc(d.tone)}</div>
         <h3 class="label">Why this family</h3><div class="why">${esc(d.why_this_family)}</div>
         <h3 class="label">From their plan</h3>
         <div class="figs">${d.plan_figures_cited.map(f => `<div class="fig" title="${esc(f.source)}"><b>${esc(f.figure)}</b><span>${esc(f.meaning)}</span></div>`).join("")}</div>
@@ -164,27 +219,25 @@ function inbox() {
                     : s.status === "pending" ? `<button class="primary" onclick="setStatus('${d.id}','approved')">Approve</button><button onclick="setStatus('${d.id}','editing')">Edit</button><button onclick="setStatus('${d.id}','rejected')">Reject</button>`
                     : `<span class="meta grow">${s.status === "approved" ? "✓ Approved, now visible in Family view" : "Rejected"}</span><button onclick="setStatus('${d.id}','pending')">Undo</button>`}
         </div></div>`;
-    }).join("");
+    }).join("") + `</section>`;
 }
 
+/* ---------- family view ---------- */
 function family(fid) {
-  const fams = [...new Map(DATA.drafts.map(d => [d.family_id, d])).values()];
-  const opts = fams.map(d => `<option value="${d.family_id}" ${d.family_id === fid ? "selected" : ""}>${esc(names(d))}</option>`).join("");
-  const mine = DATA.drafts.filter(d => d.family_id === fid && st(d).status === "approved")
-    .sort((a, b) => priority(b) - priority(a));
-  const msg = d => `<div class="hero" style="padding:22px;margin-top:14px"><div class="from"><span class="avatar">${esc(d.household.advisor.name[0] + d.household.advisor.surname[0])}</span>
-        From ${esc(d.household.advisor.name)} ${esc(d.household.advisor.surname)}, your advisor</div>
-      <h2 style="font-size:22px;margin:14px 0 4px">${esc(d.subject)}</h2></div>
+  const mine = DATA.drafts.filter(d => d.family_id === fid && st(d).status === "approved").sort((a, b) => priority(b) - priority(a));
+  const any = DATA.drafts.find(d => d.family_id === fid);
+  const msg = d => `<div class="msgcard" style="margin-bottom:22px"><div class="hero"><div class="from"><span class="avatar">${esc(d.household.advisor.name[0] + d.household.advisor.surname[0])}</span>
+        From ${esc(d.household.advisor.name)} ${esc(d.household.advisor.surname)}, your advisor</div><h2>${esc(d.subject)}</h2></div>
       <div class="card" style="margin-top:12px"><p class="msg">${esc(st(d).text)}</p>
-      ${d.audio ? `<audio controls src="${d.audio}" style="width:100%;margin-top:14px"></audio><div class="note">Voice note uses a synthetic stock voice.</div>`
-                : `<div class="note">Voice note: coming soon (synthetic stock voice).</div>`}</div>`;
-  return `<div class="phone"><div class="toolbar"><select onchange="location.hash='#/family/'+this.value">${opts}</select><span class="tag sim">Simulated</span></div>` +
-    (mine.length ? mine.map(msg).join("")
-      : `<div class="empty">Nothing here yet. The advisor hasn't approved a message for this family.</div>`) + `</div>` +
-    `<div class="phone">${projectionChart(fid)}</div>`;
+      ${d.audio ? `<audio controls src="${d.audio}" style="width:100%;margin-top:14px"></audio><div class="note">Voice note uses a synthetic stock voice.</div>` : ""}</div></div>`;
+  return `<section id="sec-messages"><div class="hero"><span class="tag sim">Simulated</span><h1 style="margin-top:16px">${esc(any ? names(any) : fid)}</h1>
+      <p>What your advisor has shared with you, and where your plan is heading.</p></div>
+    <h2>Messages from your advisor</h2><p class="lead">Only messages your advisor approved appear here.</p>
+    ${mine.length ? mine.map(msg).join("") : `<div class="empty">Nothing here yet. Approve a draft in the Advisor inbox and it will appear here.</div>`}</section>
+    <section id="sec-plan">${projectionChart(fid)}</section>`;
 }
 
-/* ---------------- charts (hand-written SVG) ---------------- */
+/* ---------- charts (hand-written SVG) ---------- */
 const FAM_ORDER = ["carter", "johnson", "lewis", "weah"];           // fixed order, never cycled
 const FAM_COLOR = {carter: "#4b55d0", johnson: "#0f9a7e", lewis: "#c7741a", weah: "#c2418a"};  // validated: CVD ΔE ≥ 11, contrast ≥ 3:1
 const NOW = 2026 + 10 / 12;                                           // Nov 2026 (event date)
@@ -204,127 +257,133 @@ function tip(e, html) {
 const hov = html => `onmousemove="tip(event,this.dataset.t)" onmouseleave="tip(event)" data-t="${esc(html)}"`;
 function goCard(fid) { const c = document.getElementById("card-" + fid); if (c) { c.scrollIntoView({behavior: "smooth", block: "center"}); c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash"); } }
 
-// 1) Urgency vs time to the goal at risk (current event)
+// 1) Urgency vs time to the goal at risk
 function urgencyChart(ds) {
-  const W = 860, H = 250, L = 46, R = 20, T = 16, B = 40;
-  const months = d => d.goal_at_risk ? Math.max(0.5, (dateNum(d.goal_at_risk.date) - NOW) * 12) : 240;
-  const maxM = 240, sx = m => L + Math.sqrt(Math.min(m, maxM) / maxM) * (W - L - R), sy = u => T + (1 - u / 100) * (H - T - B);
+  const W = 860, H = 260, L = 46, R = 16, T = 16, B = 42, PR = W - R - 120;   // right band = "no dated goal"
+  const months = d => Math.max(0.5, (dateNum(d.goal_at_risk.date) - NOW) * 12);
+  const maxM = 240, sx = m => L + Math.sqrt(Math.min(m, maxM) / maxM) * (PR - L), sy = u => T + (1 - u / 100) * (H - T - B);
   const ticks = [[1, "1 mo"], [6, "6 mo"], [12, "1 yr"], [24, "2 yrs"], [60, "5 yrs"], [120, "10 yrs"], [240, "20 yrs"]];
   let g = "";
   [0, 25, 50, 75, 100].forEach(u => g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${sy(u)}" y2="${sy(u)}"/><text x="${L - 8}" y="${sy(u) + 4}" text-anchor="end">${u}</text>`);
   ticks.forEach(([m, t]) => g += `<line class="grid" x1="${sx(m)}" x2="${sx(m)}" y1="${T}" y2="${H - B}" stroke-dasharray="2 4"/><text x="${sx(m)}" y="${H - B + 18}" text-anchor="middle">${t}</text>`);
-  g += `<text x="${(L + W - R) / 2}" y="${H - 4}" text-anchor="middle">time until the goal at risk →</text>`;
+  g += `<line class="axis" x1="${PR + 30}" x2="${PR + 30}" y1="${T}" y2="${H - B}"/><text x="${(PR + 30 + W - R) / 2}" y="${H - B + 18}" text-anchor="middle">no dated goal</text>`;
+  g += `<text x="${(L + PR) / 2}" y="${H - 4}" text-anchor="middle">time until the goal at risk →</text><text x="${L - 34}" y="${T + 4}" transform="rotate(-90 ${L - 34} ${T + 4})" text-anchor="end">urgency</text>`;
   ds.forEach(d => {
-    const x = sx(months(d)), y = sy(d.urgency_score), c = FAM_COLOR[d.family_id];
-    const t = `<b>${esc(names(d))}</b><br>${d.affected} impact · urgency ${d.urgency_score}<br>${d.goal_at_risk ? esc(d.goal_at_risk.name) + ", " + fmtDate(d.goal_at_risk.date) : ""}<br><i>Click to open the draft</i>`;
+    const x = d.goal_at_risk ? sx(months(d)) : (PR + 30 + W - R) / 2, y = sy(d.urgency_score), c = FAM_COLOR[d.family_id], right = x > W - 150;
+    const t = `<b>${esc(names(d))}</b><br>${d.affected} impact · urgency ${d.urgency_score}<br>${d.goal_at_risk ? "Goal at risk: " + esc(d.goal_at_risk.name) + ", " + fmtDate(d.goal_at_risk.date) : "No dated goal at risk"}<br><i>Click to open the draft</i>`;
     g += `<g onclick="goCard('${d.family_id}')" ${hov(t)} style="cursor:pointer"><circle cx="${x}" cy="${y}" r="16" class="hit"/>
       <circle cx="${x}" cy="${y}" r="7" fill="${c}" stroke="var(--panel)" stroke-width="2"/>
-      <text class="lbl" x="${x + (x > W - 140 ? -12 : 12)}" y="${y + 4}" text-anchor="${x > W - 140 ? "end" : "start"}">${esc(famName(d.family_id))}</text></g>`;
+      <text class="lbl" x="${x + (right ? -12 : 12)}" y="${y + 4}" text-anchor="${right ? "end" : "start"}">${esc(famName(d.family_id))}</text></g>`;
   });
-  return `<div class="viz"><div class="viz-head"><div><h3>Who needs you first</h3><p>Urgency against how soon each family's goal at risk is. Top-left = call this week. Click a dot to open the draft.</p></div></div>
-    <svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Urgency by time to goal">${g}</svg></div>`;
+  return `<section id="sec-urgency"><h2>Who needs you first</h2><p class="lead">Urgency against how soon each family's goal at risk is. Top-left means call this week. Click a dot to open the draft.</p>
+    <svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Urgency by time to goal">${g}</svg></section>`;
 }
 
-// 2) Plan calendar: whole-plan timeline or month calendar of the next two years
+// 2) Plan calendar. Each draft's goal at risk is linked to the matching goal in the plan
+//    (e.g. "Home purchase" = "Purchase a home"), so the red ring always sits on a real marker.
 let calMode = "timeline", calSel = null;
+const rkey = s => String(s).toLowerCase().replace(/[^a-z ]/g, " ").split(/\s+/).filter(w => w && !["purchase", "a", "for", "the", "of", "to"].includes(w)).sort().join(" ");
 function calItems(ds) {
-  const risk = new Map(ds.map(d => [d.family_id, d.goal_at_risk]));
   const items = [];
   FAM_ORDER.forEach(fid => {
     const f = DATA.families[fid]; if (!f) return;
     f.goals.forEach(g => items.push({fid, kind: "goal", date: String(g.year), label: g.name, amount: g.amount}));
     f.retirement.forEach(r => items.push({fid, kind: "retire", date: r, label: "Retirement"}));
-    const r = risk.get(fid);
-    if (r) items.push({fid, kind: "risk", date: r.date, label: "At risk: " + r.name});
+    const d = ds.find(x => x.family_id === fid), r = d && d.goal_at_risk;
+    if (!r) return;
+    const hits = items.filter(it => it.fid === fid && rkey(it.label) === rkey(r.name));
+    if (hits.length) hits.forEach(it => { it.risk = true; if (it.kind === "goal" && r.date.includes("-")) it.date = r.date; });
+    else items.push({fid, kind: "goal", date: r.date, label: r.name, risk: true, extra: true});
   });
   const ev = DATA.events.find(e => e.event_id === curEvent);
   if (ev) items.push({fid: null, kind: "event", date: ev.date.slice(0, 7), label: ev.headline});
   return items;
 }
-const itemHtml = it => `<b>${it.fid ? esc(famName(it.fid)) : "Simulated event"}</b> · ${esc(it.label)}<br>${fmtDate(it.date)}${it.amount ? " · " + money(it.amount) : ""}`;
+const itemHtml = it => `<b>${it.fid ? esc(famName(it.fid)) : "Simulated event"}</b> · ${esc(it.label)}<br>${fmtDate(it.date)}${it.amount ? " · " + money(it.amount) : ""}${it.risk ? '<br><span style="color:#ff8a80">At risk from this event</span>' : ""}`;
 
 function planCalendar(ds) {
   const items = calItems(ds);
-  const body = calMode === "timeline" ? timeline(items) : monthCal(items);
-  return `<div class="viz"><div class="viz-head"><div><h3>Plan calendar</h3><p>Every dated goal in the four plans, the goals this event puts at risk, and retirement dates.</p></div>
+  return `<section id="sec-calendar"><div class="toolbar" style="margin:48px 0 0;align-items:flex-end"><h2 style="font-size:clamp(26px,3.4vw,40px);line-height:1.1">Plan calendar</h2>
     <div class="seg"><button class="${calMode === "timeline" ? "on" : ""}" onclick="calMode='timeline';render()">Whole plan</button><button class="${calMode === "months" ? "on" : ""}" onclick="calMode='months';render()">Next 2 years</button></div></div>
-    ${body}
+    <p class="lead" style="margin-top:6px">Every dated goal in the four plans and retirement dates. A red ring marks the goal this event puts at risk.</p>
+    ${calMode === "timeline" ? timeline(items) : monthCal(items)}
     <div class="legend">${FAM_ORDER.map(f => `<span><i style="background:${FAM_COLOR[f]}"></i>${esc(famName(f))}</span>`).join("")}
-      <span><i class="dia" style="background:var(--ink-2)"></i>Retirement</span><span><i class="ring"></i>Goal at risk</span></div></div>`;
+      <span><i class="dia" style="background:var(--ink-2)"></i>Retirement</span><span><i class="ring"></i>Goal at risk from this event</span></div></section>`;
 }
 
 function timeline(items) {
-  const W = 860, rowH = 44, L = 92, R = 16, T = 26, H = T + FAM_ORDER.length * rowH + 26;
+  const W = 860, rowH = 48, L = 92, R = 16, T = 28, H = T + FAM_ORDER.length * rowH + 26;
   const y0 = 2026, y1 = 2049, sx = v => L + (v - y0) / (y1 - y0) * (W - L - R);
   let g = "";
   for (let y = y0; y <= y1; y += 2) g += `<line class="grid" x1="${sx(y)}" x2="${sx(y)}" y1="${T - 6}" y2="${H - 22}"/><text x="${sx(y)}" y="${H - 6}" text-anchor="middle">${y}</text>`;
-  g += `<line x1="${sx(NOW)}" x2="${sx(NOW)}" y1="${T - 14}" y2="${H - 22}" stroke="var(--sim)" stroke-width="2" stroke-dasharray="4 3"/>
-        <text x="${sx(NOW) + 6}" y="${T - 10}" style="fill:var(--sim);font-weight:600">today · simulated event</text>`;
+  g += `<line x1="${sx(NOW)}" x2="${sx(NOW)}" y1="${T - 16}" y2="${H - 22}" stroke="var(--sim)" stroke-width="2" stroke-dasharray="4 3"/>
+        <text x="${sx(NOW) + 6}" y="${T - 12}" style="fill:var(--sim);font-weight:600">today · simulated event</text>`;
   FAM_ORDER.forEach((fid, i) => {
     const cy = T + i * rowH + rowH / 2, c = FAM_COLOR[fid];
     g += `<line class="axis" x1="${L}" x2="${W - R}" y1="${cy}" y2="${cy}"/><text class="lbl" x="${L - 10}" y="${cy + 4}" text-anchor="end">${esc(famName(fid))}</text>`;
-    items.filter(it => it.fid === fid).forEach(it => {
-      const x = sx(dateNum(it.date)), t = itemHtml(it);
-      if (it.kind === "retire") g += `<g ${hov(t)}><rect x="${x - 6}" y="${cy - 6}" width="12" height="12" transform="rotate(45 ${x} ${cy})" fill="${c}" stroke="var(--panel)" stroke-width="2"/><circle class="hit" cx="${x}" cy="${cy}" r="14"/></g>`;
-      else if (it.kind === "risk") g += `<g ${hov(t)} onclick="goCard('${fid}')" style="cursor:pointer"><circle cx="${x}" cy="${cy}" r="12" fill="none" stroke="var(--red)" stroke-width="2"/><circle class="hit" cx="${x}" cy="${cy}" r="14"/></g>`;
-      else g += `<g ${hov(t)}><circle cx="${x}" cy="${cy}" r="7" fill="${c}" stroke="var(--panel)" stroke-width="2"/><circle class="hit" cx="${x}" cy="${cy}" r="14"/></g>`;
+    const mine = items.filter(it => it.fid === fid).sort((a, b) => (a.risk ? 1 : 0) - (b.risk ? 1 : 0));  // rings drawn on top
+    mine.forEach(it => {
+      const x = sx(dateNum(it.date)), t = itemHtml(it), click = it.risk ? `onclick="goCard('${fid}')" style="cursor:pointer"` : "";
+      const mark = it.kind === "retire"
+        ? `<rect x="${x - 6}" y="${cy - 6}" width="12" height="12" transform="rotate(45 ${x} ${cy})" fill="${c}" stroke="var(--panel)" stroke-width="2"/>`
+        : `<circle cx="${x}" cy="${cy}" r="7" fill="${c}" stroke="var(--panel)" stroke-width="2"/>`;
+      const ring = it.risk ? `<circle cx="${x}" cy="${cy}" r="13" fill="none" stroke="var(--red)" stroke-width="2"/>` : "";
+      const lbl = it.extra ? `<text class="risklbl" x="${x + 18}" y="${cy + 4}">${esc(it.label)}</text>` : "";
+      g += `<g ${hov(t)} ${click}>${mark}${ring}${lbl}<circle class="hit" cx="${x}" cy="${cy}" r="15"/></g>`;
     });
   });
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Goals timeline">${g}</svg>`;
 }
 
 function monthCal(items) {
-  const start = {y: 2026, m: 11}, MONTHS = 26, now = "2026-11";
-  const key = (y, m) => `${y}-${String(m).padStart(2, "0")}`;
+  const MONTHS = 26, now = "2026-11", key = (y, m) => `${y}-${String(m).padStart(2, "0")}`;
   const chip = (it, i) => it.kind === "event"
     ? `<button class="chip ev" onclick="calSel=${i};render()">Event</button>`
-    : `<button class="chip ${it.kind === "risk" ? "risk" : ""}" onclick="calSel=${i};render()"><i style="background:${FAM_COLOR[it.fid]}"></i>${esc(famName(it.fid))}: ${esc(it.label.replace("At risk: ", "⚠ "))}</button>`;
-  let html = "", y = start.y, m = start.m;
-  const years = {};
+    : `<button class="chip ${it.risk ? "risk" : ""}" onclick="calSel=${i};render()"><i style="background:${FAM_COLOR[it.fid]}"></i>${esc(famName(it.fid))}: ${it.risk ? "⚠ " : ""}${esc(it.label)}</button>`;
+  let html = "", y = 2026, m = 11; const years = {};
   for (let k = 0; k < MONTHS; k++) { (years[y] = years[y] || []).push(m); if (++m > 12) { m = 1; y++; } }
+  const idx = items.map((it, i) => [it, i]);
   Object.entries(years).forEach(([yy, ms]) => {
-    const yearOnly = items.map((it, i) => [it, i]).filter(([it]) => it.date === yy);
+    const yearOnly = idx.filter(([it]) => it.date === yy);
     html += `<div><div class="cal-yh"><b>${yy}</b>${yearOnly.length ? `<span class="meta">during the year:</span>` + yearOnly.map(([it, i]) => chip(it, i)).join("") : ""}</div><div class="cal-year">` +
-      ms.map(mm => {
-        const k = key(yy, mm), here = items.map((it, i) => [it, i]).filter(([it]) => it.date === k);
-        return `<div class="cal-m ${k === now ? "now" : ""}"><div class="mn">${new Date(+yy, mm - 1).toLocaleString("en", {month: "short"})}</div>${here.map(([it, i]) => chip(it, i)).join("")}</div>`;
+      ms.map(mm => { const k = key(yy, mm);
+        return `<div class="cal-m ${k === now ? "now" : ""}"><div class="mn">${new Date(+yy, mm - 1).toLocaleString("en", {month: "short"})}</div>${idx.filter(([it]) => it.date === k).map(([it, i]) => chip(it, i)).join("")}</div>`;
       }).join("") + `</div></div>`;
   });
   const sel = calSel != null && items[calSel];
-  return `<div class="cal">${html}</div><div class="cal-detail">${sel ? itemHtml(sel) + (sel.fid ? ` · <a href="javascript:goCard('${sel.fid}')">open draft</a>` : "") : "Click any item for details."}</div>`;
+  return `<div class="cal">${html}</div><div class="cal-detail">${sel ? itemHtml(sel).replace('color:#ff8a80', 'color:var(--red)') + (sel.fid ? ` · <a href="javascript:goCard('${sel.fid}')">open draft</a>` : "") : "Click any item for details."}</div>`;
 }
 
 // 3) Family view: Living-map projection with goal markers + crosshair tooltip
+function projMax(P) {   // round axis top: 4 gridlines on a 1/2/2.5/5 × 10^n step
+  const raw = Math.max(...P.map(r => r.net_worth)) / 4, p = 10 ** Math.floor(Math.log10(raw));
+  return [1, 2, 2.5, 5, 10].map(k => k * p).find(s => s >= raw) * 4;
+}
+const PJ = {W: 760, H: 300, L: 56, R: 16, T: 34, B: 30};
 function projectionChart(fid) {
   const f = DATA.families[fid]; if (!f) return "";
-  const P = f.projection.filter(r => r.year <= 2060), W = 460, H = 260, L = 50, R = 14, T = 30, B = 30;
+  const {W, H, L, R, T, B} = PJ, P = f.projection.filter(r => r.year <= 2060);
   const x0 = P[0].year, x1 = P[P.length - 1].year, maxV = projMax(P);
   const sx = v => L + (v - x0) / (x1 - x0) * (W - L - R), sy = v => T + (1 - Math.max(0, v) / maxV) * (H - T - B);
   const line = k => P.map((r, i) => `${i ? "L" : "M"}${sx(r.year).toFixed(1)},${sy(r[k]).toFixed(1)}`).join("");
   let g = "";
   for (let i = 0; i <= 4; i++) { const v = maxV * i / 4; g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${sy(v)}" y2="${sy(v)}"/><text x="${L - 6}" y="${sy(v) + 4}" text-anchor="end">${money(Math.round(v))}</text>`; }
-  for (let y = Math.ceil(x0 / 10) * 10; y <= x1; y += 10) g += `<text x="${sx(y)}" y="${H - 8}" text-anchor="middle">${y}</text>`;
-  const marks = [...f.goals.map(gl => ({y: gl.year, t: gl.name, a: gl.amount})), ...f.retirement.slice(0, 1).map(r => ({y: dateNum(r), t: "Retirement"}))];
-  marks.forEach(mk => { const x = sx(mk.y); g += `<g ${hov(`<b>${esc(mk.t)}</b> · ${Math.floor(mk.y)}${mk.a ? " · " + money(mk.a) : ""}`)}><line x1="${x}" x2="${x}" y1="${T - 8}" y2="${H - B}" stroke="var(--line-2)" stroke-dasharray="3 3"/><circle cx="${x}" cy="${T - 12}" r="5" fill="${mk.t === "Retirement" ? "var(--ink-2)" : "var(--red)"}"/><circle class="hit" cx="${x}" cy="${T - 12}" r="12"/></g>`; });
+  for (let y = Math.ceil(x0 / 5) * 5; y <= x1; y += 5) g += `<text x="${sx(y)}" y="${H - 8}" text-anchor="middle">${y}</text>`;
+  const marks = [...f.goals.map(gl => ({y: gl.year + 0.5, t: gl.name, a: gl.amount})), ...f.retirement.slice(0, 1).map(r => ({y: dateNum(r), t: "Retirement"}))];
+  marks.forEach(mk => { const x = sx(mk.y); g += `<g ${hov(`<b>${esc(mk.t)}</b> · ${Math.floor(mk.y)}${mk.a ? " · " + money(mk.a) : ""}`)}><line x1="${x}" x2="${x}" y1="${T - 10}" y2="${H - B}" stroke="var(--line-2)" stroke-dasharray="3 3"/><circle cx="${x}" cy="${T - 14}" r="5" fill="${mk.t === "Retirement" ? "var(--ink-2)" : "var(--red)"}"/><circle class="hit" cx="${x}" cy="${T - 14}" r="12"/></g>`; });
   g += `<path d="${line("net_worth")}" fill="none" stroke="#4b55d0" stroke-width="2"/><path d="${line("investable")}" fill="none" stroke="#0f9a7e" stroke-width="2"/>`;
   g += `<g id="xh" style="display:none"><line id="xh-l" y1="${T}" y2="${H - B}" stroke="var(--ink-2)"/><circle id="xh-a" r="4" fill="#4b55d0" stroke="var(--panel)" stroke-width="2"/><circle id="xh-b" r="4" fill="#0f9a7e" stroke="var(--panel)" stroke-width="2"/></g>`;
-  g += `<rect x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent" onmousemove="projHover(event,'${fid}',this)" onmouseleave="projHover(null)"/>`;
-  return `<div class="viz"><div class="viz-head"><div><h3>Your plan, year by year</h3><p>Projected net worth and investable assets from your Sherpas living map, in future dollars, with your goals marked. A projection, not a promise.</p></div></div>
+  g += `<rect x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent" onmousemove="projHover(event,'${fid}')" onmouseleave="projHover(null)"/>`;
+  return `<h2>Your plan, year by year</h2><p class="lead">Projected net worth and investable assets from your Sherpas living map, in future dollars, with your goals marked. A projection, not a promise.</p>
     <svg class="chart" id="proj" viewBox="0 0 ${W} ${H}" role="img" aria-label="Projected net worth">${g}</svg>
-    <div class="legend"><span><i style="background:#4b55d0"></i>Net worth</span><span><i style="background:#0f9a7e"></i>Investable assets</span><span><i style="background:var(--red)"></i>Goal</span><span><i style="background:var(--ink-2)"></i>Retirement</span></div></div>`;
+    <div class="legend"><span><i style="background:#4b55d0"></i>Net worth</span><span><i style="background:#0f9a7e"></i>Investable assets</span><span><i style="background:var(--red)"></i>Goal</span><span><i style="background:var(--ink-2)"></i>Retirement</span></div>`;
 }
-// round axis top: 4 gridlines on a 1/2/2.5/5 × 10^n step
-function projMax(P) {
-  const raw = Math.max(...P.map(r => r.net_worth)) / 4, p = 10 ** Math.floor(Math.log10(raw));
-  const step = [1, 2, 2.5, 5, 10].map(k => k * p).find(s => s >= raw);
-  return step * 4;
-}
-function projHover(e, fid, rect) {
+function projHover(e, fid) {
   const xh = document.getElementById("xh"); if (!xh) return;
   if (!e) { xh.style.display = "none"; tip(null); return; }
   const svg = document.getElementById("proj"), pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
   const p = pt.matrixTransform(svg.getScreenCTM().inverse());
-  const P = DATA.families[fid].projection.filter(r => r.year <= 2060), W = 460, H = 260, L = 50, R = 14, T = 30, B = 30;
+  const {W, H, L, R, T, B} = PJ, P = DATA.families[fid].projection.filter(r => r.year <= 2060);
   const x0 = P[0].year, x1 = P[P.length - 1].year, maxV = projMax(P);
   const yr = Math.round(x0 + (p.x - L) / (W - L - R) * (x1 - x0)), r = P.find(q => q.year === yr); if (!r) return;
   const sx = v => L + (v - x0) / (x1 - x0) * (W - L - R), sy = v => T + (1 - Math.max(0, v) / maxV) * (H - T - B);
@@ -334,18 +393,29 @@ function projHover(e, fid, rect) {
   tip(e, `<b>${yr}</b><br>Net worth ${money(r.net_worth)}<br>Investable ${money(r.investable)}`);
 }
 
+/* ---------- render + scroll-spy for the left menu ---------- */
+let spy;
 function render() {
   const [, view = "inbox", arg] = location.hash.split("/");
+  const fid = arg || "carter";
   document.getElementById("nav-inbox").className = view === "inbox" ? "on" : "";
   document.getElementById("nav-family").className = view === "family" ? "on" : "";
-  document.getElementById("app").innerHTML = view === "family" ? family(arg || DATA.drafts[0].family_id) : inbox();
+  document.getElementById("side").innerHTML = view === "family" ? sideFamily(fid) : sideInbox();
+  document.getElementById("app").innerHTML = view === "family" ? family(fid) : inbox();
+  if (spy) spy.disconnect();
+  const btns = [...document.querySelectorAll(".side .sub button[data-sec]")];
+  spy = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    btns.forEach(b => b.classList.toggle("on", b.dataset.sec === e.target.id));
+  }), {rootMargin: "-20% 0px -70% 0px"});
+  btns.forEach(b => { const el = document.getElementById(b.dataset.sec); if (el) spy.observe(el); });
 }
 function setStatus(id, s) { const d = DATA.drafts.find(x => x.id === id); state[id] = {...st(d), status: s}; save(); render(); }
 function saveEdit(id) { state[id] = {status: "approved", text: document.getElementById("ta-" + id).value}; save(); render(); }
 function approveAll() { evDrafts(curEvent).forEach(d => { if (st(d).status === "pending") state[d.id] = {...st(d), status: "approved"}; }); save(); render(); }
 function resetAll() { state = {}; save(); render(); }
 
-window.addEventListener("hashchange", render);
+window.addEventListener("hashchange", () => { render(); window.scrollTo({top: 0}); });
 fetch("data/drafts.json").then(r => r.json()).then(j => { DATA = j; render(); })
   .catch(() => document.getElementById("app").innerHTML = '<p class="empty">Could not load data/drafts.json</p>');
 </script>
