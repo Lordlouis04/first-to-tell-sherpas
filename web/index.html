@@ -369,14 +369,28 @@ function projectionChart(fid) {
   let g = "";
   for (let i = 0; i <= 4; i++) { const v = maxV * i / 4; g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${sy(v)}" y2="${sy(v)}"/><text x="${L - 6}" y="${sy(v) + 4}" text-anchor="end">${money(Math.round(v))}</text>`; }
   for (let y = Math.ceil(x0 / 5) * 5; y <= x1; y += 5) g += `<text x="${sx(y)}" y="${H - 8}" text-anchor="middle">${y}</text>`;
-  const marks = [...f.goals.map(gl => ({y: gl.year + 0.5, t: gl.name, a: gl.amount})), ...f.retirement.slice(0, 1).map(r => ({y: dateNum(r), t: "Retirement"}))];
-  marks.forEach(mk => { const x = sx(mk.y); g += `<g ${hov(`<b>${esc(mk.t)}</b> · ${Math.floor(mk.y)}${mk.a ? " · " + money(mk.a) : ""}`)}><line x1="${x}" x2="${x}" y1="${T - 10}" y2="${H - B}" stroke="var(--line-2)" stroke-dasharray="3 3"/><circle cx="${x}" cy="${T - 14}" r="5" fill="${mk.t === "Retirement" ? "var(--ink-2)" : "var(--red)"}"/><circle class="hit" cx="${x}" cy="${T - 14}" r="12"/></g>`; });
   g += `<path d="${line("net_worth")}" fill="none" stroke="#4b55d0" stroke-width="2"/><path d="${line("investable")}" fill="none" stroke="#0f9a7e" stroke-width="2"/>`;
+  // goals sit ON the net-worth line in the year they happen ("milestones along the way"), labelled directly
+  const nwAt = yr => { const r = P.find(q => q.year === Math.round(yr)) || P[P.length - 1]; return r.net_worth; };
+  const marks = [...f.goals.filter(gl => gl.year >= x0).map(gl => ({y: gl.year, t: gl.name, a: gl.amount, goal: true})),
+                 ...f.retirement.slice(0, 1).map(r => ({y: Math.floor(dateNum(r)), t: "Retirement"}))].sort((a, b) => a.y - b.y);
+  let lastX = -99, lift = 0;
+  marks.forEach(mk => {
+    const x = sx(mk.y), y = sy(nwAt(mk.y));
+    lift = x - lastX < 70 ? lift + 16 : 0; lastX = x;                 // stagger labels of goals close in time
+    const ly = y - 14 - lift, short = mk.t.replace("Purchase a ", "").replace(/^./, c => c.toUpperCase());
+    const mark = mk.goal ? `<circle cx="${x}" cy="${y}" r="6" fill="var(--red)" stroke="var(--panel)" stroke-width="2"/>`
+                         : `<rect x="${x - 6}" y="${y - 6}" width="12" height="12" transform="rotate(45 ${x} ${y})" fill="var(--ink-2)" stroke="var(--panel)" stroke-width="2"/>`;
+    g += `<g ${hov(`<b>${esc(mk.t)}</b> · ${mk.y}${mk.a ? " · " + money(mk.a) : ""}<br>Projected net worth that year: ${money(nwAt(mk.y))}`)}>
+      <line x1="${x}" x2="${x}" y1="${y}" y2="${H - B}" stroke="var(--line-2)" stroke-dasharray="3 3"/>${mark}
+      <text x="${x}" y="${ly}" text-anchor="middle" style="fill:var(--ink-2);font-weight:600;font-size:11.5px">${esc(short)}${mk.a ? " " + money(mk.a) : ""}</text>
+      <circle class="hit" cx="${x}" cy="${y}" r="13"/></g>`;
+  });
   g += `<g id="xh" style="display:none"><line id="xh-l" y1="${T}" y2="${H - B}" stroke="var(--ink-2)"/><circle id="xh-a" r="4" fill="#4b55d0" stroke="var(--panel)" stroke-width="2"/><circle id="xh-b" r="4" fill="#0f9a7e" stroke="var(--panel)" stroke-width="2"/></g>`;
   g += `<rect x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent" onmousemove="projHover(event,'${fid}')" onmouseleave="projHover(null)"/>`;
   return `<h2>Your plan, year by year</h2><p class="lead">Projected net worth and investable assets from your Sherpas living map, in future dollars, with your goals marked. A projection, not a promise.</p>
     <svg class="chart" id="proj" viewBox="0 0 ${W} ${H}" role="img" aria-label="Projected net worth">${g}</svg>
-    <div class="legend"><span><i style="background:#4b55d0"></i>Net worth</span><span><i style="background:#0f9a7e"></i>Investable assets</span><span><i style="background:var(--red)"></i>Goal</span><span><i style="background:var(--ink-2)"></i>Retirement</span></div>`;
+    <div class="legend"><span><i style="background:#4b55d0"></i>Net worth</span><span><i style="background:#0f9a7e"></i>Investable assets</span><span><i style="background:var(--red)"></i>Goal (when it happens)</span><span><i class="dia" style="background:var(--ink-2)"></i>Retirement</span></div>`;
 }
 function projHover(e, fid) {
   const xh = document.getElementById("xh"); if (!xh) return;
