@@ -1,0 +1,71 @@
+{
+ "family_id": "lewis",
+ "advisor_name": "Mohamed Benhaddi",
+ "advisor_first": "Mohamed",
+ "firm_name": "Sherpas demo (synthetic)",
+ "household": "Samantha Lewis",
+ "target_minutes": 3,
+ "client_first_name": "Samantha",
+ "tone_hint": "validator: exact figures and sources before any suggestion; frame around Ethan and Ava",
+ "facts": [
+  "$1,395,000",
+  "$335,000",
+  "$80,000",
+  "$12,500",
+  "$98,838",
+  "$3,032"
+ ],
+ "summary": {
+  "line": "your net worth is about $1,395,000, with $335,000 invested and no debt",
+  "strength": "your protection for Ethan and Ava is fully in place",
+  "area": "retirement accounts, which hold nothing yet"
+ },
+ "world_update": "universities announced 5% tuition increases. For you, Ethan's $12,500 payment is due in August 2027, and $98,838 of college funding is still needed",
+ "data_gap": {
+  "id": "G1",
+  "question": "Quick question for your file: do you know if your employer offers a 401(k) plan?"
+ },
+ "upcoming_goal": {
+  "name": "Ethan's next college payment of $12,500",
+  "when": "in August 2027"
+ },
+ "plan_point": "your taxable holdings cost about $3,032 a year in tax, and technology is 30.6% of your stock holdings",
+ "topics": {
+  "cash": "You hold $80,000 in cash, about 7.9 months of essentials, but only $750 sits above your reserve and near-term goals.",
+  "college": "Ethan's $12,500 payment is due in August 2027, and $98,838 of college funding is still needed for Ethan and Ava.",
+  "market": "Your invested savings are 85.1% in stocks, with technology 30.6% and the US 92.6% of your stock holdings.",
+  "tax": "Every investment dollar sits in taxable accounts, which cost about $3,032 a year in tax.",
+  "retirement": "Your retirement accounts hold $0 today, and the projection shows savings running out at age 73.",
+  "home": "Your plan includes a second home purchase of $500,000 in 2030."
+ },
+ "events": {
+  "home_prices_2026_11__lewis": {
+   "event_id": "home_prices_2026_11",
+   "headline": "US home prices up 6% over the past year in major markets",
+   "type": "market",
+   "subject": "Home prices: your home today and your 2030 plan",
+   "audio": "audio/home_prices_2026_11__lewis.mp3"
+  },
+  "tax_limits_2027__lewis": {
+   "event_id": "tax_limits_2027",
+   "headline": "New tax law raises 2027 contribution limits for 401(k), IRA and HSA accounts",
+   "type": "law",
+   "subject": "A new tax law opens more room for your retirement",
+   "audio": "audio/tax_limits_2027__lewis.mp3"
+  },
+  "tech_selloff_2026_11__lewis": {
+   "event_id": "tech_selloff_2026_11",
+   "headline": "Tech sell-off: Nvidia down 30% in two weeks; broad US equities down ~8%",
+   "type": "market",
+   "subject": "What the tech sell-off means for your portfolio",
+   "audio": "audio/tech_selloff_2026_11__lewis.mp3"
+  },
+  "tuition_2027__lewis": {
+   "event_id": "tuition_2027",
+   "headline": "Universities announce 5% tuition increases for the 2027-28 academic year",
+   "type": "life",
+   "subject": "Tuition is going up: let's plan Ethan's and Ava's college",
+   "audio": "audio/tuition_2027__lewis.mp3"
+  }
+ }
+}

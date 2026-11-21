@@ -1,0 +1,64 @@
+{
+ "family_id": "weah",
+ "advisor_name": "Mohamed Benhaddi",
+ "advisor_first": "Mohamed",
+ "firm_name": "Sherpas demo (synthetic)",
+ "household": "Timothy & Melanie Weah",
+ "target_minutes": 3,
+ "client_first_name": "Timothy",
+ "tone_hint": "joint couple: Timothy Growth, Melanie Moderate; acknowledge both views",
+ "facts": [
+  "$210,000",
+  "$150,000",
+  "$600,000",
+  "$45,000",
+  "$140,000",
+  "$110,000"
+ ],
+ "summary": {
+  "line": "you have $210,000 invested and $150,000 in cash",
+  "strength": "your retirement plan is well supported and your cash cushion is strong",
+  "area": "life insurance and umbrella cover"
+ },
+ "world_update": "rates came down, so the spare cash you hold will likely earn a little less while it waits",
+ "data_gap": {
+  "id": "G1",
+  "question": "Quick question for your file: is the monthly spending in your plan still about right, or has it changed?"
+ },
+ "upcoming_goal": {
+  "name": "your vehicle purchase of $45,000",
+  "when": "in 2028"
+ },
+ "plan_point": "Timothy has $140,000 of life insurance and Melanie $110,000, both well below the range your plan suggests",
+ "topics": {
+  "cash": "You hold $150,000 in cash, about 16 months of essentials, and about $60,223 sits above your reserve and near-term goals.",
+  "debt": "Your $18,000 card at 18% is your most expensive debt.",
+  "home": "Your plan has a $600,000 home purchase in 2030.",
+  "college": "Your plan still needs about $113,509 for college for Liam and Josh, with $0 in 529s today.",
+  "market": "Your invested savings are about 81% in stocks, and you two have different comfort levels with risk.",
+  "retirement": "Your retirement plan looks well supported: income covers 93% of your yearly need in the projection."
+ },
+ "events": {
+  "home_prices_2026_11__weah": {
+   "event_id": "home_prices_2026_11",
+   "headline": "US home prices up 6% over the past year in major markets",
+   "type": "market",
+   "subject": "Home prices and your 2030 plans",
+   "audio": "audio/home_prices_2026_11__weah.mp3"
+  },
+  "rate_cut_2026_11__weah": {
+   "event_id": "rate_cut_2026_11",
+   "headline": "Federal Reserve cuts interest rates by 0.5 percentage points; mortgage and savings rates expected to follow",
+   "type": "market",
+   "subject": "Lower rates and your spare cash",
+   "audio": "audio/rate_cut_2026_11__weah.mp3"
+  },
+  "tech_selloff_2026_11__weah": {
+   "event_id": "tech_selloff_2026_11",
+   "headline": "Tech sell-off: Nvidia down 30% in two weeks; broad US equities down ~8%",
+   "type": "market",
+   "subject": "The tech drop, and a conversation for both of you",
+   "audio": "audio/tech_selloff_2026_11__weah.mp3"
+  }
+ }
+}

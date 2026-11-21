@@ -1,0 +1,69 @@
+{
+ "family_id": "carter",
+ "advisor_name": "Mohamed Benhaddi",
+ "advisor_first": "Mohamed",
+ "firm_name": "Sherpas demo (synthetic)",
+ "household": "Michael Carter",
+ "target_minutes": 3,
+ "client_first_name": "Michael",
+ "tone_hint": "numbers-first but calm; he is weighing a home purchase against retirement",
+ "facts": [
+  "$218,500",
+  "$145,000",
+  "$30,000",
+  "$113,300",
+  "$180,000"
+ ],
+ "summary": {
+  "line": "your net worth is about $218,500, with $145,000 invested",
+  "strength": "your $180,000 income and the full employer match are a real strength",
+  "area": "the cash cushion ahead of your January 2027 home purchase"
+ },
+ "world_update": "tech stocks fell sharply. What matters for you is the January 2027 home purchase: it needs $113,300 in cash and you hold $30,000 today",
+ "data_gap": {
+  "id": "G1",
+  "question": "Quick question for your file: is the money for the home purchase sitting in cash, or in your brokerage account?"
+ },
+ "upcoming_goal": {
+  "name": "your home purchase",
+  "when": "in January 2027"
+ },
+ "plan_point": "your life insurance is $180,000, well below the range your plan suggests, and there is no umbrella liability policy yet",
+ "topics": {
+  "home": "Your plan sets aside $113,300 in cash for the January 2027 home purchase, and you hold $30,000 today.",
+  "cash": "You hold $30,000 in cash, about 3.2 months of expenses, while your plan suggests 5 to 6 months.",
+  "retirement": "Your plan shows savings running short around age 85 if you retire at 58, so it's a good topic for your advisor.",
+  "market": "Your invested savings are 73.5% in stocks, with technology about 33% of your stock holdings.",
+  "debt": "Your debt is $28,500 in total, and the $3,500 card at 20% is the most expensive part."
+ },
+ "events": {
+  "home_prices_2026_11__carter": {
+   "event_id": "home_prices_2026_11",
+   "headline": "US home prices up 6% over the past year in major markets",
+   "type": "market",
+   "subject": "Home prices and your January budget",
+   "audio": "audio/home_prices_2026_11__carter.mp3"
+  },
+  "rate_cut_2026_11__carter": {
+   "event_id": "rate_cut_2026_11",
+   "headline": "Federal Reserve cuts interest rates by 0.5 percentage points; mortgage and savings rates expected to follow",
+   "type": "market",
+   "subject": "Lower rates and your January home purchase",
+   "audio": "audio/rate_cut_2026_11__carter.mp3"
+  },
+  "tax_limits_2027__carter": {
+   "event_id": "tax_limits_2027",
+   "headline": "New tax law raises 2027 contribution limits for 401(k), IRA and HSA accounts",
+   "type": "law",
+   "subject": "The new contribution limits: no action needed yet",
+   "audio": "audio/tax_limits_2027__carter.mp3"
+  },
+  "tech_selloff_2026_11__carter": {
+   "event_id": "tech_selloff_2026_11",
+   "headline": "Tech sell-off: Nvidia down 30% in two weeks; broad US equities down ~8%",
+   "type": "market",
+   "subject": "The tech drop and your January home purchase",
+   "audio": "audio/tech_selloff_2026_11__carter.mp3"
+  }
+ }
+}

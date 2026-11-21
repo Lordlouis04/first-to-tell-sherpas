@@ -1,0 +1,70 @@
+{
+ "family_id": "johnson",
+ "advisor_name": "Mohamed Benhaddi",
+ "advisor_first": "Mohamed",
+ "firm_name": "Sherpas demo (synthetic)",
+ "household": "Daniel & Emily Johnson",
+ "target_minutes": 3,
+ "client_first_name": "Emily",
+ "tone_hint": "calm, reassuring, plain language, reassure before informing",
+ "facts": [
+  "$511,000",
+  "$330,000",
+  "$15,032",
+  "$19,000",
+  "$4,500",
+  "$1,000,000"
+ ],
+ "summary": {
+  "line": "your net worth is about $511,000, with $330,000 in investable assets",
+  "strength": "two steady incomes and manageable debt payments are a solid base",
+  "area": "the cash cushion, which covers about 1.4 months of essentials while your plan suggests 8 to 9"
+ },
+ "world_update": "markets dipped with a tech sell-off, but your retirement is planned for 2044 and your savings are 60.2% in stocks, so nothing changes for you because of it",
+ "data_gap": {
+  "id": "G1",
+  "question": "Quick question for your file: do either of your employers offer a 401(k) match?"
+ },
+ "upcoming_goal": {
+  "name": "your family vacation",
+  "when": "of $4,500 a year"
+ },
+ "plan_point": "life insurance for both of you is well below the range your plan suggests, and there is no umbrella policy, where the plan suggests about $1,000,000",
+ "topics": {
+  "cash": "Your accessible cash is $19,000, about 1.4 months of essentials, and your plan suggests 8 to 9 months.",
+  "debt": "Your $18,000 card at 24.9% is on track to be cleared by January 2034 at current payments.",
+  "retirement": "Your plan has retirement in 2044, and nothing is going into your 401(k)s today.",
+  "college": "Your 529 holds $30,000 with $8,000 going in each year, and $106,552 of college funding is still needed.",
+  "market": "Your invested savings are 60.2% in stocks, against an 80.0% target."
+ },
+ "events": {
+  "layoffs_johnson_employer__johnson": {
+   "event_id": "layoffs_johnson_employer",
+   "headline": "Daniel Johnson's employer announces 10% layoffs",
+   "type": "life",
+   "subject": "The layoff news at Daniel's company",
+   "audio": "audio/layoffs_johnson_employer__johnson.mp3"
+  },
+  "rate_cut_2026_11__johnson": {
+   "event_id": "rate_cut_2026_11",
+   "headline": "Federal Reserve cuts interest rates by 0.5 percentage points; mortgage and savings rates expected to follow",
+   "type": "market",
+   "subject": "Lower rates and your mortgage",
+   "audio": "audio/rate_cut_2026_11__johnson.mp3"
+  },
+  "tax_limits_2027__johnson": {
+   "event_id": "tax_limits_2027",
+   "headline": "New tax law raises 2027 contribution limits for 401(k), IRA and HSA accounts",
+   "type": "law",
+   "subject": "New contribution limits, and a first step for your 401(k)s",
+   "audio": "audio/tax_limits_2027__johnson.mp3"
+  },
+  "tech_selloff_2026_11__johnson": {
+   "event_id": "tech_selloff_2026_11",
+   "headline": "Tech sell-off: Nvidia down 30% in two weeks; broad US equities down ~8%",
+   "type": "market",
+   "subject": "The tech headlines: no action needed, here's why",
+   "audio": "audio/tech_selloff_2026_11__johnson.mp3"
+  }
+ }
+}
