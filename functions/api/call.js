@@ -29,7 +29,8 @@ export async function onRequestPost({request, env}) {
   if (!head.ok) return json({ok: false, error: "Voice note not found"}, 404);
 
   // Trial accounts take a TwiML URL ("Custom TwiML URL"), so Twilio fetches /api/twiml when the call connects.
-  const form = new URLSearchParams({To: env.DEMO_TO, From: env.TWILIO_FROM, Url: `${origin}/api/twiml?id=${body.id}`, Method: "GET"});
+  // Trial accounts only accept To / From / Url / StatusCallback (no Method, no inline Twiml); /api/twiml answers GET and POST.
+  const form = new URLSearchParams({To: env.DEMO_TO, From: env.TWILIO_FROM, Url: `${origin}/api/twiml?id=${body.id}`});
   const auth = btoa(`${env.TWILIO_ACCOUNT_SID}:${env.TWILIO_AUTH_TOKEN}`);
   const r = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${env.TWILIO_ACCOUNT_SID}/Calls.json`, {
     method: "POST",
