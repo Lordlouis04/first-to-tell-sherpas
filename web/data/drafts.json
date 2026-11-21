@@ -307,5 +307,1149 @@
    "audio": "audio/tech_selloff_2026_11__weah.mp3",
    "id": "tech_selloff_2026_11__weah"
   }
- ]
+ ],
+ "families": {
+  "weah": {
+   "names": [
+    "Timothy",
+    "Melanie"
+   ],
+   "retirement": [
+    "2048-03",
+    "2048-04"
+   ],
+   "goals": [
+    {
+     "name": "College Liam",
+     "type": "EDUCATION",
+     "amount": 11250,
+     "frequency": null,
+     "year": 2038
+    },
+    {
+     "name": "College Josh",
+     "type": "EDUCATION",
+     "amount": 11250,
+     "frequency": null,
+     "year": 2041
+    },
+    {
+     "name": "Purchase a home",
+     "type": "REAL_ESTATE_PURCHASE",
+     "amount": 600000,
+     "frequency": "ONE_TIME",
+     "year": 2030
+    },
+    {
+     "name": "Purchase a vehicle",
+     "type": "VEHICLE_PURCHASE",
+     "amount": 45000,
+     "frequency": "ONE_TIME",
+     "year": 2028
+    }
+   ],
+   "projection": [
+    {
+     "year": 2026,
+     "net_worth": 712086,
+     "investable": 371588
+    },
+    {
+     "year": 2027,
+     "net_worth": 823317,
+     "investable": 449278
+    },
+    {
+     "year": 2028,
+     "net_worth": 945346,
+     "investable": 524488
+    },
+    {
+     "year": 2029,
+     "net_worth": 1044059,
+     "investable": 614300
+    },
+    {
+     "year": 2030,
+     "net_worth": 1163031,
+     "investable": 561863
+    },
+    {
+     "year": 2031,
+     "net_worth": 1307142,
+     "investable": 663135
+    },
+    {
+     "year": 2032,
+     "net_worth": 1460964,
+     "investable": 772423
+    },
+    {
+     "year": 2033,
+     "net_worth": 1621060,
+     "investable": 890605
+    },
+    {
+     "year": 2034,
+     "net_worth": 1790331,
+     "investable": 1018840
+    },
+    {
+     "year": 2035,
+     "net_worth": 1972378,
+     "investable": 1157086
+    },
+    {
+     "year": 2036,
+     "net_worth": 2167951,
+     "investable": 1306111
+    },
+    {
+     "year": 2037,
+     "net_worth": 2377773,
+     "investable": 1466740
+    },
+    {
+     "year": 2038,
+     "net_worth": 2585588,
+     "investable": 1622749
+    },
+    {
+     "year": 2039,
+     "net_worth": 2807491,
+     "investable": 1791106
+    },
+    {
+     "year": 2040,
+     "net_worth": 3042480,
+     "investable": 1972706
+    },
+    {
+     "year": 2041,
+     "net_worth": 3265261,
+     "investable": 2143579
+    },
+    {
+     "year": 2042,
+     "net_worth": 3532509,
+     "investable": 2351109
+    },
+    {
+     "year": 2043,
+     "net_worth": 3817378,
+     "investable": 2573911
+    },
+    {
+     "year": 2044,
+     "net_worth": 4121133,
+     "investable": 2813143
+    },
+    {
+     "year": 2045,
+     "net_worth": 4469226,
+     "investable": 3094139
+    },
+    {
+     "year": 2046,
+     "net_worth": 4841694,
+     "investable": 3396816
+    },
+    {
+     "year": 2047,
+     "net_worth": 5240317,
+     "investable": 3722822
+    },
+    {
+     "year": 2048,
+     "net_worth": 5442180,
+     "investable": 3849106
+    },
+    {
+     "year": 2049,
+     "net_worth": 5553124,
+     "investable": 3881366
+    },
+    {
+     "year": 2050,
+     "net_worth": 5663547,
+     "investable": 3909846
+    },
+    {
+     "year": 2051,
+     "net_worth": 5765563,
+     "investable": 3926498
+    },
+    {
+     "year": 2052,
+     "net_worth": 5862710,
+     "investable": 3934690
+    },
+    {
+     "year": 2053,
+     "net_worth": 6167559,
+     "investable": 4146811
+    },
+    {
+     "year": 2054,
+     "net_worth": 6555401,
+     "investable": 4437961
+    },
+    {
+     "year": 2055,
+     "net_worth": 6991844,
+     "investable": 4773543
+    },
+    {
+     "year": 2056,
+     "net_worth": 7458069,
+     "investable": 5134524
+    },
+    {
+     "year": 2057,
+     "net_worth": 7956228,
+     "investable": 5522827
+    },
+    {
+     "year": 2058,
+     "net_worth": 8488634,
+     "investable": 5940523
+    },
+    {
+     "year": 2059,
+     "net_worth": 9057769,
+     "investable": 6389838
+    },
+    {
+     "year": 2060,
+     "net_worth": 9621762,
+     "investable": 6873168
+    },
+    {
+     "year": 2061,
+     "net_worth": 10070976,
+     "investable": 7239265
+    },
+    {
+     "year": 2062,
+     "net_worth": 10538674,
+     "investable": 7621320
+    },
+    {
+     "year": 2063,
+     "net_worth": 10894736,
+     "investable": 7889132
+    },
+    {
+     "year": 2064,
+     "net_worth": 11251414,
+     "investable": 8154877
+    },
+    {
+     "year": 2065,
+     "net_worth": 11607716,
+     "investable": 8417479
+    },
+    {
+     "year": 2066,
+     "net_worth": 11961193,
+     "investable": 8674407
+    },
+    {
+     "year": 2067,
+     "net_worth": 12310930,
+     "investable": 8924657
+    },
+    {
+     "year": 2068,
+     "net_worth": 12653482,
+     "investable": 9164697
+    },
+    {
+     "year": 2069,
+     "net_worth": 12988685,
+     "investable": 9394271
+    },
+    {
+     "year": 2070,
+     "net_worth": 13311338,
+     "investable": 9608081
+    },
+    {
+     "year": 2071,
+     "net_worth": 13621274,
+     "investable": 9805864
+    },
+    {
+     "year": 2072,
+     "net_worth": 13914178,
+     "investable": 9983203
+    },
+    {
+     "year": 2073,
+     "net_worth": 14188088,
+     "investable": 10138033
+    },
+    {
+     "year": 2074,
+     "net_worth": 14442231,
+     "investable": 10269474
+    },
+    {
+     "year": 2075,
+     "net_worth": 14670470,
+     "investable": 10371279
+    },
+    {
+     "year": 2076,
+     "net_worth": 14874373,
+     "investable": 10444903
+    },
+    {
+     "year": 2077,
+     "net_worth": 15334811,
+     "investable": 10771100
+    },
+    {
+     "year": 2078,
+     "net_worth": 15957595,
+     "investable": 11255558
+    },
+    {
+     "year": 2079,
+     "net_worth": 16115848,
+     "investable": 11378578
+    }
+   ]
+  },
+  "carter": {
+   "names": [
+    "Michael"
+   ],
+   "retirement": [
+    "2047-04"
+   ],
+   "goals": [
+    {
+     "name": "Purchase a home",
+     "type": "REAL_ESTATE_PURCHASE",
+     "amount": 550000,
+     "frequency": "ONE_TIME",
+     "year": 2027
+    }
+   ],
+   "projection": [
+    {
+     "year": 2026,
+     "net_worth": 226457,
+     "investable": 178717
+    },
+    {
+     "year": 2027,
+     "net_worth": 268863,
+     "investable": 81172
+    },
+    {
+     "year": 2028,
+     "net_worth": 312877,
+     "investable": 95902
+    },
+    {
+     "year": 2029,
+     "net_worth": 369712,
+     "investable": 125852
+    },
+    {
+     "year": 2030,
+     "net_worth": 436175,
+     "investable": 168253
+    },
+    {
+     "year": 2031,
+     "net_worth": 512602,
+     "investable": 220835
+    },
+    {
+     "year": 2032,
+     "net_worth": 596065,
+     "investable": 279056
+    },
+    {
+     "year": 2033,
+     "net_worth": 687042,
+     "investable": 343382
+    },
+    {
+     "year": 2034,
+     "net_worth": 785804,
+     "investable": 414064
+    },
+    {
+     "year": 2035,
+     "net_worth": 892222,
+     "investable": 490947
+    },
+    {
+     "year": 2036,
+     "net_worth": 1006692,
+     "investable": 574395
+    },
+    {
+     "year": 2037,
+     "net_worth": 1129782,
+     "investable": 664934
+    },
+    {
+     "year": 2038,
+     "net_worth": 1262107,
+     "investable": 763133
+    },
+    {
+     "year": 2039,
+     "net_worth": 1404332,
+     "investable": 869605
+    },
+    {
+     "year": 2040,
+     "net_worth": 1557175,
+     "investable": 985008
+    },
+    {
+     "year": 2041,
+     "net_worth": 1721325,
+     "investable": 1110046
+    },
+    {
+     "year": 2042,
+     "net_worth": 1898486,
+     "investable": 1245478
+    },
+    {
+     "year": 2043,
+     "net_worth": 2088678,
+     "investable": 1392123
+    },
+    {
+     "year": 2044,
+     "net_worth": 2292877,
+     "investable": 1550861
+    },
+    {
+     "year": 2045,
+     "net_worth": 2512135,
+     "investable": 1722644
+    },
+    {
+     "year": 2046,
+     "net_worth": 2747584,
+     "investable": 1908497
+    },
+    {
+     "year": 2047,
+     "net_worth": 2840681,
+     "investable": 1949763
+    },
+    {
+     "year": 2048,
+     "net_worth": 2860262,
+     "investable": 1915159
+    },
+    {
+     "year": 2049,
+     "net_worth": 2875133,
+     "investable": 1873361
+    },
+    {
+     "year": 2050,
+     "net_worth": 2884734,
+     "investable": 1823675
+    },
+    {
+     "year": 2051,
+     "net_worth": 2883613,
+     "investable": 1760504
+    },
+    {
+     "year": 2052,
+     "net_worth": 2852014,
+     "investable": 1663937
+    },
+    {
+     "year": 2053,
+     "net_worth": 2805065,
+     "investable": 1548941
+    },
+    {
+     "year": 2054,
+     "net_worth": 2732940,
+     "investable": 1405516
+    },
+    {
+     "year": 2055,
+     "net_worth": 2639563,
+     "investable": 1237402
+    },
+    {
+     "year": 2056,
+     "net_worth": 2606011,
+     "investable": 1125478
+    },
+    {
+     "year": 2057,
+     "net_worth": 2592063,
+     "investable": 1066679
+    },
+    {
+     "year": 2058,
+     "net_worth": 2580056,
+     "investable": 1008458
+    },
+    {
+     "year": 2059,
+     "net_worth": 2568194,
+     "investable": 948978
+    },
+    {
+     "year": 2060,
+     "net_worth": 2550203,
+     "investable": 881919
+    },
+    {
+     "year": 2061,
+     "net_worth": 2524019,
+     "investable": 805174
+    },
+    {
+     "year": 2062,
+     "net_worth": 2488464,
+     "investable": 717522
+    },
+    {
+     "year": 2063,
+     "net_worth": 2448011,
+     "investable": 623386
+    },
+    {
+     "year": 2064,
+     "net_worth": 2439767,
+     "investable": 559828
+    },
+    {
+     "year": 2065,
+     "net_worth": 2434784,
+     "investable": 497847
+    },
+    {
+     "year": 2066,
+     "net_worth": 2432200,
+     "investable": 436531
+    },
+    {
+     "year": 2067,
+     "net_worth": 2432298,
+     "investable": 376111
+    },
+    {
+     "year": 2068,
+     "net_worth": 2435388,
+     "investable": 316843
+    },
+    {
+     "year": 2069,
+     "net_worth": 2441807,
+     "investable": 259007
+    },
+    {
+     "year": 2070,
+     "net_worth": 2451923,
+     "investable": 202914
+    },
+    {
+     "year": 2071,
+     "net_worth": 2466135,
+     "investable": 148903
+    },
+    {
+     "year": 2072,
+     "net_worth": 2484879,
+     "investable": 97348
+    },
+    {
+     "year": 2073,
+     "net_worth": 2508628,
+     "investable": 48660
+    },
+    {
+     "year": 2074,
+     "net_worth": 2537895,
+     "investable": 3288
+    },
+    {
+     "year": 2075,
+     "net_worth": 2573241,
+     "investable": -38276
+    },
+    {
+     "year": 2076,
+     "net_worth": 2615271,
+     "investable": -75495
+    },
+    {
+     "year": 2077,
+     "net_worth": 2664646,
+     "investable": -107780
+    },
+    {
+     "year": 2078,
+     "net_worth": 2722081,
+     "investable": -134488
+    },
+    {
+     "year": 2079,
+     "net_worth": 2788353,
+     "investable": -154919
+    },
+    {
+     "year": 2080,
+     "net_worth": 2812003,
+     "investable": -160752
+    }
+   ]
+  },
+  "johnson": {
+   "names": [
+    "Daniel",
+    "Emily"
+   ],
+   "retirement": [
+    "2044-05",
+    "2044-09"
+   ],
+   "goals": [
+    {
+     "name": "College Oliver",
+     "type": "EDUCATION",
+     "amount": 15000,
+     "frequency": null,
+     "year": 2033
+    },
+    {
+     "name": "College Sophia",
+     "type": "EDUCATION",
+     "amount": 15000,
+     "frequency": null,
+     "year": 2035
+    }
+   ],
+   "projection": [
+    {
+     "year": 2026,
+     "net_worth": 522431,
+     "investable": 350354
+    },
+    {
+     "year": 2027,
+     "net_worth": 612940,
+     "investable": 399708
+    },
+    {
+     "year": 2028,
+     "net_worth": 710736,
+     "investable": 453403
+    },
+    {
+     "year": 2029,
+     "net_worth": 816300,
+     "investable": 511766
+    },
+    {
+     "year": 2030,
+     "net_worth": 930179,
+     "investable": 575155
+    },
+    {
+     "year": 2031,
+     "net_worth": 1045717,
+     "investable": 643949
+    },
+    {
+     "year": 2032,
+     "net_worth": 1167703,
+     "investable": 719432
+    },
+    {
+     "year": 2033,
+     "net_worth": 1281217,
+     "investable": 783116
+    },
+    {
+     "year": 2034,
+     "net_worth": 1399114,
+     "investable": 853392
+    },
+    {
+     "year": 2035,
+     "net_worth": 1501657,
+     "investable": 905977
+    },
+    {
+     "year": 2036,
+     "net_worth": 1609987,
+     "investable": 961789
+    },
+    {
+     "year": 2037,
+     "net_worth": 1750437,
+     "investable": 1047054
+    },
+    {
+     "year": 2038,
+     "net_worth": 1900037,
+     "investable": 1138687
+    },
+    {
+     "year": 2039,
+     "net_worth": 2083384,
+     "investable": 1261157
+    },
+    {
+     "year": 2040,
+     "net_worth": 2279585,
+     "investable": 1393434
+    },
+    {
+     "year": 2041,
+     "net_worth": 2489458,
+     "investable": 1536258
+    },
+    {
+     "year": 2042,
+     "net_worth": 2714718,
+     "investable": 1690421
+    },
+    {
+     "year": 2043,
+     "net_worth": 2955621,
+     "investable": 1856776
+    },
+    {
+     "year": 2044,
+     "net_worth": 3111209,
+     "investable": 1934173
+    },
+    {
+     "year": 2045,
+     "net_worth": 3094647,
+     "investable": 1835576
+    },
+    {
+     "year": 2046,
+     "net_worth": 3068954,
+     "investable": 1723787
+    },
+    {
+     "year": 2047,
+     "net_worth": 3030391,
+     "investable": 1614522
+    },
+    {
+     "year": 2048,
+     "net_worth": 2959079,
+     "investable": 1500305
+    },
+    {
+     "year": 2049,
+     "net_worth": 2878630,
+     "investable": 1375646
+    },
+    {
+     "year": 2050,
+     "net_worth": 2833527,
+     "investable": 1284987
+    },
+    {
+     "year": 2051,
+     "net_worth": 2830670,
+     "investable": 1235189
+    },
+    {
+     "year": 2052,
+     "net_worth": 2851394,
+     "investable": 1207545
+    },
+    {
+     "year": 2053,
+     "net_worth": 2869569,
+     "investable": 1175881
+    },
+    {
+     "year": 2054,
+     "net_worth": 2882266,
+     "investable": 1137222
+    },
+    {
+     "year": 2055,
+     "net_worth": 2888157,
+     "investable": 1090196
+    },
+    {
+     "year": 2056,
+     "net_worth": 2887962,
+     "investable": 1035474
+    },
+    {
+     "year": 2057,
+     "net_worth": 2905666,
+     "investable": 996992
+    },
+    {
+     "year": 2058,
+     "net_worth": 2939460,
+     "investable": 972892
+    },
+    {
+     "year": 2059,
+     "net_worth": 2976627,
+     "investable": 950404
+    },
+    {
+     "year": 2060,
+     "net_worth": 3017473,
+     "investable": 929780
+    },
+    {
+     "year": 2061,
+     "net_worth": 3062328,
+     "investable": 911295
+    },
+    {
+     "year": 2062,
+     "net_worth": 3111550,
+     "investable": 895251
+    },
+    {
+     "year": 2063,
+     "net_worth": 3165527,
+     "investable": 881977
+    },
+    {
+     "year": 2064,
+     "net_worth": 3224681,
+     "investable": 871834
+    },
+    {
+     "year": 2065,
+     "net_worth": 3289465,
+     "investable": 865214
+    },
+    {
+     "year": 2066,
+     "net_worth": 3360374,
+     "investable": 862546
+    },
+    {
+     "year": 2067,
+     "net_worth": 3437938,
+     "investable": 864297
+    },
+    {
+     "year": 2068,
+     "net_worth": 3522737,
+     "investable": 870975
+    },
+    {
+     "year": 2069,
+     "net_worth": 3615393,
+     "investable": 883135
+    },
+    {
+     "year": 2070,
+     "net_worth": 3716581,
+     "investable": 901378
+    },
+    {
+     "year": 2071,
+     "net_worth": 3827030,
+     "investable": 926360
+    },
+    {
+     "year": 2072,
+     "net_worth": 3947529,
+     "investable": 958792
+    },
+    {
+     "year": 2073,
+     "net_worth": 4084580,
+     "investable": 1005098
+    },
+    {
+     "year": 2074,
+     "net_worth": 4252040,
+     "investable": 1079052
+    },
+    {
+     "year": 2075,
+     "net_worth": 4325892,
+     "investable": 1113108
+    }
+   ]
+  },
+  "lewis": {
+   "names": [
+    "Samantha"
+   ],
+   "retirement": [
+    "2044-07"
+   ],
+   "goals": [
+    {
+     "name": "College Ethan",
+     "type": "EDUCATION",
+     "amount": 12500,
+     "frequency": null,
+     "year": 2026
+    },
+    {
+     "name": "College Ava",
+     "type": "EDUCATION",
+     "amount": 12500,
+     "frequency": null,
+     "year": 2028
+    },
+    {
+     "name": "Purchase a home",
+     "type": "REAL_ESTATE_PURCHASE",
+     "amount": 500000,
+     "frequency": "ONE_TIME",
+     "year": 2030
+    }
+   ],
+   "projection": [
+    {
+     "year": 2026,
+     "net_worth": 1401427,
+     "investable": 420006
+    },
+    {
+     "year": 2027,
+     "net_worth": 1479965,
+     "investable": 480397
+    },
+    {
+     "year": 2028,
+     "net_worth": 1553297,
+     "investable": 533657
+    },
+    {
+     "year": 2029,
+     "net_worth": 1634586,
+     "investable": 593049
+    },
+    {
+     "year": 2030,
+     "net_worth": 1694917,
+     "investable": 496954
+    },
+    {
+     "year": 2031,
+     "net_worth": 1770779,
+     "investable": 525022
+    },
+    {
+     "year": 2032,
+     "net_worth": 1868772,
+     "investable": 572728
+    },
+    {
+     "year": 2033,
+     "net_worth": 1973991,
+     "investable": 625175
+    },
+    {
+     "year": 2034,
+     "net_worth": 2086828,
+     "investable": 682749
+    },
+    {
+     "year": 2035,
+     "net_worth": 2207715,
+     "investable": 745865
+    },
+    {
+     "year": 2036,
+     "net_worth": 2337149,
+     "investable": 814995
+    },
+    {
+     "year": 2037,
+     "net_worth": 2475655,
+     "investable": 890624
+    },
+    {
+     "year": 2038,
+     "net_worth": 2623807,
+     "investable": 973281
+    },
+    {
+     "year": 2039,
+     "net_worth": 2782229,
+     "investable": 1063532
+    },
+    {
+     "year": 2040,
+     "net_worth": 2951617,
+     "investable": 1162011
+    },
+    {
+     "year": 2041,
+     "net_worth": 3132533,
+     "investable": 1269362
+    },
+    {
+     "year": 2042,
+     "net_worth": 3327534,
+     "investable": 1386319
+    },
+    {
+     "year": 2043,
+     "net_worth": 3535731,
+     "investable": 1513656
+    },
+    {
+     "year": 2044,
+     "net_worth": 3628794,
+     "investable": 1522924
+    },
+    {
+     "year": 2045,
+     "net_worth": 3522479,
+     "investable": 1329758
+    },
+    {
+     "year": 2046,
+     "net_worth": 3443976,
+     "investable": 1161215
+    },
+    {
+     "year": 2047,
+     "net_worth": 3396943,
+     "investable": 1020820
+    },
+    {
+     "year": 2048,
+     "net_worth": 3336412,
+     "investable": 863460
+    },
+    {
+     "year": 2049,
+     "net_worth": 3261023,
+     "investable": 687623
+    },
+    {
+     "year": 2050,
+     "net_worth": 3169301,
+     "investable": 491677
+    },
+    {
+     "year": 2051,
+     "net_worth": 3059645,
+     "investable": 273853
+    },
+    {
+     "year": 2052,
+     "net_worth": 2930320,
+     "investable": 32242
+    },
+    {
+     "year": 2053,
+     "net_worth": 2787255,
+     "investable": -227414
+    },
+    {
+     "year": 2054,
+     "net_worth": 2641557,
+     "investable": -494204
+    },
+    {
+     "year": 2055,
+     "net_worth": 2493280,
+     "investable": -768277
+    },
+    {
+     "year": 2056,
+     "net_worth": 2342408,
+     "investable": -1049868
+    },
+    {
+     "year": 2057,
+     "net_worth": 2188929,
+     "investable": -1339219
+    },
+    {
+     "year": 2058,
+     "net_worth": 2032834,
+     "investable": -1636578
+    },
+    {
+     "year": 2059,
+     "net_worth": 1874122,
+     "investable": -1942197
+    },
+    {
+     "year": 2060,
+     "net_worth": 1711618,
+     "investable": -2220413
+    },
+    {
+     "year": 2061,
+     "net_worth": 1543826,
+     "investable": -2507437
+    },
+    {
+     "year": 2062,
+     "net_worth": 1370568,
+     "investable": -2803553
+    },
+    {
+     "year": 2063,
+     "net_worth": 1191661,
+     "investable": -3109054
+    },
+    {
+     "year": 2064,
+     "net_worth": 1006916,
+     "investable": -3424245
+    },
+    {
+     "year": 2065,
+     "net_worth": 816135,
+     "investable": -3749439
+    },
+    {
+     "year": 2066,
+     "net_worth": 619115,
+     "investable": -4084960
+    },
+    {
+     "year": 2067,
+     "net_worth": 415647,
+     "investable": -4431142
+    },
+    {
+     "year": 2068,
+     "net_worth": 205512,
+     "investable": -4788332
+    },
+    {
+     "year": 2069,
+     "net_worth": -11516,
+     "investable": -5156887
+    },
+    {
+     "year": 2070,
+     "net_worth": -124380,
+     "investable": -5360262
+    }
+   ]
+  }
+ }
 }
