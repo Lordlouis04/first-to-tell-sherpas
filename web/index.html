@@ -398,6 +398,7 @@ let spy;
 function render() {
   const [, view = "inbox", arg] = location.hash.split("/");
   const fid = arg || "carter";
+  curEvent = curEvent || DATA.events[0].event_id;
   document.getElementById("nav-inbox").className = view === "inbox" ? "on" : "";
   document.getElementById("nav-family").className = view === "family" ? "on" : "";
   document.getElementById("side").innerHTML = view === "family" ? sideFamily(fid) : sideInbox();
