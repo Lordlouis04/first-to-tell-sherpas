@@ -1,0 +1,43 @@
+{
+  "family_id": "lewis",
+  "event_id": "tax_limits_2027",
+  "affected": "high",
+  "action_type": "act",
+  "urgency_score": 60,
+  "goal_at_risk": {
+    "name": "Retirement",
+    "date": "2044-07"
+  },
+  "why_this_family": "She has $0 in retirement accounts and savings projected to run out at 73, so higher tax-advantaged limits are directly useful.",
+  "plan_figures_cited": [
+    {
+      "figure": "$7,500",
+      "meaning": "deductible traditional IRA room",
+      "source": "PLAN.financial_health.summary_main"
+    },
+    {
+      "figure": "$4,400",
+      "meaning": "HSA room if the health plan qualifies",
+      "source": "PLAN.financial_health.summary_main"
+    },
+    {
+      "figure": "$1,408",
+      "meaning": "yearly tax value of the HSA at 32%",
+      "source": "PLAN.portfolio.recommendations_main"
+    },
+    {
+      "figure": "$6,418",
+      "meaning": "yearly cash flow shortfall",
+      "source": "PLAN.financial_health.summary_main"
+    }
+  ],
+  "tone": "numbers-first",
+  "subject": "A new tax law opens more room for your retirement",
+  "draft": "Samantha, a new tax law raises next year's contribution limits for 401(k), IRA and HSA accounts. For you this is more than a headline: your retirement accounts hold $0 today, and your plan shows savings running out at age 73. Under the limits in your plan, you could put up to $7,500 into a deductible traditional IRA and up to $4,400 into an HSA, which is worth about $1,408 a year in tax. Higher limits widen that room. Since your cash flow is about $6,418 a year short, the realistic step is redirecting what you already save. Let's look at it together.",
+  "voice_script": "Hi Samantha, it's Mohamed. A new tax law raises next year's limits for retirement and health savings accounts. Your retirement accounts are empty today, so this is a real opening. Let's look at redirecting what you already save into them.",
+  "advisor_note": "Event is SIMULATED and the new 2027 limit figures are not in the plan data; confirm official numbers. Check whether a workplace 401(k) is available. Client profile not available (no MCP); tone inferred from the plan narrative.",
+  "simulated_inputs": [
+    "event"
+  ],
+  "generated_by": "offline-draft"
+}

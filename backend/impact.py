@@ -81,6 +81,9 @@ def load_prompt() -> tuple[str, dict[str, dict]]:
     system = text.split("# Event fixtures")[0].strip()
     fixtures = re.search(r"# Event fixtures.*?```json\s*(\[.*?\])\s*```", text, re.S)
     events = {e["event_id"]: e for e in json.loads(fixtures.group(1))}
+    extra = ROOT / "prompts" / "events_extra.json"  # more simulated events, kept outside the team prompt
+    if extra.exists():
+        events.update({e["event_id"]: e for e in json.loads(extra.read_text(encoding="utf8"))})
     return system, events
 
 
@@ -145,7 +148,9 @@ def ungrounded_figures(result: ImpactResult, source_text: str) -> list[str]:
     found = set()
     for text in [result.draft, result.voice_script, *(f.figure for f in result.plan_figures_cited)]:
         for m in _NUM.findall(text):
-            if _norm(m) not in src:
+            n = _norm(m)
+            # dollar figures may come from structured fields (e.g. goal "amount": 550000) without "$"
+            if n not in src and not (n.startswith("$") and re.search(rf"(?<![\d.]){re.escape(n[1:])}(?![\d])", src)):
                 found.add(m.strip())
     return sorted(found)
 

@@ -1,0 +1,33 @@
+{
+  "family_id": "carter",
+  "event_id": "rate_cut_2026_11",
+  "affected": "medium",
+  "action_type": "understand",
+  "urgency_score": 65,
+  "goal_at_risk": {
+    "name": "Home purchase",
+    "date": "2027-01"
+  },
+  "why_this_family": "His home purchase is two months away and the plan has no mortgage payment yet, so the rate move changes a number he will soon commit to.",
+  "plan_figures_cited": [
+    {
+      "figure": "$113,300",
+      "meaning": "cash to hold for the January 2027 home purchase",
+      "source": "PLAN.financial_health.protection_emergency_fund"
+    },
+    {
+      "figure": "$2,800",
+      "meaning": "rent per month today",
+      "source": "PLAN.financial_health.debt"
+    }
+  ],
+  "tone": "numbers-first",
+  "subject": "Lower rates and your January home purchase",
+  "draft": "Michael, the Federal Reserve has cut rates by 0.5 percentage points, and mortgage rates are expected to follow. That's relevant to your January 2027 home purchase, which needs $113,300 in cash. Your plan doesn't yet include what the new mortgage payment would be, and that payment will decide how the purchase fits next to your rent of $2,800 a month today and your retirement saving. Let's look at current rate quotes together and put a real monthly number into your plan, so you can decide on timing with the full picture.",
+  "voice_script": "Hi Michael, it's Mohamed. Rates just came down, which matters for your January home purchase. Your plan doesn't include the new mortgage payment yet, so let's get real quotes and put that number in, so you can decide on timing with the full picture.",
+  "advisor_note": "New mortgage payment is missing from the plan data; gather lender quotes. Client profile not available (no MCP); tone inferred from the plan narrative.",
+  "simulated_inputs": [
+    "event"
+  ],
+  "generated_by": "offline-draft"
+}

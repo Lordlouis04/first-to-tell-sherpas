@@ -1,0 +1,35 @@
+{
+  "family_id": "johnson",
+  "event_id": "rate_cut_2026_11",
+  "affected": "medium",
+  "action_type": "understand",
+  "urgency_score": 50,
+  "goal_at_risk": null,
+  "why_this_family": "$560,000 of their debt is a mortgage at 6.5%, so falling rates could free cash for the thin reserve and the 401(k)s they don't fund today.",
+  "plan_figures_cited": [
+    {
+      "figure": "$560,000",
+      "meaning": "mortgage balance",
+      "source": "PLAN.financial_health.debt"
+    },
+    {
+      "figure": "6.5%",
+      "meaning": "mortgage rate",
+      "source": "PLAN.financial_health.debt"
+    },
+    {
+      "figure": "$65,040",
+      "meaning": "total debt payments per year, incl. mortgage",
+      "source": "PLAN.portfolio.summary_main"
+    }
+  ],
+  "tone": "joint-couple",
+  "subject": "Lower rates and your mortgage",
+  "draft": "Daniel and Emily, the Federal Reserve has cut rates by 0.5 percentage points, and mortgage rates are expected to follow. That matters for you: $560,000 of your debt is the mortgage at 6.5%, and total debt payments take $65,040 a year. If rates keep falling, it may be worth looking at whether refinancing makes sense, though costs and timing need checking first. Any monthly savings could go where your plan needs them most: your cash cushion and your two 401(k)s, which get $0 today. No decision is needed now; let's look at the numbers together when you have time.",
+  "voice_script": "Hi Daniel and Emily, it's Mohamed. Rates have just come down, and your mortgage is at 6.5%. If mortgage rates keep falling, refinancing could free up money for your cash cushion. No decision needed now; let's look at it together soon.",
+  "advisor_note": "Refinancing costs, remaining term and live rate quotes are not in the data; confirm before the call. Client profile not available (no MCP); tone inferred from the plan narrative.",
+  "simulated_inputs": [
+    "event"
+  ],
+  "generated_by": "offline-draft"
+}

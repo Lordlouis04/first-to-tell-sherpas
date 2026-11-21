@@ -1,0 +1,48 @@
+{
+  "family_id": "lewis",
+  "event_id": "tuition_2027",
+  "affected": "high",
+  "action_type": "act",
+  "urgency_score": 80,
+  "goal_at_risk": {
+    "name": "College for Ethan",
+    "date": "2027-08"
+  },
+  "why_this_family": "Ethan's $12,500 payment is due August 2027, $98,838 of college funding is still needed and only $750 of cash sits above the reserve.",
+  "plan_figures_cited": [
+    {
+      "figure": "$12,500",
+      "meaning": "Ethan's college payment due August 2027",
+      "source": "PLAN.portfolio.recommendations_main"
+    },
+    {
+      "figure": "$98,838",
+      "meaning": "college funding still needed",
+      "source": "PLAN.financial_health.summary_main"
+    },
+    {
+      "figure": "$80,000",
+      "meaning": "cash held",
+      "source": "PLAN.financial_health.summary_main"
+    },
+    {
+      "figure": "$750",
+      "meaning": "cash above reserve and near-term goals",
+      "source": "PLAN.financial_health.summary_main"
+    },
+    {
+      "figure": "$6,418",
+      "meaning": "yearly cash flow shortfall",
+      "source": "PLAN.financial_health.summary_main"
+    }
+  ],
+  "tone": "numbers-first",
+  "subject": "Tuition is going up: let's plan Ethan's and Ava's college",
+  "draft": "Samantha, universities are announcing 5% tuition increases for the 2027-28 academic year. That lands right on your plan: Ethan's $12,500 payment is due in August 2027, and your plan still needs $98,838 for college for Ethan and Ava, with $0 in 529 plans today. Your $80,000 in cash covers the next payment, but only $750 sits above your reserve and near-term goals, and your cash flow is about $6,418 a year short. Let's look this month at Ethan's actual costs and a funding plan for both children, so college doesn't eat into your safety cushion.",
+  "voice_script": "Hi Samantha, it's Mohamed. Universities are raising tuition for next year, and Ethan's payment is due in August. Your cash can cover it, but the cushion is thin, so let's map out college costs for both children this month.",
+  "advisor_note": "Ethan's school and actual cost are not in the data. Plan shows college starting Aug 2026 but the next payment due Aug 2027; confirm. Client profile not available (no MCP); tone inferred from the plan narrative.",
+  "simulated_inputs": [
+    "event"
+  ],
+  "generated_by": "offline-draft"
+}

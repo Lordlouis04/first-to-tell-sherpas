@@ -1,0 +1,35 @@
+{
+  "family_id": "weah",
+  "event_id": "rate_cut_2026_11",
+  "affected": "low",
+  "action_type": "understand",
+  "urgency_score": 30,
+  "goal_at_risk": null,
+  "why_this_family": "About $60,223 of their $150,000 cash sits above the reserve, and falling rates make that idle cash earn less.",
+  "plan_figures_cited": [
+    {
+      "figure": "$150,000",
+      "meaning": "cash held",
+      "source": "PLAN.financial_health.summary_main"
+    },
+    {
+      "figure": "$60,223",
+      "meaning": "cash above reserve and near-term goals",
+      "source": "PLAN.financial_health.summary_main"
+    },
+    {
+      "figure": "18%",
+      "meaning": "credit card rate",
+      "source": "PLAN.financial_health.summary_main"
+    }
+  ],
+  "tone": "joint-couple",
+  "subject": "Lower rates and your spare cash",
+  "draft": "Timothy and Melanie, the Federal Reserve has cut rates by 0.5 percentage points, so the interest on savings accounts is likely to drop. You hold $150,000 in cash, and about $60,223 of it sits above your reserve and near-term goals. With rates falling, that spare cash earns less while it waits, which makes the conversation your plan already suggested a little more timely: how to share it between life insurance, an umbrella policy, the 18% card and college saving for Liam and Josh. Nothing urgent here, and the order is your choice. Let's find a time for both of you.",
+  "voice_script": "Hi Timothy and Melanie, it's Mohamed. Rates have come down, so the spare cash you hold will earn a bit less. It's a good moment to decide together how to use it, as your plan suggested. Nothing urgent; let's find a time for both of you.",
+  "advisor_note": "Current savings rate on their cash account is not in the data. Client profile not available (no MCP); tone inferred from the plan narrative.",
+  "simulated_inputs": [
+    "event"
+  ],
+  "generated_by": "offline-draft"
+}

@@ -1,0 +1,43 @@
+{
+  "family_id": "carter",
+  "event_id": "tax_limits_2027",
+  "affected": "low",
+  "action_type": "reassure",
+  "urgency_score": 25,
+  "goal_at_risk": {
+    "name": "Retirement",
+    "date": "2047-04"
+  },
+  "why_this_family": "He already has unused 401(k) room; the law adds more, but his near-term home purchase and tight cash flow mean no action now.",
+  "plan_figures_cited": [
+    {
+      "figure": "$17,000",
+      "meaning": "current 401(k) deferral",
+      "source": "PLAN.portfolio.portfolio_today_whats_working"
+    },
+    {
+      "figure": "$24,500",
+      "meaning": "401(k) limit in the plan",
+      "source": "PLAN.portfolio.portfolio_today_whats_working"
+    },
+    {
+      "figure": "$7,500",
+      "meaning": "unused 401(k) room",
+      "source": "PLAN.portfolio.summary_main"
+    },
+    {
+      "figure": "$1,800",
+      "meaning": "tax value of that room",
+      "source": "PLAN.portfolio.portfolio_today_verdict"
+    }
+  ],
+  "tone": "numbers-first",
+  "subject": "The new contribution limits: no action needed yet",
+  "draft": "Michael, a new tax law raises next year's contribution limits for 401(k), IRA and HSA accounts. Here is what it means for you. Today you defer $17,000 to your 401(k) against a $24,500 limit, so you already have $7,500 of unused room, worth about $1,800 in tax. A higher limit adds room, but it doesn't change your priorities: the January 2027 home purchase and your cash cushion come first, and your cash flow is already tight. So no action is needed now. Once the home is settled, let's look at using that room to close your retirement gap.",
+  "voice_script": "Hi Michael, it's Mohamed. A new law raises next year's retirement contribution limits. For now nothing changes for you: your home purchase and cash cushion come first. Once the home is settled, we can use that extra room for retirement.",
+  "advisor_note": "Event is SIMULATED; confirm official 2027 limits. Client profile not available (no MCP); tone inferred from the plan narrative.",
+  "simulated_inputs": [
+    "event"
+  ],
+  "generated_by": "offline-draft"
+}

@@ -1,0 +1,38 @@
+{
+  "family_id": "johnson",
+  "event_id": "tax_limits_2027",
+  "affected": "medium",
+  "action_type": "understand",
+  "urgency_score": 45,
+  "goal_at_risk": {
+    "name": "Retirement",
+    "date": "2044"
+  },
+  "why_this_family": "Neither contributes to their 401(k) and the retirement gap needs $34,165 a year, so the law is a natural prompt to start.",
+  "plan_figures_cited": [
+    {
+      "figure": "$24,500",
+      "meaning": "401(k) limit each, per the plan",
+      "source": "PLAN.financial_health.summary_main"
+    },
+    {
+      "figure": "$34,165",
+      "meaning": "extra yearly saving to close the retirement gap",
+      "source": "PLAN.financial_health.summary_main"
+    },
+    {
+      "figure": "$15,032",
+      "meaning": "free cash flow per year",
+      "source": "PLAN.financial_health.summary_main"
+    }
+  ],
+  "tone": "joint-couple",
+  "subject": "New contribution limits, and a first step for your 401(k)s",
+  "draft": "Daniel and Emily, a new tax law raises next year's contribution limits for 401(k), IRA and HSA accounts. The headline matters less for you than the starting point: each of you contributes $0 to your 401(k) today, while each of you could put in up to $24,500 under the limits in your plan. Closing your retirement gap would take about $34,165 more a year, more than your $15,032 of free cash flow, so this is about small, steady steps rather than the maximum. A good first check is whether either employer offers a match. Let's look at it together.",
+  "voice_script": "Hi Daniel and Emily, it's Mohamed. A new law raises next year's retirement contribution limits. Neither of you is contributing to your 401(k) today, so let's start by checking whether your employers offer a match, then take small, steady steps.",
+  "advisor_note": "Event is SIMULATED; confirm official 2027 limits and whether either employer offers a match. Client profile not available (no MCP); tone inferred from the plan narrative.",
+  "simulated_inputs": [
+    "event"
+  ],
+  "generated_by": "offline-draft"
+}

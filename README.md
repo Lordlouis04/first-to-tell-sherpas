@@ -7,7 +7,12 @@ before they have to ask, and the advisor can't hand-write 30 personal messages a
 We cover **Tracker → personal message → advisor approval at scale** (brief: "Markets fall" and "Communications").
 
 ## What we built
-1. **Tracker (simulated)**: one event, e.g. `tech_selloff_2026_11` (Nvidia -30% in two weeks, US equities ~-8%).
+1. **Tracker (simulated)**: six events covering the brief's moments, each routed only to the families it touches:
+   - Markets fall: `tech_selloff_2026_11` (Nvidia -30% in two weeks, US equities ~-8%), all 4 families.
+   - Markets: `rate_cut_2026_11` (Fed -0.5 points) for Johnson, Weah and Carter; `home_prices_2026_11` (+6%) for Carter, Weah and Lewis.
+   - The law changes: `tax_limits_2027` (higher 401(k)/IRA/HSA limits) for Lewis, Carter and Johnson.
+   - The family's life changes: `layoffs_johnson_employer` for Johnson; `tuition_2027` (+5%) for Lewis.
+   The first two events are in `prompts/impact_engine.md`; the rest are in `prompts/events_extra.json`.
 2. **Impact engine** (`backend/impact.py`): for each family, combines the event with the family's Sherpas plan
    and returns strict JSON: affected / action type / urgency, the goal at risk, why this family, the plan figures cited,
    a draft message (≤120 words) and a voice script (≤60 words).
@@ -21,7 +26,7 @@ We cover **Tracker → personal message → advisor approval at scale** (brief: 
    `web/audio/` and labelled as synthetic.
 
 ## What is simulated
-- **The event** is simulated and labelled `SIMULATED` everywhere.
+- **All six events** are simulated and labelled `SIMULATED` everywhere.
 - **Families** are the 4 synthetic Sherpas case families (Weah, Carter, Johnson, Lewis).
 - **The current drafts** in `data/cache/impact/` were written offline in a Claude Code session following
   `prompts/impact_engine.md`, and passed through the same schema and grounding checks (`generated_by: "offline-draft"`),

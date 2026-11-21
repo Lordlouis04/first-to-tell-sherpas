@@ -1,0 +1,38 @@
+{
+  "family_id": "carter",
+  "event_id": "home_prices_2026_11",
+  "affected": "high",
+  "action_type": "act",
+  "urgency_score": 75,
+  "goal_at_risk": {
+    "name": "Home purchase",
+    "date": "2027-01"
+  },
+  "why_this_family": "His $550,000 home purchase is two months away; a 6% price rise changes the cash he needs, and he holds $30,000 against $113,300.",
+  "plan_figures_cited": [
+    {
+      "figure": "$550,000",
+      "meaning": "planned home purchase in 2027",
+      "source": "PLAN.goals"
+    },
+    {
+      "figure": "$113,300",
+      "meaning": "cash to hold for the purchase",
+      "source": "PLAN.financial_health.protection_emergency_fund"
+    },
+    {
+      "figure": "$30,000",
+      "meaning": "accessible cash today",
+      "source": "PLAN.financial_health.summary_main"
+    }
+  ],
+  "tone": "calm-first",
+  "subject": "Home prices and your January budget",
+  "draft": "Michael, home prices in major US markets are up 6% over the past year. With your purchase planned for January 2027, it's worth checking that the budget still holds. Your plan budgets $550,000 for the home and sets aside $113,300 in cash for it, and you hold $30,000 today. If prices in your area have moved, the cash needed for the down payment and closing costs moves with them. Let's look together at what comparable homes cost now and confirm the budget and timing, so your plan reflects what you'd actually pay.",
+  "voice_script": "Hi Michael, it's Mohamed. Home prices have risen about 6% over the past year, so let's check that your January budget still holds and confirm how much cash you'll need before you commit.",
+  "advisor_note": "Local price data for his target area is not in the plan; national figure is SIMULATED. Client profile not available (no MCP); tone inferred from the plan narrative.",
+  "simulated_inputs": [
+    "event"
+  ],
+  "generated_by": "offline-draft"
+}

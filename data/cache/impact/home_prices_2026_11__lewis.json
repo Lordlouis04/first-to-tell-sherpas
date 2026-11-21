@@ -1,0 +1,38 @@
+{
+  "family_id": "lewis",
+  "event_id": "home_prices_2026_11",
+  "affected": "low",
+  "action_type": "understand",
+  "urgency_score": 25,
+  "goal_at_risk": {
+    "name": "Home purchase",
+    "date": "2030"
+  },
+  "why_this_family": "Her home is most of her wealth and she plans a $500,000 purchase in 2030 that competes with college and retirement.",
+  "plan_figures_cited": [
+    {
+      "figure": "$900,000",
+      "meaning": "home value, owned outright",
+      "source": "PLAN.financial_health.assets"
+    },
+    {
+      "figure": "$500,000",
+      "meaning": "planned second home in 2030",
+      "source": "PLAN.goals"
+    },
+    {
+      "figure": "$750",
+      "meaning": "cash above reserve and near-term goals",
+      "source": "PLAN.financial_health.summary_main"
+    }
+  ],
+  "tone": "numbers-first",
+  "subject": "Home prices: your home today and your 2030 plan",
+  "draft": "Samantha, home prices in major US markets are up 6% over the past year. Two sides of that touch your plan. Your home, valued at $900,000 and fully owned, is most of your wealth. And you're planning a second home purchase of $500,000 in 2030, which could cost more if prices keep rising. That purchase competes with college for Ethan and Ava and with retirement saving, and only $750 of your cash sits above your reserve and near-term goals. No action is needed now; at our next review, let's revisit the 2030 budget alongside college costs.",
+  "voice_script": "Hi Samantha, it's Mohamed. Home prices are up, which lifts the value of your home and may raise the cost of the one you plan for 2030. Nothing to do now; let's revisit that budget alongside college costs at our next review.",
+  "advisor_note": "Client profile not available (no MCP); tone inferred from the plan narrative.",
+  "simulated_inputs": [
+    "event"
+  ],
+  "generated_by": "offline-draft"
+}

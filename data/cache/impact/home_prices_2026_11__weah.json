@@ -1,0 +1,33 @@
+{
+  "family_id": "weah",
+  "event_id": "home_prices_2026_11",
+  "affected": "low",
+  "action_type": "reassure",
+  "urgency_score": 20,
+  "goal_at_risk": {
+    "name": "Home purchase",
+    "date": "2030"
+  },
+  "why_this_family": "Their $600,000 home purchase is in 2030; rising prices may change the budget, but there is time.",
+  "plan_figures_cited": [
+    {
+      "figure": "$600,000",
+      "meaning": "planned home purchase in 2030",
+      "source": "PLAN.goals"
+    },
+    {
+      "figure": "$350,000",
+      "meaning": "current home value",
+      "source": "PLAN.financial_health.assets"
+    }
+  ],
+  "tone": "joint-couple",
+  "subject": "Home prices and your 2030 plans",
+  "draft": "Timothy and Melanie, home prices in major US markets are up 6% over the past year. Your plan has a $600,000 home purchase in 2030, so there's time, and one year of prices doesn't set the price you'll pay then. Your current home, valued at $350,000, is part of the picture too. Nothing to do today. When we next review, let's check whether $600,000 is still the right figure for the home you want and how it fits next to college saving for Liam and Josh.",
+  "voice_script": "Hi Timothy and Melanie, it's Mohamed. Home prices have gone up, and you're planning a home purchase in 2030. There's time and nothing to do today, but at our next review let's check that the budget still fits the home you want.",
+  "advisor_note": "Client profile not available (no MCP); tone inferred from the plan narrative.",
+  "simulated_inputs": [
+    "event"
+  ],
+  "generated_by": "offline-draft"
+}

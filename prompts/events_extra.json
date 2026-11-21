@@ -1,0 +1,14 @@
+[
+  {"event_id": "rate_cut_2026_11", "type": "market", "simulated": true,
+   "headline": "Federal Reserve cuts interest rates by 0.5 percentage points; mortgage and savings rates expected to follow",
+   "date": "2026-11-21", "applies_to": ["johnson", "weah", "carter"]},
+  {"event_id": "tax_limits_2027", "type": "law", "simulated": true,
+   "headline": "New tax law raises 2027 contribution limits for 401(k), IRA and HSA accounts",
+   "date": "2026-11-21", "applies_to": ["lewis", "carter", "johnson"]},
+  {"event_id": "home_prices_2026_11", "type": "market", "simulated": true,
+   "headline": "US home prices up 6% over the past year in major markets",
+   "date": "2026-11-21", "applies_to": ["carter", "weah", "lewis"]},
+  {"event_id": "tuition_2027", "type": "life", "simulated": true,
+   "headline": "Universities announce 5% tuition increases for the 2027-28 academic year",
+   "date": "2026-11-21", "applies_to": ["lewis"]}
+]
