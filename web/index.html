@@ -298,7 +298,7 @@ function monthCal(items) {
 function projectionChart(fid) {
   const f = DATA.families[fid]; if (!f) return "";
   const P = f.projection.filter(r => r.year <= 2060), W = 460, H = 260, L = 50, R = 14, T = 30, B = 30;
-  const x0 = P[0].year, x1 = P[P.length - 1].year, maxV = Math.max(...P.map(r => r.net_worth)) * 1.08;
+  const x0 = P[0].year, x1 = P[P.length - 1].year, maxV = projMax(P);
   const sx = v => L + (v - x0) / (x1 - x0) * (W - L - R), sy = v => T + (1 - Math.max(0, v) / maxV) * (H - T - B);
   const line = k => P.map((r, i) => `${i ? "L" : "M"}${sx(r.year).toFixed(1)},${sy(r[k]).toFixed(1)}`).join("");
   let g = "";
@@ -309,9 +309,15 @@ function projectionChart(fid) {
   g += `<path d="${line("net_worth")}" fill="none" stroke="#4b55d0" stroke-width="2"/><path d="${line("investable")}" fill="none" stroke="#0f9a7e" stroke-width="2"/>`;
   g += `<g id="xh" style="display:none"><line id="xh-l" y1="${T}" y2="${H - B}" stroke="var(--ink-2)"/><circle id="xh-a" r="4" fill="#4b55d0" stroke="var(--panel)" stroke-width="2"/><circle id="xh-b" r="4" fill="#0f9a7e" stroke="var(--panel)" stroke-width="2"/></g>`;
   g += `<rect x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent" onmousemove="projHover(event,'${fid}',this)" onmouseleave="projHover(null)"/>`;
-  return `<div class="viz"><div class="viz-head"><div><h3>Your plan, year by year</h3><p>Projected net worth and investable assets from your Sherpas living map, with your goals marked. A projection, not a promise.</p></div></div>
+  return `<div class="viz"><div class="viz-head"><div><h3>Your plan, year by year</h3><p>Projected net worth and investable assets from your Sherpas living map, in future dollars, with your goals marked. A projection, not a promise.</p></div></div>
     <svg class="chart" id="proj" viewBox="0 0 ${W} ${H}" role="img" aria-label="Projected net worth">${g}</svg>
     <div class="legend"><span><i style="background:#4b55d0"></i>Net worth</span><span><i style="background:#0f9a7e"></i>Investable assets</span><span><i style="background:var(--red)"></i>Goal</span><span><i style="background:var(--ink-2)"></i>Retirement</span></div></div>`;
+}
+// round axis top: 4 gridlines on a 1/2/2.5/5 × 10^n step
+function projMax(P) {
+  const raw = Math.max(...P.map(r => r.net_worth)) / 4, p = 10 ** Math.floor(Math.log10(raw));
+  const step = [1, 2, 2.5, 5, 10].map(k => k * p).find(s => s >= raw);
+  return step * 4;
 }
 function projHover(e, fid, rect) {
   const xh = document.getElementById("xh"); if (!xh) return;
@@ -319,7 +325,7 @@ function projHover(e, fid, rect) {
   const svg = document.getElementById("proj"), pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
   const p = pt.matrixTransform(svg.getScreenCTM().inverse());
   const P = DATA.families[fid].projection.filter(r => r.year <= 2060), W = 460, H = 260, L = 50, R = 14, T = 30, B = 30;
-  const x0 = P[0].year, x1 = P[P.length - 1].year, maxV = Math.max(...P.map(r => r.net_worth)) * 1.08;
+  const x0 = P[0].year, x1 = P[P.length - 1].year, maxV = projMax(P);
   const yr = Math.round(x0 + (p.x - L) / (W - L - R) * (x1 - x0)), r = P.find(q => q.year === yr); if (!r) return;
   const sx = v => L + (v - x0) / (x1 - x0) * (W - L - R), sy = v => T + (1 - Math.max(0, v) / maxV) * (H - T - B);
   xh.style.display = ""; document.getElementById("xh-l").setAttribute("x1", sx(yr)); document.getElementById("xh-l").setAttribute("x2", sx(yr));
