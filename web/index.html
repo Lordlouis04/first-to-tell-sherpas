@@ -4,39 +4,71 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>First to Tell</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#f6f5f1;--card:#fff;--ink:#1d1d1b;--muted:#6b6a65;--line:#e4e2db;--accent:#1f5f4a;--accent-ink:#fff;
-        --high:#b4372b;--medium:#b5761b;--low:#2f6f9f;--none:#6b6a65;--sim:#7a3fb0}
-  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#151514;--card:#1e1e1c;--ink:#ecebe6;--muted:#a09f99;--line:#33322f;--accent:#5fb08f;--accent-ink:#0d1a14}}
-  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
-  header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line);background:var(--card)}
-  header h1{font-size:18px;margin:0} nav a{color:var(--muted);text-decoration:none;margin-left:14px;font-weight:600} nav a.on{color:var(--accent)}
-  main{max-width:920px;margin:0 auto;padding:16px}
-  .banner{background:color-mix(in srgb,var(--sim) 12%,transparent);border:1px solid var(--sim);color:var(--ink);border-radius:10px;padding:10px 12px;margin-bottom:14px;font-size:14px}
-  .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:99px;color:#fff}
-  .sim{background:var(--sim)} .high{background:var(--high)} .medium{background:var(--medium)} .low{background:var(--low)} .none{background:var(--none)}
-  .toolbar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin:6px 0 12px;flex-wrap:wrap}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
-  .card.approved{border-color:var(--accent)} .card.rejected{opacity:.55}
-  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap} .grow{flex:1}
-  .fam{font-weight:700;font-size:16px} .muted{color:var(--muted);font-size:13px}
-  .why{margin:8px 0;padding:8px 10px;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent);font-size:14px}
-  .figs{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0} .fig{border:1px solid var(--line);border-radius:8px;padding:3px 8px;font-size:12.5px} .fig b{font-variant-numeric:tabular-nums}
-  textarea{width:100%;min-height:150px;font:inherit;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
-  .msg{white-space:pre-wrap;margin:8px 0}
-  button{font:inherit;font-weight:600;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 12px;cursor:pointer}
-  button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-  .note{font-size:13px;color:var(--muted);margin-top:6px} .empty{color:var(--muted);text-align:center;padding:30px}
-  select{font:inherit;padding:6px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
-  .phone{max-width:420px;margin:0 auto}
+  /* Visual language follows the Sherpas shared-plan pages: Poppins headings, Inter body,
+     soft grey canvas, white rounded panel, lavender hero card, indigo accent. */
+  :root{--canvas:#f5f5f5;--panel:#ffffff;--bar:#f8f9fc;--ink:#1b1c22;--ink-2:#3a3d4a;--muted:#646883;--faint:#9a9db2;
+        --line:#e3e5ec;--line-2:#d3d6df;--brand:#4b55d0;--brand-ink:#fff;--hero-a:#eceffd;--hero-b:#e4e8fb;
+        --red:#d0342c;--amber:#e08a1e;--green:#2f9e5b;--blue:#4b55d0;--sim:#6b4fc8}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--canvas:#111216;--panel:#191a20;--bar:#1d1e25;--ink:#ececf2;--ink-2:#c9cbd6;--muted:#9a9db2;--faint:#6d7085;
+        --line:#2b2d37;--line-2:#383a46;--brand:#8a92ff;--brand-ink:#11121a;--hero-a:#23264a;--hero-b:#1e2140}}
+  :root[data-theme="dark"]{--canvas:#111216;--panel:#191a20;--bar:#1d1e25;--ink:#ececf2;--ink-2:#c9cbd6;--muted:#9a9db2;--faint:#6d7085;
+        --line:#2b2d37;--line-2:#383a46;--brand:#8a92ff;--brand-ink:#11121a;--hero-a:#23264a;--hero-b:#1e2140}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--canvas);color:var(--ink);font:15px/1.6 Inter,ui-sans-serif,system-ui,sans-serif}
+  h1,h2,h3,.display{font-family:Poppins,ui-sans-serif,system-ui,sans-serif;letter-spacing:-.025em;margin:0}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 24px;background:var(--bar)}
+  .wordmark{font-family:Poppins,sans-serif;font-weight:600;font-size:20px;letter-spacing:-.02em}
+  .crumbs{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 24px;background:var(--panel);border-bottom:1px solid var(--line)}
+  .crumbs nav{display:flex;align-items:center;gap:10px;font-size:15px}
+  .crumbs a{color:var(--muted);text-decoration:none} .crumbs a.on{color:var(--ink);font-weight:600}
+  .crumbs .sep{color:var(--faint)}
+  .shell{max-width:1040px;margin:0 auto;padding:0}
+  @media (min-width:900px){.shell{margin:20px auto;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--panel)}}
+  main{background:var(--panel);padding:24px}
+  @media (max-width:600px){main{padding:16px}.topbar,.crumbs{padding-left:16px;padding-right:16px}}
+  .hero{background:linear-gradient(135deg,var(--hero-a),var(--hero-b));border-radius:20px;padding:28px}
+  .hero h2{font-size:clamp(24px,4vw,34px);font-weight:600;line-height:1.15;color:var(--ink)}
+  .hero .big{font-family:Poppins,sans-serif;font-weight:600;font-size:clamp(44px,8vw,72px);line-height:1;color:var(--brand);margin:14px 0 6px}
+  .hero p{margin:8px 0 0;color:var(--ink-2)}
+  .fine{font-size:12px;font-style:italic;color:var(--muted);margin:8px 4px 0}
+  .tag{display:inline-block;font:600 11px/1 Inter,sans-serif;letter-spacing:.05em;text-transform:uppercase;padding:5px 9px;border-radius:99px;color:#fff;vertical-align:middle}
+  .sim{background:var(--sim)} .high{background:var(--red)} .medium{background:var(--amber)} .low{background:var(--blue)} .none{background:var(--faint)}
+  .section-title{font-family:Poppins,sans-serif;font-weight:600;font-size:22px;letter-spacing:-.02em;margin:28px 0 4px}
+  .toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;margin:4px 0 16px;flex-wrap:wrap;color:var(--muted)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:14px}
+  .card.approved{border-color:var(--green);box-shadow:inset 4px 0 0 var(--green)} .card.rejected{opacity:.5}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap} .grow{flex:1}
+  .fam{font-family:Poppins,sans-serif;font-weight:600;font-size:19px;letter-spacing:-.02em}
+  .meta{color:var(--muted);font-size:13.5px}
+  h3.label{font:600 15px/1.4 Inter,sans-serif;color:var(--brand);letter-spacing:0;margin:16px 0 6px}
+  .why{color:var(--ink-2)}
+  .figs{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin:4px 0}
+  .fig{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--bar)}
+  .fig b{display:block;font-family:Poppins,sans-serif;font-weight:600;font-size:18px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--ink)}
+  .fig span{font-size:12.5px;color:var(--muted);line-height:1.35;display:block}
+  textarea{width:100%;min-height:170px;font:inherit;padding:12px;border-radius:12px;border:1px solid var(--line-2);background:var(--bar);color:var(--ink)}
+  .msg{white-space:pre-wrap;margin:0;color:var(--ink)}
+  .note{font-size:13px;color:var(--muted);margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--bar)}
+  button{font:600 14px/1 Inter,sans-serif;border-radius:10px;border:1px solid var(--line-2);background:var(--panel);color:var(--ink);padding:10px 14px;cursor:pointer}
+  button:hover{border-color:var(--brand)} button:disabled{opacity:.45;cursor:default}
+  button.primary{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+  .empty{color:var(--muted);text-align:center;padding:36px}
+  select{font:inherit;padding:9px 12px;border-radius:10px;border:1px solid var(--line-2);background:var(--panel);color:var(--ink)}
+  .phone{max-width:460px;margin:0 auto}
+  .from{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13.5px}
+  .avatar{width:34px;height:34px;border-radius:50%;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font:600 13px Poppins,sans-serif}
 </style>
 </head>
 <body>
-<header>
-  <h1>First to Tell <span class="tag sim">Prototype</span></h1>
-  <nav><a href="#/inbox" id="nav-inbox">Advisor inbox</a><a href="#/family" id="nav-family">Family view</a></nav>
-</header>
-<main id="app"><p class="empty">Loading…</p></main>
+<div class="shell">
+  <div class="topbar"><span class="wordmark">First to Tell</span><span class="tag sim">Prototype</span></div>
+  <div class="crumbs"><nav><a href="#/inbox" id="nav-inbox">Advisor inbox</a><span class="sep">›</span><a href="#/family" id="nav-family">Family view</a></nav></div>
+  <main id="app"><p class="empty">Loading…</p></main>
+</div>
 <script>
 const STORE = "ftt-state-v1";
 let DATA = null, state = {};
@@ -56,32 +88,36 @@ function priority(d) {
   return d.urgency_score * (1 + 12 / months);
 }
 
-function banner() {
-  const ev = DATA.events.map(e => `<b>${esc(e.headline)}</b> (${esc(e.date)})`).join("<br>");
-  return `<div class="banner"><span class="tag sim">Simulated</span> Event: ${ev}<br>
-  Synthetic families from the Sherpas case. No real messages are sent. Draft messages were generated offline and validated against each family's plan figures.</div>`;
+function hero(ds, pending) {
+  const ev = DATA.events[0] || {};
+  return `<div class="hero"><span class="tag sim">Simulated event</span>
+    <h2 style="margin-top:14px">${esc(ev.headline)}</h2>
+    <div class="big">${ds.length} families</div>
+    <p>Each one got a personal draft grounded in their own plan. ${pending ? `<b>${pending}</b> waiting for your approval.` : "All reviewed."}</p></div>
+    <p class="fine">Synthetic families from the Sherpas case; event dated ${esc(ev.date)} is simulated. No real messages are sent. Drafts were generated offline and checked so that every figure comes from the family's plan.</p>`;
 }
 
 function inbox() {
   const ds = [...DATA.drafts].sort((a, b) => priority(b) - priority(a));
   const pending = ds.filter(d => st(d).status === "pending").length;
-  return banner() + `<div class="toolbar"><div><b>${ds.length}</b> drafts · <b>${pending}</b> waiting for you</div>
+  return hero(ds, pending) + `<div class="section-title">Drafts to review</div>
+    <div class="toolbar"><div>Sorted by urgency and how soon the goal at risk is</div>
     <div class="row"><button onclick="resetAll()">Reset</button><button class="primary" onclick="approveAll()" ${pending ? "" : "disabled"}>Approve all pending</button></div></div>` +
     ds.map(d => {
       const s = st(d), editing = s.status === "editing";
       return `<div class="card ${s.status}">
-        <div class="row"><span class="fam grow">${esc(names(d))}</span>
-          <span class="tag ${d.affected}">${d.affected}</span>
-          <span class="muted">${esc(d.action_type)} · urgency ${d.urgency_score}${d.goal_at_risk ? " · " + esc(d.goal_at_risk.name) + " " + esc(d.goal_at_risk.date) : ""}</span></div>
-        <div class="why"><b>Why this family:</b> ${esc(d.why_this_family)}</div>
-        <div class="figs">${d.plan_figures_cited.map(f => `<span class="fig" title="${esc(f.source)}"><b>${esc(f.figure)}</b> ${esc(f.meaning)}</span>`).join("")}</div>
-        <div class="muted">Subject: <b>${esc(d.subject)}</b> · tone: ${esc(d.tone)}</div>
-        ${editing ? `<textarea id="ta-${d.id}">${esc(s.text)}</textarea>` : `<div class="msg">${esc(s.text)}</div>`}
+        <div class="row"><span class="fam grow">${esc(names(d))}</span><span class="tag ${d.affected}">${d.affected} impact</span></div>
+        <div class="meta">${esc(d.action_type)} · urgency ${d.urgency_score}${d.goal_at_risk ? " · goal at risk: " + esc(d.goal_at_risk.name) + ", " + esc(d.goal_at_risk.date) : ""} · tone: ${esc(d.tone)}</div>
+        <h3 class="label">Why this family</h3><div class="why">${esc(d.why_this_family)}</div>
+        <h3 class="label">From their plan</h3>
+        <div class="figs">${d.plan_figures_cited.map(f => `<div class="fig" title="${esc(f.source)}"><b>${esc(f.figure)}</b><span>${esc(f.meaning)}</span></div>`).join("")}</div>
+        <h3 class="label">${esc(d.subject)}</h3>
+        ${editing ? `<textarea id="ta-${d.id}">${esc(s.text)}</textarea>` : `<p class="msg">${esc(s.text)}</p>`}
         ${d.advisor_note ? `<div class="note">⚑ ${esc(d.advisor_note)}</div>` : ""}
-        <div class="row" style="margin-top:10px">
+        <div class="row" style="margin-top:16px">
           ${editing ? `<button class="primary" onclick="saveEdit('${d.id}')">Save &amp; approve</button><button onclick="setStatus('${d.id}','pending')">Cancel</button>`
                     : s.status === "pending" ? `<button class="primary" onclick="setStatus('${d.id}','approved')">Approve</button><button onclick="setStatus('${d.id}','editing')">Edit</button><button onclick="setStatus('${d.id}','rejected')">Reject</button>`
-                    : `<span class="muted grow">${s.status === "approved" ? "✓ Approved — visible in Family view" : "Rejected"}</span><button onclick="setStatus('${d.id}','pending')">Undo</button>`}
+                    : `<span class="meta grow">${s.status === "approved" ? "✓ Approved, now visible in Family view" : "Rejected"}</span><button onclick="setStatus('${d.id}','pending')">Undo</button>`}
         </div></div>`;
     }).join("");
 }
@@ -92,9 +128,10 @@ function family(fid) {
   const d = DATA.drafts.find(x => x.family_id === fid) || DATA.drafts[0];
   const ok = approved.includes(d);
   return `<div class="phone"><div class="toolbar"><select onchange="location.hash='#/family/'+this.value">${opts}</select><span class="tag sim">Simulated</span></div>` +
-    (ok ? `<div class="card"><div class="muted">From ${esc(d.household.advisor.name)} ${esc(d.household.advisor.surname)}, your advisor</div>
-      <div class="fam" style="margin:6px 0">${esc(d.subject)}</div>
-      <div class="msg">${esc(st(d).text)}</div>
+    (ok ? `<div class="hero" style="padding:22px"><div class="from"><span class="avatar">${esc(d.household.advisor.name[0] + d.household.advisor.surname[0])}</span>
+        From ${esc(d.household.advisor.name)} ${esc(d.household.advisor.surname)}, your advisor</div>
+      <h2 style="font-size:22px;margin:14px 0 10px">${esc(d.subject)}</h2></div>
+      <div class="card" style="margin-top:12px"><p class="msg">${esc(st(d).text)}</p>
       ${d.audio ? `<audio controls src="${d.audio}" style="width:100%"></audio><div class="note">Voice note uses a synthetic stock voice.</div>`
                 : `<div class="note">Voice note: coming soon (synthetic stock voice).</div>`}</div>`
         : `<div class="empty">Nothing here yet. The advisor hasn't approved a message for this family.</div>`) + `</div>`;
