@@ -206,7 +206,7 @@ function checkins() {
     : CHK.error ? `<div class="empty">${esc(CHK.error)}</div>` : checkinsBody();
   return `<section id="sec-overview"><div class="hero"><span class="tag sim">Simulated calls</span><h1 style="margin-top:16px">Client check-ins</h1>
       <p>After every AI call you get a 10-second summary: what matters, what the client asked for, and a suggested next step. If nothing needs doing, it says so. Changes that clients report in their app appear here too, to validate.</p></div>
-    <div class="toolbar" style="margin-top:16px"><span class="meta">Calls are placed by an AI assistant that follows your rules: no advice, only plan figures, escalate anything important.</span><div class="row"><button onclick="testSms(this)">✉️ Send test SMS</button><button onclick="loadCheckins(true)">Refresh</button></div></div></section>${body}`;
+    <div class="toolbar" style="margin-top:16px"><span class="meta">Calls are placed by an AI assistant that follows your rules: no advice, only plan figures, escalate anything important. Demo calls and texts only ring the phone of team member Luis Roberto Quintanilla Torrez.</span><div class="row"><button onclick="testSms(this)">✉️ Send test SMS</button><button onclick="loadCheckins(true)">Refresh</button></div></div></section>${body}`;
 }
 function checkinsBody() {
   const {calls, changes, kv} = CHK;
@@ -338,7 +338,7 @@ function family(fid) {
       ${d.audio ? `<audio controls src="/${d.audio}" style="width:100%;margin-top:14px"></audio>
         <div class="row" style="margin-top:12px"><button class="primary" onclick="callMe('${d.id}', this)">📞 Call me with this message</button>
           <span class="meta" id="call-${d.id}">A real, interactive call: the assistant plays this voice note, asks how you feel, and offers your advisor.</span></div>
-        <div class="note">Voice note uses a synthetic stock voice. Demo calls go only to one pre-registered number.</div>` : ""}</div></div>`;
+        <div class="note">Voice note uses a synthetic stock voice. Demo calls only ring the phone of team member Luis Roberto Quintanilla Torrez.</div>` : ""}</div></div>`;
   return `<section id="sec-messages"><div class="hero"><span class="tag sim">Simulated</span><h1 style="margin-top:16px">${esc(any ? names(any) : fid)}</h1>
       <p>What your advisor has shared with you, and where your plan is heading.</p></div>
     <h2>Messages from your advisor</h2><p class="lead">Only messages your advisor approved appear here.</p>

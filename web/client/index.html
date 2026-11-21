@@ -139,7 +139,7 @@ function home() {
       <button class="ghost" style="min-width:88px" onclick="go('profile')">Change</button></div>`).join("") +
     `<div class="card" style="margin-top:4px"><div class="big">Want to talk now?</div><div class="note">A short call from ${esc(advisor().name)}'s AI assistant. It answers from your plan, never gives advice, and passes anything important to ${esc(advisor().name)}.</div>
       <button class="primary" onclick="callMe({mode:'periodic', fid}, this, 's-now')">📞 Call me now</button><div class="status" id="s-now"></div></div>` +
-    `<p class="sim-note">Demo with synthetic families and simulated events. Calls go only to one pre-registered demo number.</p>`;
+    `<p class="sim-note">Demo with synthetic families and simulated events. Calls and texts only go to one demo phone, the personal phone of team member Luis Roberto Quintanilla Torrez, never to real families.</p>`;
 }
 function missedBanner() {
   const m = MISSED[fid], seen = (state.seenMissed || {})[fid] || 0;

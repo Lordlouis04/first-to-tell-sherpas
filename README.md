@@ -8,7 +8,7 @@ The advisor approves in bulk, and each family gets a message, a voice note and a
 - Advisor view: https://first-to-tell-sherpas.pages.dev/advisor/
 - Client app (mobile): https://first-to-tell-sherpas.pages.dev/client/?family=lewis (families: `lewis`, `carter`, `johnson`, `weah`)
 
-Calls, SMS and saving approvals need the demo PIN, and calls only ring one pre-registered demo phone. Everything else is open.
+Calls, SMS and saving approvals need the demo PIN. **All demo calls and SMS go to one specific, pre-registered phone: the personal phone of team member Luis Roberto Quintanilla Torrez** (verified on the Twilio trial). Real families are never called. Everything else is open.
 
 ## Problem we chose
 One advisor, ~150 families, and each one wants to feel like the only one. Families hear about changes from the news first;
@@ -39,7 +39,7 @@ All 130+ possible lines are pre-generated (`scripts/build_tts_cache.mjs` → `we
 - **Drafts:** written offline in a Claude Code session following `prompts/impact_engine.md` and passed through the same schema and
   grounding checks (`generated_by: "offline-draft"`), because no Anthropic API key was available. `backend/impact.py` regenerates them with Claude.
 - **Client behavioural profile** (from the Sherpas MCP) was not available. We use the plan, its risk profiles, and what families tell us in calls and in the app.
-- **No real messages are sent to clients.** Calls and SMS only reach one pre-registered demo phone (Twilio trial).
+- **No real messages are sent to clients.** Calls and SMS only reach one pre-registered phone, the personal phone of team member Luis Roberto Quintanilla Torrez (Twilio trial).
 
 ## How to run
 ```bash
