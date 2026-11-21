@@ -79,16 +79,16 @@ export function safe(line, brief) {
 export function prompt(step, brief, ctx = {}) {
   const A = brief.advisor_first, C = brief.client_first_name;
   switch (step) {
-    case "S0": return `Hi, this is the AI assistant from ${brief.advisor_name}'s office, with a simulated demo check-in. This call is recorded and ${A} gets a summary. Am I speaking with ${C}, and is now a good moment for about ${brief.target_minutes} minutes?`;
+    case "S0": return `Hi, this is the AI assistant from ${brief.advisor_name}'s office, with your regular check-in. This call is recorded and ${A} gets a summary. Am I speaking with ${C}, and is now a good moment for about ${brief.target_minutes} minutes?`;
     case "S0b": return `Thanks, ${C}. Is there anything specific you'd like to talk about today, or shall I go through the usual quick check-in?`;
     case "S1": return `Here's a quick snapshot from your plan: ${brief.summary.line}, and ${brief.summary.strength}. One thing we keep an eye on is ${brief.summary.area}. Does that match how things feel on your side?`;
-    case "S2": return `One thing from the news, in this simulated demo: ${brief.world_update}. How does that sit with you?`;
+    case "S2": return `One thing from the news: ${brief.world_update}. How does that sit with you?`;
     case "S3": return brief.data_gap.question;
     case "S4": return `Looking ahead, your plan has ${brief.upcoming_goal.name} ${brief.upcoming_goal.when}. How are preparations going?`;
     case "S5": return `Something your plan highlights that's worth talking through with ${A}: ${brief.plan_point}. Would you like ${A} to walk you through that?`;
     case "S7": return `Is there anything you'd like me to pass on to ${A}?`;
     case "Q": return "Of course. What's your question?";
-    case "E0": return `Hi, this is the AI assistant from ${brief.advisor_name}'s office, with a simulated demo message. This call is recorded and ${A} gets a summary. Am I speaking with ${C}?`;
+    case "E0": return `Hi, this is the AI assistant from ${brief.advisor_name}'s office, with a short update for you. This call is recorded and ${A} gets a summary. Am I speaking with ${C}?`;
     case "E2": return `How do you feel about it, and is anything worrying you?`;
     case "E3": return `Is there anything about this you'd like to ask, or anything on your mind?`;
     case "E4": return `Would you like ${A} to call you about it?`;

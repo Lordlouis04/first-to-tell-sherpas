@@ -104,7 +104,7 @@ export async function onRequest({request, env}) {
   const goto = async step => {
     if (!step || step === "S8" || step === "E5" || h >= 9) return close();   // Twilio trial: max 10 hops
     if (step === "E2") {   // event: reason + calm first + the advisor-approved voice note, then ask how they feel
-      say(`Thanks, ${brief.client_first_name}. I'm calling about something in the news, in this simulated demo: ${event.headline}.`);
+      say(`Thanks, ${brief.client_first_name}. I'm calling about something that may matter for you: ${event.headline}.`);
       say(event.type === "market" ? "First, ups and downs like this are normal, and your plan was built with them in mind. Here's the short voice note your advisor approved for you."
                                   : "First, nothing here needs a decision today. Here's the short voice note your advisor approved for you.");
       s.turns.push({who: "ai", text: "[plays the advisor-approved voice note]"});

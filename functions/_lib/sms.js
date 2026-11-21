@@ -3,10 +3,10 @@
 // in-app banner + advisor row still make sure the family gets the information.
 export function smsText(brief, event) {
   const A = brief.advisor_name, C = brief.client_first_name;
-  if (!event) return `Synapsis (demo): Hi ${C}, ${A}'s office tried to reach you for your check-in. Nothing urgent, we'll try again at your next scheduled time.`;
+  if (!event) return `Synapsis: Hi ${C}, ${A}'s office tried to reach you for your check-in. Nothing urgent, we'll try again at your next scheduled time.`;
   return event.urgent
-    ? `Synapsis (demo): Hi ${C}, ${A}'s office tried to call you about something important: ${event.subject}. Please open your app or reply to call back today.`
-    : `Synapsis (demo): Hi ${C}, ${A}'s office tried to call you about: ${event.subject}. Nothing urgent, it's waiting in your app whenever suits you.`;
+    ? `Synapsis: Hi ${C}, ${A}'s office tried to call you about something important: ${event.subject}. Please open your app or reply to call back today.`
+    : `Synapsis: Hi ${C}, ${A}'s office tried to call you about: ${event.subject}. Nothing urgent, it's waiting in your app whenever suits you.`;
 }
 
 export async function sendSms(env, body) {
