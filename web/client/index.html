@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f8f9fc">
+<title>My Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  /* Client app: structure from the team's mockup (greeting, next step, upcoming calls, preferences, bottom nav),
+     visual language from the Sherpas plan pages (Poppins/Inter, indigo accent, lavender cards). Built for non-experts:
+     big touch targets (>=44px), one idea per card, plain words. */
+  :root{--canvas:#f8f9fc;--panel:#fff;--ink:#1b1c22;--ink-2:#3a3d4a;--muted:#646883;--faint:#9a9db2;--line:#e3e5ec;--line-2:#d3d6df;
+        --brand:#4b55d0;--brand-ink:#fff;--hero-a:#eceffd;--hero-b:#e2e6fb;--red:#d0342c;--green:#2f9e5b;--sim:#6b4fc8;color-scheme:light}
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--canvas);color:var(--ink);font:16px/1.5 Inter,ui-sans-serif,system-ui,sans-serif}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer}
+  .app{max-width:460px;margin:0 auto;min-height:100vh;padding:28px 16px 120px;position:relative}
+  @media (min-width:600px){.app{border-left:1px solid var(--line);border-right:1px solid var(--line);background:var(--canvas)}}
+  h1{font:600 27px/1.15 Poppins,sans-serif;letter-spacing:-.03em;margin:0}
+  h2{font:600 19px/1.25 Poppins,sans-serif;letter-spacing:-.02em;margin:22px 0 10px}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .sub{color:var(--muted);font-size:14px;margin-top:2px}
+  .av{width:44px;height:44px;border-radius:50%;background:linear-gradient(120deg,var(--hero-a),var(--hero-b));color:var(--brand);display:grid;place-items:center;border:0;flex:none}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:12px;margin-bottom:12px}
+  .row{display:flex;align-items:center;gap:12px}
+  .grow{flex:1;min-width:0}
+  .lbl{font:600 11px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .accent{background:linear-gradient(120deg,var(--hero-a),var(--hero-b));border-color:transparent}
+  .accent .lbl{color:var(--brand)}
+  .big{font-size:17px;font-weight:600}
+  .ghost{min-height:44px;border:1px solid var(--line-2);background:var(--panel);color:var(--brand);border-radius:12px;font-weight:600;font-size:15px;padding:0 14px}
+  .primary{min-height:52px;border:0;border-radius:14px;background:var(--brand);color:var(--brand-ink);font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
+  .primary:disabled,.ghost:disabled{opacity:.5}
+  .tag{display:inline-block;font:600 11px/1 Inter,sans-serif;letter-spacing:.05em;text-transform:uppercase;padding:5px 9px;border-radius:99px;color:#fff;background:var(--sim)}
+  .pill{display:inline-block;font:600 12px/1 Inter,sans-serif;padding:6px 10px;border-radius:99px;background:var(--hero-a);color:var(--brand)}
+  .pill.urg{background:#fdecea;color:#9e2a22}
+  .msg{margin:0;font-size:15.5px;line-height:1.55;white-space:pre-wrap}
+  .msg.clip{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+  .link{background:none;border:0;padding:0;color:var(--brand);font-weight:600;font-size:14.5px;min-height:32px;text-align:left}
+  .note{font-size:13px;color:var(--muted)}
+  .status{font-size:13.5px;color:var(--ink-2);min-height:18px}
+  audio{width:100%}
+  .seg{display:flex;background:#eef0f6;border-radius:12px;padding:4px;gap:4px}
+  .seg button{flex:1;min-height:44px;border:0;background:none;border-radius:9px;font-size:14px;font-weight:500;color:var(--muted)}
+  .seg button.on{background:var(--panel);color:var(--brand);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+  .field{width:100%;min-height:46px;padding:10px 12px;border-radius:12px;border:1px solid var(--line-2);background:var(--panel)}
+  textarea.field{min-height:96px;resize:vertical}
+  .empty{color:var(--muted);text-align:center;padding:22px;border:1px dashed var(--line-2);border-radius:16px;font-size:14.5px}
+  nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--panel);border-top:1px solid var(--line);display:flex;justify-content:center;padding:8px 16px calc(14px + env(safe-area-inset-bottom));z-index:10}
+  nav.tabs .in{display:flex;width:100%;max-width:460px}
+  nav.tabs button{flex:1;border:0;background:none;color:var(--muted);font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:4px;min-height:48px}
+  nav.tabs button.on{color:var(--brand)}
+  .fab{position:fixed;bottom:96px;right:max(16px,calc(50% - 214px));z-index:11;min-height:52px;border:0;border-radius:99px;background:var(--ink);color:#fff;font-weight:600;font-size:15px;padding:0 18px;display:flex;align-items:center;gap:8px;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+  .sheet-bg{position:fixed;inset:0;background:rgba(20,22,35,.38);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+  .sheet{background:var(--panel);width:100%;max-width:460px;border-radius:22px 22px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:86vh;display:flex;flex-direction:column;gap:12px}
+  .sheet .grab{width:40px;height:4px;border-radius:4px;background:var(--line-2);margin:0 auto 4px}
+  .bubbles{display:flex;flex-direction:column;gap:8px;overflow:auto;min-height:160px}
+  .b{max-width:86%;padding:10px 13px;border-radius:16px;font-size:15px;line-height:1.45}
+  .b.ai{align-self:flex-start;background:#eef0f6} .b.me{align-self:flex-end;background:var(--brand);color:#fff}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{border:1px solid var(--line-2);background:var(--panel);border-radius:99px;padding:8px 12px;font-size:13.5px;min-height:36px}
+  .fam{display:flex;align-items:center;gap:12px;min-height:56px;border:1px solid var(--line);border-radius:14px;padding:8px 12px;background:var(--panel);width:100%;text-align:left}
+  .fam.on{border-color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand)}
+  .sim-note{font-size:11.5px;color:var(--muted);text-align:center;margin-top:18px}
+</style>
+</head>
+<body>
+<div class="app" id="app"><p class="empty">Loading…</p></div>
+<button class="fab" id="fab" onclick="openChat()" aria-label="Ask about your plan">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Ask</button>
+<nav class="tabs"><div class="in">
+  <button id="t-home" onclick="go('home')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9H4z"/></svg>Home</button>
+  <button id="t-history" onclick="go('history')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>History</button>
+  <button id="t-profile" onclick="go('profile')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>Profile</button>
+</div></nav>
+<div id="sheet"></div>
+<script>
+/* Shared with the advisor view (same browser): approvals and preferences live in localStorage "ftt-state-v1". */
+const STORE = "ftt-state-v1";
+let DATA = null, state = {}, tab = "home", fid = null, BRIEF = null, open = {}, chat = [];
+const load = () => { try { state = JSON.parse(localStorage.getItem(STORE) || "{}"); } catch (e) { state = {}; } };
+const save = () => { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} };
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const st = d => state[d.id] || {status: "pending", text: d.draft};
+
+/* schedule: same rules as the advisor view (urgent alerts always immediate; the rest in the next scheduled call) */
+const TODAY = new Date(2026, 10, 21);
+const FREQS = {weekly: "Weekly", biweekly: "Every 2 weeks", monthly: "Monthly"};
+const TIMES = ["09:00", "12:30", "15:30", "18:00"];
+const freqOf = f => (state.freq && state.freq[f]) || "monthly";
+const timeOf = f => (state.time && state.time[f]) || "15:30";
+function nextCalls(f, n = 2) {
+  const fr = freqOf(f), out = [];
+  if (fr === "monthly") { for (let i = 1; out.length < n; i++) { const d = new Date(TODAY.getFullYear(), TODAY.getMonth() + i, 1); while (d.getDay() !== 5) d.setDate(d.getDate() + 1); out.push(d); } }
+  else { const d = new Date(TODAY); do d.setDate(d.getDate() + 1); while (d.getDay() !== 5); for (let i = 0; i < n; i++) { out.push(new Date(d)); d.setDate(d.getDate() + (fr === "weekly" ? 7 : 14)); } }
+  return out;
+}
+const dayFmt = d => d.toLocaleDateString("en", {weekday: "short", day: "numeric", month: "short"});
+const URGENT = 70, isUrgent = d => d.urgency_score >= URGENT;
+const priority = d => { let m = 120; if (d.goal_at_risk && d.goal_at_risk.date) { const [y, mo] = d.goal_at_risk.date.split("-").map(Number); m = Math.max(1, (y - 2026) * 12 + ((mo || 6) - 11)); } return d.urgency_score * (1 + 12 / m); };
+
+const mine = () => DATA.drafts.filter(d => d.family_id === fid && st(d).status === "approved").sort((a, b) => priority(b) - priority(a));
+const famOf = id => DATA.drafts.find(d => d.family_id === id);
+const firstName = id => { const d = famOf(id); return d.household.names.join(" & "); };
+const advisor = () => famOf(fid).household.advisor;
+
+/* ---------------- screens ---------------- */
+function header() {
+  return `<div class="top"><div><h1>Hi, ${esc(firstName(fid))}</h1><div class="sub">Your plan with ${esc(advisor().name)} ${esc(advisor().surname)}</div></div>
+    <button class="av" onclick="openFamilies()" aria-label="Switch family (demo)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></button></div>`;
+}
+function msgCard(d, clip) {
+  const A = d.household.advisor;
+  return `<div class="card">
+    <div class="row"><span class="grow lbl">From ${esc(A.name)}</span><span class="pill ${isUrgent(d) ? "urg" : ""}">${isUrgent(d) ? "Important" : "Update"}</span></div>
+    <div class="big">${esc(d.subject)}</div>
+    <p class="msg ${clip && !open[d.id] ? "clip" : ""}">${esc(st(d).text)}</p>
+    ${clip ? `<button class="link" onclick="open['${d.id}']=!open['${d.id}'];render()">${open[d.id] ? "Show less" : "Read more"}</button>` : ""}
+    ${d.audio ? `<div class="lbl">Voice note</div><audio controls preload="none" src="/${d.audio}"></audio>` : ""}
+    <button class="ghost" onclick="callMe({mode:'event', id:'${d.id}'}, this, 's-${d.id}')">📞 Call me about this</button>
+    <div class="status" id="s-${d.id}"></div></div>`;
+}
+function home() {
+  const ms = mine(), b = BRIEF;
+  const step = b ? `Talk with ${esc(advisor().name)} about ${esc(b.upcoming_goal.name)} ${esc(b.upcoming_goal.when)}` : "";
+  return header() +
+    `<div class="card accent" style="margin-top:20px;flex-direction:row;align-items:center"><span style="color:var(--brand);display:flex"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      <div><div class="lbl">Your next step</div><div style="font-size:15.5px;font-weight:500;margin-top:4px">${step}</div></div></div>` +
+    `<h2>New from ${esc(advisor().name)}</h2>` +
+    (ms.length ? msgCard(ms[0], true) : `<div class="empty">Nothing new right now. If something matters to you, ${esc(advisor().name)} will tell you here first.</div>`) +
+    `<h2>Upcoming calls</h2>` +
+    nextCalls(fid).map(d => `<div class="card" style="flex-direction:row;align-items:center;padding:14px 16px;border-radius:16px">
+      <div class="grow"><div class="big">${dayFmt(d)} · ${timeOf(fid)}</div><div class="note">Check-in call with ${esc(advisor().name)}'s assistant</div></div>
+      <button class="ghost" style="min-width:88px" onclick="go('profile')">Change</button></div>`).join("") +
+    `<div class="card" style="margin-top:4px"><div class="big">Want to talk now?</div><div class="note">A short call from ${esc(advisor().name)}'s AI assistant. It answers from your plan, never gives advice, and passes anything important to ${esc(advisor().name)}.</div>
+      <button class="primary" onclick="callMe({mode:'periodic', fid}, this, 's-now')">📞 Call me now</button><div class="status" id="s-now"></div></div>` +
+    `<p class="sim-note">Demo with synthetic families and simulated events. Calls go only to one pre-registered demo number.</p>`;
+}
+function history() {
+  const ms = mine(), sent = (state.sent && state.sent[fid]) || [];
+  return header() + `<h2 style="margin-top:24px">Messages</h2>` +
+    (ms.length ? ms.map(d => msgCard(d, true)).join("") : `<div class="empty">No messages yet.</div>`) +
+    `<h2>What you told ${esc(advisor().name)}</h2>` +
+    (sent.length ? sent.slice().reverse().map(s => `<div class="card" style="gap:6px"><div class="row"><span class="grow lbl">${esc(s.kind)}</span><span class="note">${esc(s.at)}</span></div><div>${esc(s.text)}</div><div class="note">Sent · ${esc(advisor().name)} will review it</div></div>`).join("")
+                 : `<div class="empty">Nothing yet. Use "Report a change" in Profile, or ask in the chat.</div>`);
+}
+function profile() {
+  return header() + `<h2 style="margin-top:24px">Preferences</h2>
+    <div class="card" style="gap:14px"><div class="lbl">How often should we check in?</div>
+      <div class="seg">${Object.entries(FREQS).map(([k, v]) => `<button class="${freqOf(fid) === k ? "on" : ""}" onclick="setPref('freq','${k}')">${v}</button>`).join("")}</div>
+      <div class="lbl" style="margin-top:4px">Preferred time</div>
+      <div class="seg">${TIMES.map(t => `<button class="${timeOf(fid) === t ? "on" : ""}" onclick="setPref('time','${t}')">${t}</button>`).join("")}</div>
+      <div class="note">Next call: ${dayFmt(nextCalls(fid, 1)[0])} at ${timeOf(fid)}. Important alerts always reach you right away.</div></div>
+    <h2>Report a change</h2>
+    <div class="card"><div class="note">Something important happened or is about to? Tell ${esc(advisor().name)}. Nothing in your plan changes until they review it.</div>
+      <select class="field" id="c-kind"><option value="car">Buying a car</option><option value="home">Home or move</option><option value="job">Job or income</option><option value="family">Family (baby, wedding…)</option><option value="health">Health</option><option value="money">Big expense or windfall</option><option value="other">Something else</option></select>
+      <input class="field" id="c-when" placeholder="When? (e.g. March 2027)">
+      <textarea class="field" id="c-text" placeholder="e.g. We've decided to buy a car next spring."></textarea>
+      <button class="primary" onclick="sendChange(this)">Send to ${esc(advisor().name)}</button><div class="status" id="c-out"></div></div>
+    <h2>About this demo</h2>
+    <div class="card" style="gap:8px"><div class="note">Synthetic family from the Sherpas case. Events are simulated. Calls and messages are protected by a demo PIN.</div>
+      <button class="link" onclick="forgetPin();this.textContent='PIN forgotten on this device'">Forget the demo PIN on this device</button></div>`;
+}
+function render() {
+  document.getElementById("app").innerHTML = tab === "history" ? history() : tab === "profile" ? profile() : home();
+  ["home", "history", "profile"].forEach(t => document.getElementById("t-" + t).classList.toggle("on", t === tab));
+}
+function go(t) { tab = t; render(); window.scrollTo({top: 0}); }
+function setPref(k, v) { state[k] = {...(state[k] || {}), [fid]: v}; save(); render(); }
+
+/* ---------------- family picker (demo only: there is no login) ---------------- */
+function openFamilies() {
+  const ids = ["carter", "johnson", "lewis", "weah"];
+  document.getElementById("sheet").innerHTML = `<div class="sheet-bg" onclick="if(event.target===this)closeSheet()"><div class="sheet"><div class="grab"></div>
+    <h2 style="margin:0">Demo: choose a family</h2><div class="note">In the real app each family signs in and only sees their own plan.</div>
+    ${ids.map(i => `<button class="fam ${i === fid ? "on" : ""}" onclick="setFamily('${i}')"><span class="av" style="width:38px;height:38px;font-weight:600">${esc(famOf(i).household.names[0][0])}</span><span class="grow"><b>${esc(famOf(i).household.names.join(" & ") + " " + famOf(i).household.surname)}</b></span></button>`).join("")}
+  </div></div>`;
+}
+function closeSheet() { document.getElementById("sheet").innerHTML = ""; }
+async function setFamily(i) {
+  fid = i; try { localStorage.setItem("ftt-client-fid", i); } catch (e) {}
+  chat = []; closeSheet(); BRIEF = null; render();
+  BRIEF = await (await fetch(`/data/briefs/${i}.json`)).json(); render();
+}
+
+/* ---------------- chat: answers only from the family's plan brief ---------------- */
+function openChat() {
+  if (!chat.length) chat = [{who: "ai", text: `Hi! I'm ${advisor().name}'s AI assistant. Ask me about your cash, goals, debt, retirement or college. For decisions, I'll pass your question to ${advisor().name}.`}];
+  drawChat();
+}
+function drawChat() {
+  document.getElementById("sheet").innerHTML = `<div class="sheet-bg" onclick="if(event.target===this)closeSheet()"><div class="sheet"><div class="grab"></div>
+    <div class="row"><h2 class="grow" style="margin:0">Ask about your plan</h2><button class="ghost" onclick="closeSheet()" aria-label="Close">Close</button></div>
+    <div class="bubbles" id="bubbles">${chat.map((m, i) => `<div class="b ${m.who === "ai" ? "ai" : "me"}">${esc(m.text)}${m.pass ? `<div style="margin-top:8px"><button class="chip" onclick="passQ(${i}, this)">Send this question to ${esc(advisor().name)}</button></div>` : ""}</div>`).join("")}</div>
+    <div class="chips">${["How much cash do I have?", "What's my next goal?", "Should I sell my stocks?", "When is my next call?"].map(q => `<button class="chip" onclick="ask(this.textContent)">${q}</button>`).join("")}</div>
+    <div class="row"><input class="field grow" id="q" placeholder="Type a question" onkeydown="if(event.key==='Enter')ask(this.value)"><button class="primary" style="width:auto;padding:0 18px" onclick="ask(document.getElementById('q').value)">Ask</button></div>
+  </div></div>`;
+  const bb = document.getElementById("bubbles"); bb.scrollTop = bb.scrollHeight;
+}
+function ask(q) {
+  q = String(q || "").trim(); if (!q || !BRIEF) return;
+  const b = BRIEF, t = q.toLowerCase(), A = advisor().name;
+  const words = {home: ["home", "house", "mortgage"], cash: ["cash", "emergency", "savings", "reserve", "cushion"], college: ["college", "tuition", "university", "529", "school"],
+                 market: ["market", "stock", "stocks", "invest", "portfolio", "tech", "nvidia"], retirement: ["retire", "retirement", "401"], debt: ["debt", "card", "loan"], tax: ["tax", "taxes"]};
+  let a, pass = null;
+  if (/\b(should i|should we|do i sell|sell|buy|move my money|what should)\b/.test(t)) { a = `That's exactly the kind of decision ${A} should help you with. Want me to send your question?`; pass = q; }
+  else if (/next (call|update|check)|when.*(call|update|hear)/.test(t)) a = `Your next call is ${dayFmt(nextCalls(fid, 1)[0])} at ${timeOf(fid)}. Important alerts always reach you right away.`;
+  else if (/next goal|goal|coming up|upcoming/.test(t)) a = `Coming up in your plan: ${b.upcoming_goal.name} ${b.upcoming_goal.when}.`;
+  else { const k = Object.keys(words).find(k => b.topics[k] && words[k].some(w => t.includes(w))); if (k) a = b.topics[k];
+         else { a = `I don't have that in front of me. Want me to send your question to ${A}?`; pass = q; } }
+  chat.push({who: "me", text: q}, {who: "ai", text: a, pass});
+  drawChat();
+}
+
+/* ---------------- server calls (demo PIN, kept for this browser session) ---------------- */
+function getPin() {
+  let pin = ""; try { pin = sessionStorage.getItem("ftt-pin") || ""; } catch (e) {}
+  if (!pin) { pin = (prompt("Demo PIN:") || "").trim(); if (pin) try { sessionStorage.setItem("ftt-pin", pin); } catch (e) {} }
+  return pin;
+}
+function forgetPin() { try { sessionStorage.removeItem("ftt-pin"); } catch (e) {} }
+async function post(path, body) {
+  const pin = getPin(); if (!pin) return {ok: false, error: "No PIN"};
+  const r = await fetch(path, {method: "POST", headers: {"content-type": "application/json", "x-pin": pin}, body: JSON.stringify({...body, pin})});
+  const j = await r.json().catch(() => ({ok: false, error: "Server error " + r.status}));
+  if (r.status === 401) forgetPin();
+  return j;
+}
+function remember(kind, text) {
+  state.sent = state.sent || {}; (state.sent[fid] = state.sent[fid] || []).push({kind, text, at: new Date().toLocaleString("en", {day: "numeric", month: "short", hour: "2-digit", minute: "2-digit"})}); save();
+}
+async function callMe(payload, btn, outId) {
+  const out = document.getElementById(outId);
+  btn.disabled = true; out.textContent = "Calling…";
+  try {
+    const j = await post("/api/call", payload);
+    out.textContent = j.ok ? `📞 Ringing ${j.to}. Pick up and talk to the assistant.` : "Couldn't call: " + (j.error || "error");
+  } catch (e) { out.textContent = "Couldn't reach the call service."; }
+  btn.disabled = false;
+}
+async function sendChange(btn) {
+  const text = document.getElementById("c-text").value.trim(), out = document.getElementById("c-out");
+  if (!text) { out.textContent = "Write a short description first."; return; }
+  const kind = document.getElementById("c-kind").value;
+  btn.disabled = true; out.textContent = "Sending…";
+  const j = await post("/api/changes", {fid, kind, text, when: document.getElementById("c-when").value});
+  if (j.ok) { remember(kind, text); document.getElementById("c-text").value = ""; out.textContent = `✓ Sent. ${advisor().name} will review it before anything in your plan changes.`; }
+  else out.textContent = "Couldn't send: " + (j.error || "error");
+  btn.disabled = false;
+}
+async function passQ(i, btn) {
+  btn.disabled = true;
+  const j = await post("/api/changes", {fid, kind: "question", text: chat[i - 1].text});
+  if (j.ok) { remember("question", chat[i - 1].text); btn.textContent = `✓ Sent to ${advisor().name}`; } else { btn.disabled = false; btn.textContent = "Couldn't send: " + (j.error || "error"); }
+}
+
+/* ---------------- boot ---------------- */
+load();
+window.addEventListener("storage", e => { if (e.key === STORE) { load(); render(); } });   // approvals made in the advisor tab show up live
+fetch("/data/drafts.json").then(r => r.json()).then(async j => {
+  DATA = j;
+  let saved = null; try { saved = localStorage.getItem("ftt-client-fid"); } catch (e) {}
+  await setFamily(new URLSearchParams(location.search).get("family") || saved || "lewis");
+}).catch(() => document.getElementById("app").innerHTML = '<p class="empty">Could not load your plan.</p>');
+</script>
+</body>
+</html>
