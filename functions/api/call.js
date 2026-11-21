@@ -42,7 +42,31 @@ export async function onRequestPost({request, env}) {
   return json({ok: true, sid: out.sid, status: out.status, to: to.slice(0, 3) + " ··· " + to.slice(-3)});
 }
 
-export async function onRequestGet({env}) {
-  const ready = ["TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "TWILIO_FROM", "DEMO_TO", "CALL_PIN"].every(k => env[k]);
-  return json({ready});
+// GET /api/call            -> {ready}
+// GET /api/call?diag=1     -> yes/no checks only (no call is placed, no secret values returned)
+export async function onRequestGet({request, env}) {
+  const keys = ["TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "TWILIO_FROM", "DEMO_TO", "CALL_PIN"];
+  const ready = keys.every(k => env[k]);
+  if (!new URL(request.url).searchParams.get("diag")) return json({ready});
+  const e164 = v => /^\+[1-9]\d{6,14}$/.test(String(v || ""));
+  const out = {
+    ready,
+    present: Object.fromEntries(keys.map(k => [k, !!env[k]])),
+    sid_format_ok: /^AC[0-9a-f]{32}$/.test(String(env.TWILIO_ACCOUNT_SID || "").trim()),
+    sid_has_spaces: /\s/.test(String(env.TWILIO_ACCOUNT_SID || "")),
+    token_len: String(env.TWILIO_AUTH_TOKEN || "").length,
+    token_has_spaces: /\s/.test(String(env.TWILIO_AUTH_TOKEN || "")),
+    from_e164_ok: e164(env.TWILIO_FROM), to_e164_ok: e164(env.DEMO_TO),
+    pin_len: String(env.CALL_PIN || "").length,
+  };
+  if (env.TWILIO_ACCOUNT_SID && env.TWILIO_AUTH_TOKEN) {
+    const auth = btoa(`${env.TWILIO_ACCOUNT_SID}:${env.TWILIO_AUTH_TOKEN}`);
+    const r = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${env.TWILIO_ACCOUNT_SID}.json`, {headers: {Authorization: `Basic ${auth}`}});
+    const j = await r.json().catch(() => ({}));
+    out.twilio_auth_status = r.status; out.account_status = j.status || null; out.account_type = j.type || null;
+    const c = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${env.TWILIO_ACCOUNT_SID}/Calls.json?PageSize=3`, {headers: {Authorization: `Basic ${auth}`}});
+    const cj = await c.json().catch(() => ({}));
+    out.recent_calls = (cj.calls || []).map(x => ({status: x.status, start: x.start_time, duration: x.duration}));
+  }
+  return json(out);
 }
