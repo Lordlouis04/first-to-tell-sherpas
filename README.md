@@ -47,15 +47,28 @@ cp backend/.env.example backend/.env                # add ANTHROPIC_API_KEY (and
 python backend/impact.py tech_selloff_2026_11 --force   # regenerate drafts with Claude (claude-opus-5-5)
 python backend/tts.py                               # voice notes (ElevenLabs, cached in web/audio)
 python scripts/export_web.py                        # bundle drafts + audio for the web
+python scripts/build_briefs.py                      # call briefs for the AI calls + plan assistant
 python -m http.server -d web 8000                   # open http://localhost:8000
 ```
 Without an API key, the cached drafts are used, so the demo never depends on a live call.
 
 5. **Update frequency**: each family chooses weekly, two-weekly or monthly personalized updates. Urgent alerts
    (urgency ≥ 70) always go out as soon as the advisor approves them; everything else waits for the next update. Nothing is dropped.
-6. **Real phone call (demo)**: "Call me with this message" in the Family view uses `functions/api/call.js`
-   (Cloudflare Pages Function + Twilio) to place a real call that plays the approved voice note. It only calls one
-   pre-registered demo number (`DEMO_TO` secret) and needs a PIN (`CALL_PIN`). Twilio keys are Cloudflare secrets, never in the repo.
+6. **Interactive AI phone calls (demo)**: real calls through Twilio (trial: 75 free minutes) to one pre-registered
+   demo number (`DEMO_TO` secret), protected by a PIN (`CALL_PIN`). Twilio keys are Cloudflare secrets, never in the repo.
+   - *Event call* ("Call me with this message"): identity and verification, calm first, the advisor-approved voice note,
+     "how do you feel?", and an offer to have the advisor call.
+   - *Periodic check-in* ("Talk to us"): steps S0–S8 of our call Prompt Pack (verify, topic of the client's choice,
+     snapshot, news, one data-gap question, upcoming goal, one plan point, message for the advisor, close).
+   - **The loop is controlled by code, not by a model** (`functions/_lib/engine.js`). Each line comes from a per-family
+     CALL_BRIEF (`scripts/build_briefs.py`, every figure checked against the plan). Twilio speech recognition gives the
+     client's words. Keyword intents apply the hard rules: no advice, honest "I'm an AI", escalate life events, distress
+     and requests for the advisor, safety line with 911/988, busy, wrong person. A validator checks every line
+     (only brief numbers, blocked phrases). No LLM key is needed, and nothing can be invented.
+   - After hang-up, the post-call extraction and a 10-second advisor summary ("all good" when nothing matters) are saved in
+     Cloudflare KV (`CALLS` binding) and shown in the advisor's **Client check-ins**.
+7. **Client app extras**: *Report a change* (for example "we're buying a car"), saved as a client statement for the advisor
+   to validate. *Ask about your plan* answers only from the family's brief and routes decisions or unknown questions to the advisor.
 
 ## Deploy
 `web/` is a static site deployed on Cloudflare Pages: no build command, output directory `web`.
