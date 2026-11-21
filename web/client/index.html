@@ -81,6 +81,7 @@
 <script>
 /* Shared with the advisor view (same browser): approvals and preferences live in localStorage "ftt-state-v1". */
 const STORE = "ftt-state-v1";
+let MISSED = {};   // missed calls from the server: {fid: {ev, subject, urgent, at}}
 let DATA = null, state = {}, tab = "home", fid = null, BRIEF = null, expanded = {}, chat = [];
 const load = () => { try { state = JSON.parse(localStorage.getItem(STORE) || "{}"); } catch (e) { state = {}; } };
 const save = () => { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} };
@@ -127,7 +128,7 @@ function msgCard(d, clip) {
 function home() {
   const ms = mine(), b = BRIEF;
   const step = b ? `Talk with ${esc(advisor().name)} about ${esc(b.upcoming_goal.name)} ${esc(b.upcoming_goal.when)}` : "";
-  return header() +
+  return header() + missedBanner() +
     `<div class="card accent" style="margin-top:20px;flex-direction:row;align-items:center"><span style="color:var(--brand);display:flex"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
       <div><div class="lbl">Your next step</div><div style="font-size:15.5px;font-weight:500;margin-top:4px">${step}</div></div></div>` +
     `<h2>New from ${esc(advisor().name)}</h2>` +
@@ -139,6 +140,17 @@ function home() {
     `<div class="card" style="margin-top:4px"><div class="big">Want to talk now?</div><div class="note">A short call from ${esc(advisor().name)}'s AI assistant. It answers from your plan, never gives advice, and passes anything important to ${esc(advisor().name)}.</div>
       <button class="primary" onclick="callMe({mode:'periodic', fid}, this, 's-now')">📞 Call me now</button><div class="status" id="s-now"></div></div>` +
     `<p class="sim-note">Demo with synthetic families and simulated events. Calls go only to one pre-registered demo number.</p>`;
+}
+function missedBanner() {
+  const m = MISSED[fid], seen = (state.seenMissed || {})[fid] || 0;
+  if (!m || m.at <= seen) return "";
+  const A = advisor().name;
+  return `<div class="card" style="margin-top:18px;border-color:${m.urgent ? "#f3b9b4" : "var(--line-2)"};background:${m.urgent ? "#fdecea" : "var(--panel)"}">
+    <div class="row"><span style="font-size:22px">📞</span><div class="grow"><div class="big">${esc(A)} tried to call you</div>
+      <div class="note" style="color:var(--ink-2)">${m.subject ? "About: " + esc(m.subject) + ". " : ""}${m.urgent ? "It's important, please take a look or call back today." : "Nothing urgent, it's here whenever suits you."}</div></div></div>
+    <div class="row"><button class="primary" style="flex:1" onclick="callMe(${m.ev ? `{mode:'event', id:'${m.ev}'}` : "{mode:'periodic', fid}"}, this, 's-missed')">📞 Call me now</button>
+      <button class="ghost" onclick="state.seenMissed={...(state.seenMissed||{}),[fid]:${m.at}};save();render()">Got it</button></div>
+    <div class="status" id="s-missed"></div></div>`;
 }
 function history() {
   const ms = mine(), sent = (state.sent && state.sent[fid]) || [];
@@ -181,6 +193,7 @@ async function pullShared() {
     const before = JSON.stringify(state);
     DATA.drafts.forEach(d => { const v = r.approvals[d.id]; if (v) state[d.id] = {status: v.status, text: v.text || d.draft}; else delete state[d.id]; });
     state.freq = {...(state.freq || {}), ...r.prefs.freq}; state.time = {...(state.time || {}), ...r.prefs.time};
+    const m = JSON.stringify(r.missed || {}); if (m !== JSON.stringify(MISSED)) { MISSED = r.missed || {}; if (!document.querySelector(".sheet")) render(); }
     if (JSON.stringify(state) !== before) { save(); if (!document.querySelector(".sheet")) render(); }
   } catch (e) {}
 }

@@ -45,21 +45,24 @@
    "headline": "US home prices up 6% over the past year in major markets",
    "type": "market",
    "subject": "Home prices and your 2030 plans",
-   "audio": "audio/home_prices_2026_11__weah.mp3"
+   "audio": "audio/home_prices_2026_11__weah.mp3",
+   "urgent": false
   },
   "rate_cut_2026_11__weah": {
    "event_id": "rate_cut_2026_11",
    "headline": "Federal Reserve cuts interest rates by 0.5 percentage points; mortgage and savings rates expected to follow",
    "type": "market",
    "subject": "Lower rates and your spare cash",
-   "audio": "audio/rate_cut_2026_11__weah.mp3"
+   "audio": "audio/rate_cut_2026_11__weah.mp3",
+   "urgent": false
   },
   "tech_selloff_2026_11__weah": {
    "event_id": "tech_selloff_2026_11",
    "headline": "Tech sell-off: Nvidia down 30% in two weeks; broad US equities down ~8%",
    "type": "market",
    "subject": "The tech drop, and a conversation for both of you",
-   "audio": "audio/tech_selloff_2026_11__weah.mp3"
+   "audio": "audio/tech_selloff_2026_11__weah.mp3",
+   "urgent": false
   }
  }
 }

@@ -43,28 +43,32 @@
    "headline": "US home prices up 6% over the past year in major markets",
    "type": "market",
    "subject": "Home prices and your January budget",
-   "audio": "audio/home_prices_2026_11__carter.mp3"
+   "audio": "audio/home_prices_2026_11__carter.mp3",
+   "urgent": true
   },
   "rate_cut_2026_11__carter": {
    "event_id": "rate_cut_2026_11",
    "headline": "Federal Reserve cuts interest rates by 0.5 percentage points; mortgage and savings rates expected to follow",
    "type": "market",
    "subject": "Lower rates and your January home purchase",
-   "audio": "audio/rate_cut_2026_11__carter.mp3"
+   "audio": "audio/rate_cut_2026_11__carter.mp3",
+   "urgent": false
   },
   "tax_limits_2027__carter": {
    "event_id": "tax_limits_2027",
    "headline": "New tax law raises 2027 contribution limits for 401(k), IRA and HSA accounts",
    "type": "law",
    "subject": "The new contribution limits: no action needed yet",
-   "audio": "audio/tax_limits_2027__carter.mp3"
+   "audio": "audio/tax_limits_2027__carter.mp3",
+   "urgent": false
   },
   "tech_selloff_2026_11__carter": {
    "event_id": "tech_selloff_2026_11",
    "headline": "Tech sell-off: Nvidia down 30% in two weeks; broad US equities down ~8%",
    "type": "market",
    "subject": "The tech drop and your January home purchase",
-   "audio": "audio/tech_selloff_2026_11__carter.mp3"
+   "audio": "audio/tech_selloff_2026_11__carter.mp3",
+   "urgent": true
   }
  }
 }

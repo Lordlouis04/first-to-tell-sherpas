@@ -206,7 +206,7 @@ function checkins() {
     : CHK.error ? `<div class="empty">${esc(CHK.error)}</div>` : checkinsBody();
   return `<section id="sec-overview"><div class="hero"><span class="tag sim">Simulated calls</span><h1 style="margin-top:16px">Client check-ins</h1>
       <p>After every AI call you get a 10-second summary: what matters, what the client asked for, and a suggested next step. If nothing needs doing, it says so. Changes that clients report in their app appear here too, to validate.</p></div>
-    <div class="toolbar" style="margin-top:16px"><span class="meta">Calls are placed by an AI assistant that follows your rules: no advice, only plan figures, escalate anything important.</span><button onclick="loadCheckins(true)">Refresh</button></div></section>${body}`;
+    <div class="toolbar" style="margin-top:16px"><span class="meta">Calls are placed by an AI assistant that follows your rules: no advice, only plan figures, escalate anything important.</span><div class="row"><button onclick="testSms(this)">✉️ Send test SMS</button><button onclick="loadCheckins(true)">Refresh</button></div></div></section>${body}`;
 }
 function checkinsBody() {
   const {calls, changes, kv} = CHK;
@@ -216,7 +216,7 @@ function checkinsBody() {
   // Layout from the team's advisor mockup: the first call that needs you is expanded (summary, transcript, requests,
   // Done); the rest are one-line rows you can open. Handled calls sink to the bottom.
   const first = n => (DATA.drafts.find(x => x.family_id === n) || {household: {names: [n]}}).household.names[0];
-  const status = c => c.done ? ["Done", "var(--faint)"] : c.summary.headline.includes("URGENT") ? ["Urgent", "var(--red)"]
+  const status = c => c.done ? ["Done", "var(--faint)"] : c.missed ? ["No answer", "var(--red)"] : c.summary.headline.includes("URGENT") ? ["Urgent", "var(--red)"]
     : !c.summary.all_good && c.summary.client_asks !== "Nothing" ? ["Asks for something", "var(--amber)"]
     : !c.summary.all_good ? ["To note", "var(--amber)"] : ["No requests", "var(--green)"];
   const pill = c => { const [t, col] = status(c); return `<span style="font:600 12px/1 Inter,sans-serif;border-radius:99px;padding:6px 10px;background:color-mix(in srgb,${col} 14%,transparent);color:${col}">${t}</span>`; };
@@ -232,7 +232,8 @@ function checkinsBody() {
         <div class="note">${c.turns.map(t => `<div style="margin:4px 0"><b>${t.who === "ai" ? "AI" : esc(first(c.family_id))}:</b> ${esc(t.text)}</div>`).join("")}</div></details>
       <div><div class="lbl">Requests</div><ul style="margin:8px 0 0;padding-left:18px;font-size:15px;line-height:1.6">
         ${c.summary.client_asks !== "Nothing" ? `<li>${esc(c.summary.client_asks)}</li>` : `<li>No requests</li>`}<li><span class="meta">Suggested:</span> ${esc(c.summary.next_step)}</li></ul></div>
-      <button class="${c.done ? "" : "primary"}" style="min-height:48px;border-radius:14px;font-size:16px" onclick="markDone('${c.key}', ${!c.done})">${c.done ? "Mark as not done" : "✓ Done"}</button></div>`;
+      ${c.missed ? `<div class="row"><button class="primary" style="min-height:48px;border-radius:14px;font-size:16px;flex:1" onclick="callAgain('${c.family_id}', ${c.event ? `'${c.event}'` : "null"}, this)">📞 Call again</button><span class="meta" id="again-${c.key.replace(/[^a-z0-9]/gi, "")}"></span></div>` : ""}
+      <button class="${c.done || c.missed ? "" : "primary"}" style="min-height:48px;border-radius:14px;font-size:16px" onclick="markDone('${c.key}', ${!c.done})">${c.done ? "Mark as not done" : "✓ Done"}</button></div>`;
   const row = c => `<button onclick="chkOpen='${c.key}';render()" style="width:100%;display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:10px;text-align:left;font:inherit;line-height:1.4">
       ${av(c)}<div class="grow" style="min-width:0"><div style="font-weight:600;font-size:16px">${esc(first(c.family_id))}</div>
       <div class="meta" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(c.summary.headline.replace(/^[^:]+:\s*/, ""))}</div></div>${pill(c)}</button>`;
@@ -246,6 +247,20 @@ function checkinsBody() {
     <section id="sec-changes"><h2>Changes reported by clients</h2><p class="lead">Client statements: validate before updating the plan.</p>${chgHtml}</section>`;
 }
 let chkOpen = null;
+async function callAgain(fid, ev, btn) {
+  const pin = getPin(); if (!pin) return;
+  btn.disabled = true;
+  const r = await fetch("/api/call", {method: "POST", headers: {"content-type": "application/json"}, body: JSON.stringify(ev ? {mode: "event", id: ev, pin} : {mode: "periodic", fid, pin})});
+  const j = await r.json().catch(() => ({}));
+  toast(j.ok ? `📞 Calling again: ringing ${j.to}` : "Couldn't call: " + (j.error || r.status)); btn.disabled = false;
+}
+async function testSms(btn) {
+  const pin = getPin(); if (!pin) return;
+  btn.disabled = true;
+  const r = await api("/api/sms", pin, {fid: "lewis", ev: "tuition_2027__lewis"});
+  toast(r.ok ? "✉️ Test SMS sent to the demo phone" : "SMS refused by Twilio: " + (r.error || "error"));
+  btn.disabled = false;
+}
 async function markDone(key, done) {
   const pin = getPin(); if (!pin) return;
   const r = await api("/api/calls", pin, {key, done});

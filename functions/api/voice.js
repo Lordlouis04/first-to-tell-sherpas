@@ -5,6 +5,7 @@
 // Without the KV binding the call still works, it just cannot save the transcript for the advisor.
 import {STEPS, intents, isYes, isNo, isQuestiony, purchaseLine, topicOf, prompt, closing, safe, extract, summarize} from "../_lib/engine.js";
 import {renderVoice, polly} from "../_lib/tts.js";
+import {smsText, sendSms} from "../_lib/sms.js";
 
 const FIDS = ["carter", "johnson", "lewis", "weah"];
 const esc = s => String(s).replace(/[<>&'"]/g, c => ({"<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&apos;", '"': "&quot;"}[c]));
@@ -26,7 +27,34 @@ async function finalize(env, brief, s, sid) {
   if (env.CALLS) {
     await env.CALLS.put(`call:${String(9999999999999 - s.ended).padStart(13, "0")}:${sid}`, JSON.stringify(rec));
     await saveState(env, sid, s);
+    if (s.turns.some(t => t.who === "client")) {   // they talked to us: clear any earlier "missed call" flag
+      try { const sh = JSON.parse(await env.CALLS.get("shared:state") || "{}"); if (sh.missed && sh.missed[brief.family_id]) { delete sh.missed[brief.family_id]; await env.CALLS.put("shared:state", JSON.stringify(sh)); } } catch {}
+    }
   }
+}
+
+// Defence when nobody talks to us: SMS (urgent vs not), a "missed call" row for the advisor, and a flag the client app shows.
+async function missedCall(env, brief, s, sid, event, ev, status) {
+  s.finalized = true; s.ended = Date.now();
+  const sms = await sendSms(env, smsText(brief, event));
+  const reason = status === "completed" ? "voicemail or hung up before talking" : status.replace("-", " ");
+  const urgent = !!(event && event.urgent);
+  const summary = {
+    headline: `${brief.household}: didn't answer (${reason}), message waiting in the app`,
+    key_points: [event ? `About: ${event.subject}${urgent ? " (urgent)" : ""}` : "Periodic check-in",
+                 sms.ok ? "SMS sent to the client" : `SMS not sent: ${sms.error}`],
+    client_asks: "Nothing",
+    next_step: urgent ? "Urgent: call again, or call them yourself today." : "Nothing urgent: it waits in their app; try again at the next scheduled call.",
+    all_good: false, emotion: "unknown", missed: true,
+  };
+  if (!env.CALLS) return;
+  await env.CALLS.put(`call:${String(9999999999999 - s.ended).padStart(13, "0")}:${sid}`, JSON.stringify({
+    id: sid, family_id: brief.family_id, household: brief.household, mode: s.mode, event: ev || null,
+    started: s.started, ended: s.ended, turns: s.turns, missed: true, sms, summary, simulated: true}));
+  let shared = {}; try { shared = JSON.parse(await env.CALLS.get("shared:state") || "{}"); } catch {}
+  shared.missed = {...(shared.missed || {}), [brief.family_id]: {ev: ev || null, subject: event ? event.subject : null, urgent, at: s.ended, sms: !!sms.ok}};
+  await env.CALLS.put("shared:state", JSON.stringify(shared));
+  await saveState(env, sid, s);
 }
 
 export async function onRequest({request, env}) {
@@ -44,12 +72,14 @@ export async function onRequest({request, env}) {
   let s = await loadState(env, sid) || {mode, event: ev || null, started: Date.now(), turns: [], topics: [], changes: [], gaps: [],
                                          unanswered: [], messages: [], interest: null, escalate: false, wantsAdvisor: false, urgency: "none", reprompted: {}};
 
-  // Twilio status callback (call ended): make sure the advisor gets a summary
+  // Twilio status callback (call ended): make sure the advisor gets a summary, and that the family still gets the news
   if (q.get("status")) {
-    if (["completed", "busy", "no-answer", "failed", "canceled"].includes(form.CallStatus)) {
-      if (!s.finalized && s.turns.length) { if (!s.closed) s.endedEarly = s.endedEarly || "client hung up"; await finalize(env, brief, s, sid); }
+    if (["completed", "busy", "no-answer", "failed", "canceled"].includes(form.CallStatus) && !s.finalized) {
+      const clientSpoke = s.turns.some(t => t.who === "client");
+      if (!clientSpoke) await missedCall(env, brief, s, sid, event, ev, form.CallStatus);   // no answer / voicemail / busy
+      else { if (!s.closed) s.endedEarly = s.endedEarly || "client hung up"; await finalize(env, brief, s, sid); }
     }
-    return new Response("", {status: 204});
+    return new Response(null, {status: 204});
   }
 
   const h = Number(q.get("h") || 0);

@@ -137,7 +137,7 @@ def main():
             **b,
             # approved event messages for this family (event call variant): voice note + headline
             "events": {k: {"event_id": d["event_id"], "headline": events[d["event_id"]]["headline"], "type": events[d["event_id"]]["type"],
-                           "subject": d["subject"], "audio": f"audio/{k}.mp3"}
+                           "subject": d["subject"], "audio": f"audio/{k}.mp3", "urgent": d["urgency_score"] >= 70}
                        for k, d in drafts.items() if d["family_id"] == fid},
         }
         (OUT / f"{fid}.json").write_text(json.dumps(brief, indent=1, ensure_ascii=False), encoding="utf8")

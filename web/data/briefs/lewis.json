@@ -45,28 +45,32 @@
    "headline": "US home prices up 6% over the past year in major markets",
    "type": "market",
    "subject": "Home prices: your home today and your 2030 plan",
-   "audio": "audio/home_prices_2026_11__lewis.mp3"
+   "audio": "audio/home_prices_2026_11__lewis.mp3",
+   "urgent": false
   },
   "tax_limits_2027__lewis": {
    "event_id": "tax_limits_2027",
    "headline": "New tax law raises 2027 contribution limits for 401(k), IRA and HSA accounts",
    "type": "law",
    "subject": "A new tax law opens more room for your retirement",
-   "audio": "audio/tax_limits_2027__lewis.mp3"
+   "audio": "audio/tax_limits_2027__lewis.mp3",
+   "urgent": false
   },
   "tech_selloff_2026_11__lewis": {
    "event_id": "tech_selloff_2026_11",
    "headline": "Tech sell-off: Nvidia down 30% in two weeks; broad US equities down ~8%",
    "type": "market",
    "subject": "What the tech sell-off means for your portfolio",
-   "audio": "audio/tech_selloff_2026_11__lewis.mp3"
+   "audio": "audio/tech_selloff_2026_11__lewis.mp3",
+   "urgent": true
   },
   "tuition_2027__lewis": {
    "event_id": "tuition_2027",
    "headline": "Universities announce 5% tuition increases for the 2027-28 academic year",
    "type": "life",
    "subject": "Tuition is going up: let's plan Ethan's and Ava's college",
-   "audio": "audio/tuition_2027__lewis.mp3"
+   "audio": "audio/tuition_2027__lewis.mp3",
+   "urgent": true
   }
  }
 }
