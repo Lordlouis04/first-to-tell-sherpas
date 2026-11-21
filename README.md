@@ -16,7 +16,9 @@ We cover **Tracker → personal message → advisor approval at scale** (brief: 
    - Never says buy or sell ("let's look at…"), and always sends something, even when the answer is "no action needed".
 3. **Advisor inbox** (`web/`): drafts are sorted by urgency × how soon the goal at risk is. The advisor sees "why this family"
    and the cited plan figures, and can approve all / edit / reject.
-4. **Family view** (`web/`): shows only the message the advisor approved. A synthetic-voice note (ElevenLabs) is next.
+4. **Family view** (`web/`): shows only the message the advisor approved, with a voice note.
+   `backend/tts.py` turns each `voice_script` into an mp3 using an ElevenLabs **stock voice**. The mp3s are cached in
+   `web/audio/` and labelled as synthetic.
 
 ## What is simulated
 - **The event** is simulated and labelled `SIMULATED` everywhere.
@@ -38,7 +40,8 @@ python -m venv .venv && .venv/Scripts/pip install anthropic pydantic python-dote
 python scripts/fetch_plans.py                       # refresh plan data (optional, already committed)
 cp backend/.env.example backend/.env                # add ANTHROPIC_API_KEY (and ELEVENLABS_API_KEY)
 python backend/impact.py tech_selloff_2026_11 --force   # regenerate drafts with Claude (claude-opus-5-5)
-python scripts/export_web.py                        # bundle drafts for the web
+python backend/tts.py                               # voice notes (ElevenLabs, cached in web/audio)
+python scripts/export_web.py                        # bundle drafts + audio for the web
 python -m http.server -d web 8000                   # open http://localhost:8000
 ```
 Without an API key, the cached drafts are used, so the demo never depends on a live call.
@@ -48,4 +51,4 @@ Without an API key, the cached drafts are used, so the demo never depends on a l
 Each push to `main` redeploys it.
 
 ## Stack
-Python, Anthropic SDK (Claude), pydantic, plain HTML/JS, Cloudflare Pages. ElevenLabs text-to-speech is planned.
+Python, Anthropic SDK (Claude), pydantic, ElevenLabs text-to-speech, plain HTML/JS, Cloudflare Pages.

@@ -61,7 +61,7 @@
      "surname": "Benhaddi"
     }
    },
-   "audio": null,
+   "audio": "audio/tech_selloff_2026_11__carter.mp3",
    "id": "tech_selloff_2026_11__carter"
   },
   {
@@ -112,7 +112,7 @@
      "surname": "Benhaddi"
     }
    },
-   "audio": null,
+   "audio": "audio/tech_selloff_2026_11__johnson.mp3",
    "id": "tech_selloff_2026_11__johnson"
   },
   {
@@ -177,7 +177,7 @@
      "surname": "Benhaddi"
     }
    },
-   "audio": null,
+   "audio": "audio/tech_selloff_2026_11__lewis.mp3",
    "id": "tech_selloff_2026_11__lewis"
   },
   {
@@ -228,7 +228,7 @@
      "surname": "Benhaddi"
     }
    },
-   "audio": null,
+   "audio": "audio/tech_selloff_2026_11__weah.mp3",
    "id": "tech_selloff_2026_11__weah"
   }
  ]
