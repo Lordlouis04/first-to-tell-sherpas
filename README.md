@@ -51,6 +51,12 @@ python -m http.server -d web 8000                   # open http://localhost:8000
 ```
 Without an API key, the cached drafts are used, so the demo never depends on a live call.
 
+5. **Update frequency**: each family chooses weekly, two-weekly or monthly personalized updates. Urgent alerts
+   (urgency ≥ 70) always go out as soon as the advisor approves them; everything else waits for the next update. Nothing is dropped.
+6. **Real phone call (demo)**: "Call me with this message" in the Family view uses `functions/api/call.js`
+   (Cloudflare Pages Function + Twilio) to place a real call that plays the approved voice note. It only calls one
+   pre-registered demo number (`DEMO_TO` secret) and needs a PIN (`CALL_PIN`). Twilio keys are Cloudflare secrets, never in the repo.
+
 ## Deploy
 `web/` is a static site deployed on Cloudflare Pages: no build command, output directory `web`.
 Each push to `main` redeploys it.
