@@ -158,7 +158,7 @@ function pickEvent(id) { curEvent = id; render(); window.scrollTo({top: 0}); }
 /* ---------- left menu ---------- */
 function sideInbox() {
   const types = {market: "Markets", law: "The law changes", life: "Family life"};
-  let h = "";
+  let h = `<div class="grp">From your clients</div><button class="it ${curEvent === "__checkins" ? "" : "dim"}" onclick="pickEvent('__checkins')">Client check-ins<span class="n">calls &amp; changes</span></button>`;
   Object.entries(types).forEach(([t, label]) => {
     const evs = DATA.events.filter(e => e.type === t); if (!evs.length) return;
     h += `<div class="grp" style="margin-top:${h ? 18 : 0}px">${label}</div>`;
@@ -182,7 +182,7 @@ function sideFamily(fid) {
   return `<div class="grp">Families</div>` + fams.map(d => {
     const on = d.family_id === fid, n = DATA.drafts.filter(x => x.family_id === d.family_id && st(x).status === "approved").length;
     return `<button class="it ${on ? "" : "dim"}" onclick="location.hash='#/family/${d.family_id}'">${esc(names(d))}<span class="n">${n} ${n === 1 ? "message" : "messages"}</span></button>` +
-      (on ? `<div class="sub"><button data-sec="sec-messages" onclick="goSec('sec-messages')">Messages from your advisor</button><button data-sec="sec-updates" onclick="goSec('sec-updates')">Your updates</button><button data-sec="sec-plan" onclick="goSec('sec-plan')">Your plan, year by year</button></div>` : "");
+      (on ? `<div class="sub"><button data-sec="sec-messages" onclick="goSec('sec-messages')">Messages from your advisor</button><button data-sec="sec-updates" onclick="goSec('sec-updates')">Your updates</button><button data-sec="sec-talk" onclick="goSec('sec-talk')">Talk to us</button><button data-sec="sec-change" onclick="goSec('sec-change')">Report a change</button><button data-sec="sec-ask" onclick="goSec('sec-ask')">Ask about your plan</button><button data-sec="sec-plan" onclick="goSec('sec-plan')">Your plan, year by year</button></div>` : "");
   }).join("");
 }
 
@@ -198,8 +198,50 @@ function hero(ds, pending) {
     <p class="fine">Synthetic families from the Sherpas case; the event dated ${esc(ev.date)} is simulated. No real messages are sent. Drafts were generated offline and checked so that every figure comes from the family's plan.</p></section>`;
 }
 
+/* ---------- advisor: client check-ins (AI call summaries + client-reported changes) ---------- */
+let CHK = null;
+function checkins() {
+  const body = CHK === null ? `<div class="empty">Loading…</div>`
+    : CHK.error ? `<div class="empty">${esc(CHK.error)}</div>` : checkinsBody();
+  return `<section id="sec-overview"><div class="hero"><span class="tag sim">Simulated calls</span><h1 style="margin-top:16px">Client check-ins</h1>
+      <p>After every AI call you get a 10-second summary: what matters, what the client asked for, and a suggested next step. If nothing needs doing, it says so. Changes that clients report in their app appear here too, to validate.</p></div>
+    <div class="toolbar" style="margin-top:16px"><span class="meta">Calls are placed by an AI assistant that follows your rules: no advice, only plan figures, escalate anything important.</span><button onclick="loadCheckins(true)">Refresh</button></div></section>${body}`;
+}
+function checkinsBody() {
+  const {calls, changes, kv} = CHK;
+  const fam = fid => { const d = DATA.drafts.find(x => x.family_id === fid); return d ? names(d) : fid; };
+  const badge = s => s.headline.includes("URGENT") ? `<span class="tag high">Urgent</span>` : s.all_good ? `<span class="tag" style="background:var(--green)">All good</span>` : `<span class="tag medium">To note</span>`;
+  const when = t => new Date(t).toLocaleString("en", {day: "numeric", month: "short", hour: "2-digit", minute: "2-digit"});
+  const callHtml = calls.length ? calls.map(c => `<div class="card">
+      <div class="row"><span class="fam grow">${esc(c.summary.headline)}</span>${badge(c.summary)}</div>
+      <div class="meta">${c.mode === "event" ? "Event call" : "Periodic check-in"} · ${when(c.ended || c.started)} · client mood: ${esc(c.summary.emotion)}</div>
+      ${c.summary.key_points.length ? `<h3 class="label">Key points</h3><ul style="margin:0;padding-left:20px">${c.summary.key_points.map(p => `<li>${esc(p)}</li>`).join("")}</ul>` : ""}
+      <h3 class="label">Client asks</h3><div>${esc(c.summary.client_asks)}</div>
+      <h3 class="label">Suggested next step</h3><div>${esc(c.summary.next_step)}</div>
+      <details style="margin-top:12px"><summary class="meta" style="cursor:pointer">Transcript (${c.turns.length} turns)</summary>
+        <div class="note">${c.turns.map(t => `<div style="margin:4px 0"><b>${t.who === "ai" ? "AI" : "Client"}:</b> ${esc(t.text)}</div>`).join("")}</div></details></div>`).join("")
+    : `<div class="empty">No calls yet. Start one from a family's view ("Talk to us").</div>`;
+  const chgHtml = changes.length ? changes.map(c => `<div class="card"><div class="row"><span class="fam grow" style="font-size:16px">${esc(fam(c.fid))}</span><span class="tag low">${esc(c.kind)}</span></div>
+      <div class="meta">${when(c.created)}${c.when ? " · happening: " + esc(c.when) : ""} · ${esc(c.source)} · ${esc(c.status)}</div><p class="msg" style="margin-top:8px">${esc(c.text)}</p></div>`).join("")
+    : `<div class="empty">No changes reported yet.</div>`;
+  return `${kv ? "" : `<div class="note">Storage is not connected yet (KV binding CALLS), so calls work but summaries can't be saved.</div>`}
+    <section id="sec-calls"><h2>Call summaries</h2><p class="lead">Newest first. Open the transcript only if you need it.</p>${callHtml}</section>
+    <section id="sec-changes"><h2>Changes reported by clients</h2><p class="lead">Client statements: validate before updating the plan.</p>${chgHtml}</section>`;
+}
+async function loadCheckins(force) {
+  if (CHK && !force) return;
+  const pin = getPin(); if (!pin) { CHK = {error: "Enter the demo PIN to see call summaries."}; return render(); }
+  try {
+    const [a, b] = await Promise.all([api("api/calls", pin), api("api/changes", pin)]);
+    CHK = a.ok && b.ok ? {calls: a.calls, changes: b.changes, kv: a.kv} : {error: a.error || b.error || "Couldn't load"};
+    if (!a.ok && a.error === "Wrong PIN") forgetPin();
+  } catch (e) { CHK = {error: "Couldn't reach the server."}; }
+  render();
+}
+
 function inbox() {
   curEvent = curEvent || DATA.events[0].event_id;
+  if (curEvent === "__checkins") { if (CHK === null) setTimeout(loadCheckins, 0); return checkins(); }
   const ds = evDrafts(curEvent).sort((a, b) => priority(b) - priority(a));
   const pending = ds.filter(d => st(d).status === "pending").length;
   return hero(ds, pending) + urgencyChart(ds) + planCalendar(ds) +
@@ -255,7 +297,7 @@ function family(fid) {
       <div class="card" style="margin-top:12px"><p class="msg">${esc(st(d).text)}</p>
       ${d.audio ? `<audio controls src="${d.audio}" style="width:100%;margin-top:14px"></audio>
         <div class="row" style="margin-top:12px"><button class="primary" onclick="callMe('${d.id}', this)">📞 Call me with this message</button>
-          <span class="meta" id="call-${d.id}">Plays this voice note on a real phone call to the demo number.</span></div>
+          <span class="meta" id="call-${d.id}">A real, interactive call: the assistant plays this voice note, asks how you feel, and offers your advisor.</span></div>
         <div class="note">Voice note uses a synthetic stock voice. Demo calls go only to one pre-registered number.</div>` : ""}</div></div>`;
   return `<section id="sec-messages"><div class="hero"><span class="tag sim">Simulated</span><h1 style="margin-top:16px">${esc(any ? names(any) : fid)}</h1>
       <p>What your advisor has shared with you, and where your plan is heading.</p></div>
@@ -267,7 +309,62 @@ function family(fid) {
         <div class="fig"><b>${dayFmt(nextUpdate(fid))}</b><span>next personalized update</span></div>
         <div class="fig"><b>Always on</b><span>urgent alerts (when something important happens)</span></div>
         <div class="fig"><b>${DATA.drafts.filter(d => d.family_id === fid && !isUrgent(d)).length}</b><span>topics waiting for your next update</span></div></div></section>
+    <section id="sec-talk"><h2>Talk to us</h2><p class="lead">A short check-in call from your advisor's AI assistant. It listens and answers from your plan, never gives advice, and passes anything important to your advisor.</p>
+      <div class="row"><button class="primary" onclick="startCall({mode:'periodic', fid:'${fid}'}, this, 'talk-${fid}')">📞 Call me for a check-in</button>
+        <span class="meta" id="talk-${fid}">Interactive: you can answer, ask, or say "I'd like to talk to my advisor". Simulated demo, recorded for your advisor.</span></div></section>
+    <section id="sec-change"><h2>Report a change</h2><p class="lead">Something important happened or is about to? Tell your advisor here. They'll review it before anything in your plan changes.</p>
+      <div class="card" style="max-width:640px"><div class="row">
+        <select id="chg-kind"><option value="car">Buying a car</option><option value="home">Home or move</option><option value="job">Job or income</option><option value="family">Family (baby, wedding…)</option><option value="health">Health</option><option value="money">Big expense or windfall</option><option value="other">Other</option></select>
+        <input id="chg-when" placeholder="When? e.g. March 2027" style="font:inherit;padding:9px 12px;border-radius:10px;border:1px solid var(--line-2);flex:1;min-width:160px"></div>
+        <textarea id="chg-text" style="min-height:90px;margin-top:10px" placeholder="e.g. We've decided to buy a car around $30,000 next spring."></textarea>
+        <div class="row" style="margin-top:10px"><button class="primary" onclick="sendChange('${fid}', this)">Send to my advisor</button><span class="meta" id="chg-out"></span></div></div></section>
+    <section id="sec-ask"><h2>Ask about your plan</h2><p class="lead">Quick answers from your own plan. For decisions, it passes your question to your advisor.</p>
+      <div class="card" style="max-width:640px"><div id="chat-log" style="display:flex;flex-direction:column;gap:8px;max-height:320px;overflow:auto">${chatLog(fid)}</div>
+        <div class="row" style="margin-top:12px"><input id="chat-in" placeholder="e.g. How much cash do I have?" style="font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line-2);flex:1;min-width:180px" onkeydown="if(event.key==='Enter')chatSend('${fid}')"><button class="primary" onclick="chatSend('${fid}')">Ask</button></div>
+        <div class="row" style="margin-top:8px">${["How much cash do I have?", "What's my next goal?", "Should I sell my stocks?", "When is my next update?"].map(q => `<button class="chip" onclick="document.getElementById('chat-in').value=this.textContent;chatSend('${fid}')">${q}</button>`).join("")}</div></div></section>
     <section id="sec-plan">${projectionChart(fid)}</section>`;
+}
+
+/* ---------- client: plan assistant (answers only from the family's brief; anything else goes to the advisor) ---------- */
+const BRIEFS = {}, CHATS = {};
+async function brief(fid) { if (!BRIEFS[fid]) BRIEFS[fid] = await (await fetch(`data/briefs/${fid}.json`)).json(); return BRIEFS[fid]; }
+function chatLog(fid) {
+  const msgs = CHATS[fid] || [{who: "ai", text: "Hi! I'm your advisor's AI assistant. Ask me about your cash, goals, debt, retirement or college, and I'll answer from your plan. For decisions, I'll pass your question to your advisor."}];
+  CHATS[fid] = msgs;
+  return msgs.map(m => `<div style="align-self:${m.who === "ai" ? "flex-start" : "flex-end"};max-width:85%;padding:9px 12px;border-radius:14px;background:${m.who === "ai" ? "var(--bar)" : "var(--brand)"};color:${m.who === "ai" ? "var(--ink)" : "var(--brand-ink)"};font-size:14px">${esc(m.text)}${m.pass ? `<div style="margin-top:6px"><button class="chip" onclick="passQ('${fid}', ${JSON.stringify(m.pass).replace(/"/g, "&quot;")}, this)">Send this question to my advisor</button></div>` : ""}</div>`).join("");
+}
+async function chatSend(fid) {
+  const el = document.getElementById("chat-in"), q = el.value.trim(); if (!q) return;
+  const b = await brief(fid), t = q.toLowerCase(), A = b.advisor_first;
+  const words = {home: ["home", "house", "mortgage"], cash: ["cash", "emergency", "savings", "reserve", "cushion"], college: ["college", "tuition", "university", "529", "school"],
+                 market: ["market", "stock", "stocks", "invest", "portfolio", "tech", "nvidia"], retirement: ["retire", "retirement", "401"], debt: ["debt", "card", "loan"], tax: ["tax", "taxes"]};
+  let a, pass = null;
+  if (/\b(should i|should we|do i sell|sell|buy|move my money|what should)\b/.test(t)) { a = `That's exactly the kind of decision ${A} should help you with. Want me to send your question?`; pass = q; }
+  else if (/next (update|check|call)|when.*(update|hear)/.test(t)) a = `Your next personalized update is ${dayFmt(nextUpdate(fid))}. Urgent alerts always reach you right away.`;
+  else if (/next goal|goal|coming up|upcoming/.test(t)) a = `Coming up in your plan: ${b.upcoming_goal.name} ${b.upcoming_goal.when}.`;
+  else { const k = Object.keys(words).find(k => b.topics[k] && words[k].some(w => t.includes(w))); if (k) a = b.topics[k];
+         else { a = `I don't have that in front of me. Want me to send your question to ${A}?`; pass = q; } }
+  CHATS[fid].push({who: "client", text: q}, {who: "ai", text: a, pass});
+  el.value = ""; document.getElementById("chat-log").innerHTML = chatLog(fid);
+  const log = document.getElementById("chat-log"); log.scrollTop = log.scrollHeight;
+}
+async function passQ(fid, q, btn) {
+  const pin = getPin(); if (!pin) return;
+  btn.disabled = true;
+  const r = await api("api/changes", pin, {fid, kind: "question", text: q});
+  btn.textContent = r.ok ? "✓ Sent to your advisor" : "Couldn't send: " + (r.error || "error");
+  if (r.error === "Wrong PIN") forgetPin();
+}
+async function sendChange(fid, btn) {
+  const text = document.getElementById("chg-text").value.trim(), out = document.getElementById("chg-out");
+  if (!text) { out.textContent = "Write a short description first."; return; }
+  const pin = getPin(); if (!pin) return;
+  btn.disabled = true; out.textContent = "Sending…";
+  const r = await api("api/changes", pin, {fid, kind: document.getElementById("chg-kind").value, text, when: document.getElementById("chg-when").value});
+  out.textContent = r.ok ? "✓ Sent. Your advisor will review it before anything in your plan changes." : "Couldn't send: " + (r.error || "error");
+  if (r.ok) { document.getElementById("chg-text").value = ""; CHK = null; }
+  if (r.error === "Wrong PIN") forgetPin();
+  btn.disabled = false;
 }
 
 /* ---------- charts (hand-written SVG) ---------- */
@@ -458,20 +555,30 @@ function render() {
   }), {rootMargin: "-20% 0px -70% 0px"});
   btns.forEach(b => { const el = document.getElementById(b.dataset.sec); if (el) spy.observe(el); });
 }
-// Real phone call through the Pages Function /api/call (Twilio). PIN kept only for this browser session.
-async function callMe(id, btn) {
-  const out = document.getElementById("call-" + id);
+// Demo PIN (same as CALL_PIN) guards calls and the shared records; kept only for this browser session.
+function getPin() {
   let pin = ""; try { pin = sessionStorage.getItem("ftt-pin") || ""; } catch (e) {}
-  if (!pin) { pin = prompt("Demo PIN to place the call:") || ""; if (!pin) return; }
+  if (!pin) { pin = (prompt("Demo PIN:") || "").trim(); if (pin) try { sessionStorage.setItem("ftt-pin", pin); } catch (e) {} }
+  return pin;
+}
+function forgetPin() { try { sessionStorage.removeItem("ftt-pin"); } catch (e) {} }
+async function api(path, pin, body) {
+  const r = await fetch(path, body ? {method: "POST", headers: {"content-type": "application/json", "x-pin": pin}, body: JSON.stringify(body)} : {headers: {"x-pin": pin}});
+  return r.json().catch(() => ({ok: false, error: "Server error " + r.status}));
+}
+// Real, interactive phone call through /api/call -> Twilio -> /api/voice on every turn.
+async function startCall(payload, btn, outId) {
+  const out = document.getElementById(outId), pin = getPin(); if (!pin) return;
   btn.disabled = true; out.textContent = "Calling…";
   try {
-    const r = await fetch("api/call", {method: "POST", headers: {"content-type": "application/json"}, body: JSON.stringify({id, pin})});
+    const r = await fetch("api/call", {method: "POST", headers: {"content-type": "application/json"}, body: JSON.stringify({...payload, pin})});
     const j = await r.json().catch(() => ({}));
-    if (j.ok) { out.textContent = `📞 Ringing ${j.to} now. Pick up to hear the message.`; try { sessionStorage.setItem("ftt-pin", pin); } catch (e) {} }
-    else { out.textContent = "Couldn't call: " + (j.error || r.status); if (r.status === 401) try { sessionStorage.removeItem("ftt-pin"); } catch (e) {} }
+    if (j.ok) { out.textContent = `📞 Ringing ${j.to} now. Pick up and talk to the assistant; the summary appears in the advisor's "Client check-ins".`; CHK = null; }
+    else { out.textContent = "Couldn't call: " + (j.error || r.status); if (r.status === 401) forgetPin(); }
   } catch (e) { out.textContent = "Couldn't reach the call service."; }
   btn.disabled = false;
 }
+const callMe = (id, btn) => startCall({mode: "event", id}, btn, "call-" + id);
 function setStatus(id, s) { const d = DATA.drafts.find(x => x.id === id); state[id] = {...st(d), status: s}; save(); render(); }
 function saveEdit(id) { state[id] = {status: "approved", text: document.getElementById("ta-" + id).value}; save(); render(); }
 function approveAll() { evDrafts(curEvent).forEach(d => { if (st(d).status === "pending") state[d.id] = {...st(d), status: "approved"}; }); save(); render(); }
