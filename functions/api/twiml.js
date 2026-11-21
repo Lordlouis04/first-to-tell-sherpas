@@ -7,7 +7,7 @@ function twiml(request) {
   const url = new URL(request.url);
   const id = url.searchParams.get("id") || "";
   const body = ID_RE.test(id)
-    ? `<Play>${url.origin}/audio/${id}.mp3</Play><Pause length="1"/><Say voice="Polly.Joanna" language="en-US">This was a simulated demo message from First to Tell. Goodbye.</Say>`
+    ? `<Play>${url.origin}/audio/${id}.mp3</Play><Pause length="1"/><Say voice="Polly.Joanna" language="en-US">This was a simulated demo message from Synapsis. Goodbye.</Say>`
     : `<Say voice="Polly.Joanna" language="en-US">Sorry, this demo message was not found. Goodbye.</Say>`;
   return new Response(`<?xml version="1.0" encoding="UTF-8"?><Response>${body}<Hangup/></Response>`,
     {headers: {"content-type": "text/xml"}});

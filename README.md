@@ -1,4 +1,4 @@
-# First to Tell — Sherpas challenge, CDTM Valencia Hacks 2026
+# Synapsis — Sherpas challenge "First to know, first to tell", CDTM Valencia Hacks 2026
 
 ## Problem we chose
 A financial advisor looks after ~150 families. When something happens (markets fall, a family member's
